@@ -23,7 +23,7 @@ DistSicurezza = 2.5; % distanza di sicurezza (distanza minima) [Km]
 
 %% System Model
 
-DistTxRxFissa = 50;
+DistTxRxFissa = 2.5;
 % Attenuazione in spazio libero
 MediaLoS = 32.4 + 20 * log10(DistTxRxFissa) + 20 * log10(Fc / 10^9); % conversione Hz->GHz
 % Shadowing component
@@ -37,7 +37,7 @@ MediaPathLoss = MediaLoS + MediaAtt;
 VarianzaPathLoss = VarianzaSh + VarianzaAtt;
 
 % Modello PathLoss
-NumSimulazioni = 10^5;
+NumSimulazioni = 10^6;
 PathLossLoS = VarianzaSh * randn(1, NumSimulazioni) + MediaLoS; % conversione Hz->GHz
 PathLossNLoSv = VarianzaPathLoss * randn(1, NumSimulazioni) + MediaPathLoss;
 % Simulazione numerica
@@ -47,7 +47,7 @@ hold on
 histogram(PathLossNLoSv, 'BinWidth', 1)
 xlabel('dB');
 ylabel('Densità di Probabilità');
-title('Path loss caso LOS e NLoSv');
+title('Path loss caso LOS e NLoSv a dtr 50m');
 legend('LoS', 'NLoSv')
 
 legend
@@ -62,26 +62,50 @@ hold on
 histogram(SNRNLoSv, 'BinWidth', 1)
 xlabel('dB');
 ylabel('Densità di Probabilità');
-title('SNR caso LOS e NLoSv');
+title('SNR caso LOS e NLoSv a dtr 50m');
 legend('LoS', 'NLoSv')
 
 % Modello PathLoss su distanza
-DistanzaTxRxMobile = [DistSicurezza:2.5:LungScenario];
-PathLossMobile = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9);
-SNRMobile = Pt_dBm + Gt_dB + Gr_dB - PathLossMobile - Pn_dBm;
-PathLossMobileNLoSv = 32.4 + 20 * log10(DistanzaTxRxMobile/2) + 20 * log10(Fc / 10^9) + 9 + max(0, 15 * log10(DistTxRxFissa / 2) - 41);
+DistanzaTxRxMobile = [DistSicurezza:1.25:LungScenario];
+PathLossMobileLoS = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9);
+SNRMobileLoS = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileLoS - Pn_dBm;
+PathLossMobileNLoSv = PathLossMobileLoS + 9 + max(0, 15 * log10(DistanzaTxRxMobile / 2) - 41);
 SNRMobileNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileNLoSv - Pn_dBm;
 % Simulazione numerica
 figure(3)
-plot(DistanzaTxRxMobile, PathLossMobile, 'LineWidth', 3);
 hold on
-plot(DistanzaTxRxMobile, SNRMobile, 'LineWidth', 3);
-hold on
-plot(DistanzaTxRxMobile, PathLossMobileNLoSv, 'LineWidth', 3);
-hold on
-plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
-xlabel('Distanza dr');
+grid on
+xlabel('Distanza dtr');
 ylabel('dB');
 title('Path Loss e SNR a distanza variabile');
+plot(DistanzaTxRxMobile, PathLossMobileLoS, 'LineWidth', 3);
+plot(DistanzaTxRxMobile, PathLossMobileNLoSv, 'LineWidth', 3);
+plot(DistanzaTxRxMobile, SNRMobileLoS, 'LineWidth', 3);
+plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
+legend('Path loss LoS', 'Path loss NLoSv', 'SNR LoS', 'SNR NLoSv')
+
+% Simulazione vs Analitica SNR su distanza
+SimSNRMobileLoS = SNRMobileLoS + randn(1, size(DistanzaTxRxMobile, 2)) * VarianzaSh;
+SimSNRMobileNLoSv = SNRMobileNLoSv + randn(1, size(DistanzaTxRxMobile, 2)) * VarianzaPathLoss;
+% Simulazione numerica
+figure(4)
+subplot(2, 1, 1)
+hold on
 grid on
-legend('Path loss LoS', 'SNR LoS', 'Path loss NLoSv', 'SNR NLoSv')
+xlim([0 200])
+ylim([-10 50])
+xlabel('Distanza dtr');
+ylabel('dB');
+title('Simulazione SNR LoS a distanza variabile');
+plot(DistanzaTxRxMobile, SNRMobileLoS, 'LineWidth', 3);
+stem(DistanzaTxRxMobile, SimSNRMobileLoS, 'filled', 'LineStyle', 'none');
+subplot(2, 1, 2)
+hold on
+grid on
+xlim([0 200])
+ylim([-20 40])
+xlabel('Distanza dtr');
+ylabel('dB');
+title('Simulazione SNR NLoSv a distanza variabile');
+plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
+stem(DistanzaTxRxMobile, SimSNRMobileNLoSv, 'filled', 'LineStyle', 'none');
