@@ -30,7 +30,7 @@ MediaLoS = 32.4 + 20 * log10(DistTxRxFissa) + 20 * log10(Fc / 10^9); % conversio
 MediaSh = 0;
 VarianzaSh = 3^2;
 % Attenuazione da bloccaggio
-MediaAtt = 9 + max(0, 15 * log10(10000) - 41);
+MediaAtt = 9 + max(0, 15 * log10(DistTxRxFissa / 2) - 41);
 VarianzaAtt = 4.5^2;
 % Attenuazione complessiva
 MediaPathLoss = MediaLoS + MediaAtt;
@@ -68,14 +68,20 @@ legend('LoS', 'NLoSv')
 % Modello PathLoss su distanza
 DistanzaTxRxMobile = [DistSicurezza:2.5:LungScenario];
 PathLossMobile = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9);
-SNRMobile = Pt_dBm + Gt_dB + Gr_dB - (32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9)) - Pn_dBm;
+SNRMobile = Pt_dBm + Gt_dB + Gr_dB - PathLossMobile - Pn_dBm;
+PathLossMobileNLoSv = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9) + 9 + max(0, 15 * log10(DistTxRxFissa / 2) - 41);
+SNRMobileNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileNLoSv - Pn_dBm;
 % Simulazione numerica
 figure(3)
 plot(DistanzaTxRxMobile, PathLossMobile, 'LineWidth', 3);
 hold on
 plot(DistanzaTxRxMobile, SNRMobile, 'LineWidth', 3);
+hold on
+plot(DistanzaTxRxMobile, PathLossMobileNLoSv, 'LineWidth', 3);
+hold on
+plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
 xlabel('Distanza dr');
 ylabel('dB');
 title('Path Loss e SNR a distanza variabile');
 grid on
-legend('Path loss', 'SNR')
+legend('Path loss LoS', 'SNR LoS', 'Path loss NLoSv', 'SNR NLoSv')
