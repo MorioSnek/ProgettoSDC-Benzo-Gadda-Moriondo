@@ -69,7 +69,7 @@ legend('LoS', 'NLoSv')
 DistanzaTxRxMobile = [DistSicurezza:2.5:LungScenario];
 PathLossMobile = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9);
 SNRMobile = Pt_dBm + Gt_dB + Gr_dB - PathLossMobile - Pn_dBm;
-PathLossMobileNLoSv = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9) + 9 + max(0, 15 * log10(DistTxRxFissa / 2) - 41);
+PathLossMobileNLoSv = 32.4 + 20 * log10(DistanzaTxRxMobile/2) + 20 * log10(Fc / 10^9) + 9 + max(0, 15 * log10(DistTxRxFissa / 2) - 41);
 SNRMobileNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileNLoSv - Pn_dBm;
 % Simulazione numerica
 figure(3)
