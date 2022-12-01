@@ -18,34 +18,64 @@ AltVeicoloStdv = 0.08; % deviazione standard delle altezze dei veicoli [m]
 % parametri scenario analizzato
 LungScenario = 200; % lunghezza dello scenario analizzato [m]
 NumCorsie = 3; % numero di corsie considerate nello scenario
-DensTraffico1 = 10; % densità a cui sono distribuiti i veicoli [veicolo/m]
-DensTraffico2 = 50; % densità a cui sono distribuiti i veicoli [veicolo/m]
+DensTraffico = 10; % densità a cui sono distribuiti i veicoli [veicolo/m]
 DistSicurezza = 2.5; % distanza di sicurezza (distanza minima) [Km]
 
 %% System Model
 
 DistTxRxFissa = 50;
 % Attenuazione in spazio libero
-MediaLoS = 32.4 + 20 * log10(DistTxRxFissa / 10^3) + 20 * log10(Fc / 10^9); % conversione m->Km e Hz->GHz
+MediaLoS = 32.4 + 20 * log10(DistTxRxFissa) + 20 * log10(Fc / 10^9); % conversione Hz->GHz
 % Shadowing component
 MediaSh = 0;
-VarianzaSh = 3;
+VarianzaSh = 3^2;
 % Attenuazione da bloccaggio
-MediaAtt = 0;
-VarianzaAtt = 0;
+MediaAtt = 9 + max(0, 15 * log10(10000) - 41);
+VarianzaAtt = 4.5^2;
 % Attenuazione complessiva
 MediaPathLoss = MediaLoS + MediaAtt;
 VarianzaPathLoss = VarianzaSh + VarianzaAtt;
+
 % Modello PathLoss
-PathLoss = VarianzaPathLoss * randn(1, 100000) + MediaPathLoss;
-SNR = (Pt_dBm - 30) + Gt_dB + Gr_dB - PathLoss - (Pn_dBm - 30);
-
-%% Simulazioni numeriche
-
-histogram(PathLoss, 'BinWidth', 0.5)
-xlabel('dB');
-ylabel('Occorrenze nella simulazione');
-title('Confronto Path Loss e SNR');
+NumSimulazioni = 10^5;
+PathLossLoS = VarianzaSh * randn(1, NumSimulazioni) + MediaLoS; % conversione Hz->GHz
+PathLossNLoSv = VarianzaPathLoss * randn(1, NumSimulazioni) + MediaPathLoss;
+% Simulazione numerica
+figure(1)
+histogram(PathLossLoS, 'BinWidth', 1)
 hold on
-histogram(SNR, 'BinWidth', 0.5)
+histogram(PathLossNLoSv, 'BinWidth', 1)
+xlabel('dB');
+ylabel('Densità di Probabilità');
+title('Path loss caso LOS e NLoSv');
+legend('LoS', 'NLoSv')
+
 legend
+
+% Modello SNR
+SNR = Pt_dBm + Gt_dB + Gr_dB - PathLossLoS - Pn_dBm;
+SNRNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossNLoSv - Pn_dBm;
+% Simulazione numerica
+figure(2)
+histogram(SNR, 'BinWidth', 1)
+hold on
+histogram(SNRNLoSv, 'BinWidth', 1)
+xlabel('dB');
+ylabel('Densità di Probabilità');
+title('SNR caso LOS e NLoSv');
+legend('LoS', 'NLoSv')
+
+% Modello PathLoss su distanza
+DistanzaTxRxMobile = [DistSicurezza:2.5:LungScenario];
+PathLossMobile = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9);
+SNRMobile = Pt_dBm + Gt_dB + Gr_dB - (32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10^9)) - Pn_dBm;
+% Simulazione numerica
+figure(3)
+plot(DistanzaTxRxMobile, PathLossMobile, 'LineWidth', 3);
+hold on
+plot(DistanzaTxRxMobile, SNRMobile, 'LineWidth', 3);
+xlabel('Distanza dr');
+ylabel('dB');
+title('Path Loss e SNR a distanza variabile');
+grid on
+legend('Path loss', 'SNR')
