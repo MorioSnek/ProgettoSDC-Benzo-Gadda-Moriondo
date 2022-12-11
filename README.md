@@ -15,9 +15,20 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
 - [Study on evaluation methodology of new vehicle-to-everything](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3209)
 
 ## Introduzione
-Il progetto ha come scopo la caratterizzazione e la simulazione dell'impatto della presenza di un veicolo bloccante sul Signal-To-Noise Ratio tra due veicoli (uno avente funzione di trasmettitore TX e uno di ricevitore RX), il tutto in uno scenario autostradale.
+Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare. In particolare, l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
 Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli bloccanti tra il trasmettitore e il ricevitore sulla medesima corsia stradale, per poi studiare quelle più complesse prodotte dalla combinazione di diversi elementi:
+- Uno o più veicoli bloccanti;
 - La posizione dell’antenna sul veicolo;
 - La presenza di traffico più o meno intenso;
-- Uno o più veicoli bloccanti;
-- La presenza di più corsie. 
+- La presenza di più corsie.
+
+## System Model
+Vengono differenziati due scenari relativi a due modelli di canale:
+- *Line-of-Sight* (LoS), ossia il canale in visibilità;
+- *Non-Line-of-Sight vehicle* (NLoSv), ossia il canale non in visibilità attenuato dalla presenza di veicoli bloccanti.
+
+Vengono considerate nell'attenuazione in spazio libero due componenti con distribuzione normale:
+- Shadowing component: $\chi\sim \mathcal{N}(0,\sigma_{sh}^2)$
+- Attenuazione da bloccaggio: $\mathcal{A}(k)\sim \mathcal{N}(\mu(k),\sigma^2(k))$
+
+Il valore $k\in\mathbb{N}$ rappresenta il numero di veicoli bloccanti nella trasmissione. L'attenuazione per il primo veicolo è ottenuta come: $9 + \textrm{max}(0,15\cdot\log_{10}(d_{tb})-41)$, pertanto nello scenario considerato (200 metri) rimarrà sempre 9dB.
