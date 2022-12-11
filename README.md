@@ -13,3 +13,11 @@ I paper di riferimento per il progetto sono:
 
 Sono stati usati a supporto del progetto anche i seguenti documenti:
 - [Study on evaluation methodology of new vehicle-to-everything](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3209)
+
+## Introduzione
+Il progetto ha come scopo la caratterizzazione e la simulazione dell'impatto della presenza di un veicolo bloccante sul Signal-To-Noise Ratio tra due veicoli (uno avente funzione di trasmettitore TX e uno di ricevitore RX), il tutto in uno scenario autostradale.
+Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli bloccanti tra il trasmettitore e il ricevitore sulla medesima corsia stradale, per poi studiare quelle più complesse prodotte dalla combinazione di diversi elementi:
+- La posizione dell’antenna sul veicolo;
+- La presenza di traffico più o meno intenso;
+- Uno o più veicoli bloccanti;
+- La presenza di più corsie. 
