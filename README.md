@@ -22,7 +22,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 - La presenza di traffico più o meno intenso;
 - La presenza di più corsie.
 
-## Parametri della simulazione
+## Parametri e variabili della simulazione
 ### Sistema di comunicazione
 | Parametro                      | Simbolo |  Valore |
 |--------------------------------|:-------:|:-------:|
@@ -30,7 +30,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Guadagno antenna trasmettitore | $G_{t}$ |  10 dB  |
 | Guadagno antenna ricevitore    | $G_{r}$ |  10 dB  |
 | Potenza di rumore              | $P_{n}$ | -85 dBm |
-| Frequenza della portante       |  $F_c$  |  28 GHz |
+| Frequenza della portante       |  $f_c$  |  28 GHz |
 
 ### Veicoli
 | Parametro                           |   Simbolo  | Valore |
@@ -45,9 +45,17 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 |---------------------------------|:-------:|:--------------:|
 | Lunghezza scenario              |   $D$   |      200 m     |
 | Numero di corsie                |   $M$   |        3       |
-| Larghezza delle corsie          |  $w_l$  |      3.5 m     |
+| Larghezza delle corsie          |  $W$    |      3.5 m     |
 | Distanza di sicurezza           |  $d_s$  |      2.5 m     |
 | Densità di traffico considerate | $\rho$  | 10 / 50 veh/km |
+
+### Variabili considerate
+| Parametro                         |  Simbolo |
+|-----------------------------------|:--------:|
+| Distanza Trasmettitore-Ricevitore | $d_{tr}$ |
+| Distanza Trasmettitore-Bloccante  | $d_{tb}$ |
+| Distanza Bloccante-Ricevitore     | $d_{br}$ |
+| Numero di veicoli bloccanti       | $k$      |
 
 ### 
 
@@ -60,4 +68,16 @@ Vengono considerate nell'attenuazione in spazio libero due componenti con distri
 - Shadowing component: $\chi\sim \mathcal{N}(0,\sigma_{sh}^2)$
 - Attenuazione da bloccaggio: $\mathcal{A}(k)\sim \mathcal{N}(\mu(k),\sigma^2(k))$
 
-Il valore $k\in\mathbb{N}$ rappresenta il numero di veicoli bloccanti nella trasmissione. L'attenuazione per il primo veicolo è ottenuta come: $9 + \textrm{max}(0,15\cdot\log_{10}(d_{tb})-41)$, pertanto nello scenario considerato (200 metri) rimarrà sempre 9dB.<br>
+Il valore $k\in\mathbb{N}$ rappresenta il numero di veicoli bloccanti nella trasmissione. L'attenuazione per il primo veicolo è ottenuta tramite: 
+$$ \begin{split}
+9 + \textrm{max}(0,15\cdot\log_{10}(d_{tb})-41)
+\end{split} $$
+Pertanto, osservando i risultati del secondo argomento della funzione, nello scenario considerato (200 metri) rimarrà sempre 9dB.<br>
+La formula per l'attenuazione in spazio libero è calcolata con la formula:
+$$ \begin{split}
+\mu_{LoS} = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c)
+\end{split} $$
+da cui deriva quindi la più completa formula derivante dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
+$$ \begin{split}
+PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k)
+\end{split} $$
