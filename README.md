@@ -68,7 +68,8 @@ Vengono considerate nell'attenuazione in spazio libero due componenti con distri
 - Shadowing component: $\chi\sim \mathcal{N}(0,\sigma_{sh}^2)$
 - Attenuazione da bloccaggio: $\mathcal{A}(k)\sim \mathcal{N}(\mu(k),\sigma^2(k))$
 
-Il valore $k\in\mathbb{N}$ rappresenta il numero di veicoli bloccanti nella trasmissione. L'attenuazione per il primo veicolo è ottenuta tramite: 
+Il valore $k\in\mathbb{N}$ rappresenta il numero di veicoli bloccanti nella trasmissione. 
+<!-- L'attenuazione per il primo veicolo è ottenuta tramite: 
 $$ \begin{split}
 9 + \textrm{max}(0,15\cdot\log_{10}(d_{tb})-41)
 \end{split} $$
@@ -80,4 +81,4 @@ $$ \begin{split}
 da cui deriva quindi la più completa formula derivante dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
 $$ \begin{split}
 PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k)
-\end{split} $$
+\end{split} $$ -->
