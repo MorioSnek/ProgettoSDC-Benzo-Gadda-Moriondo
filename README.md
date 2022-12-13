@@ -70,9 +70,9 @@ Vengono considerate nell'attenuazione in spazio libero due componenti con distri
 
 Il valore $k\in\mathbb{N}$ rappresenta il numero di veicoli bloccanti nella trasmissione. 
 L'attenuazione per il primo veicolo è ottenuta tramite: 
-$$ 9 + \textrm{max}(0,15\cdot\log_{10}(d_{tb})-41) $$
+$$9 + \textrm{max}(0,15\cdot\log_{10}(d_{tb})-41)$$
 Pertanto, osservando i risultati del secondo argomento della funzione, nello scenario considerato (200 metri) rimarrà sempre 9dB.<br>
 La formula per l'attenuazione in spazio libero è calcolata con la formula:
 $$\mu_{LoS} = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c)$$
 da cui deriva quindi la più completa formula derivante dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
-$$ PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k) $$
+$$PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k)$$
