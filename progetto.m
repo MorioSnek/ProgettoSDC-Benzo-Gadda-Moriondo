@@ -20,7 +20,7 @@ AltVeicoloStdv = 0.08; % deviazione standard delle altezze dei veicoli [m]
 LungScenario = 200; % lunghezza dello scenario analizzato [m]
 NumCorsie = 3; % numero di corsie considerate nello scenario
 LarghezzaCorsia = 3.5;
-DensTraffico1 = 10; % densità a cui sono distribuiti i veicoli [veicolo/m]
+DensTraffico1 = 10; % densità a cui sono distribuiti i veicoli [veicolo/km]
 DensTraffico2 = 50;
 DistSicurezza = 2.5; % distanza di sicurezza (distanza minima) [m]
 
@@ -40,7 +40,7 @@ MediaPathLoss = MediaLoS + MediaAtt;
 VarianzaPathLoss = VarianzaSh + VarianzaAtt;
 
 % Modello PathLoss
-NumSimulazioni = 10 ^ 4;
+NumSimulazioni = 10 ^ 5;
 PathLossLoS = VarianzaSh * randn(1, NumSimulazioni) + MediaLoS; % conversione Hz->GHz
 PathLossNLoSv = VarianzaPathLoss * randn(1, NumSimulazioni) + MediaPathLoss;
 
@@ -70,24 +70,23 @@ ProbSamelane = 1 / NumCorsie;
 ProbDifflane = 1 - ProbSamelane;
 NumeroMaxSlot = floor(DistanzaTxRxFissa / LunghezzaSlotA);
 % Variaibli PPP
-GammaA = DensTraffico1*10^-3 * LunghezzaSlotA;
-GammaB = DensTraffico1*10^-3 * LunghezzaSlotB;
-GammaC = DensTraffico1*10^-3 * LunghezzaSlotC;
+GammaA = DensTraffico1 * 10 ^ -3 * LunghezzaSlotA;
+GammaB = DensTraffico1 * 10 ^ -3 * LunghezzaSlotB;
+GammaC = DensTraffico1 * 10 ^ -3 * LunghezzaSlotC;
 
 % Definizione distanze dal bloccante
-DistanzaTxB = DistanzaTxRxFissa / 2; % in questo caso collocato a metà tra TX e RX
-DistanzaBRx = DistanzaTxB;
-
+DistanzaTxB = rand(1, NumSimulazioni) * DistanzaTxRxFissa; % collocato in una posizione casuale tra TX e RX
+DistanzaBRx = DistanzaTxRxFissa - DistanzaTxB;
 % Modellazione primo ellissoide di Fresnel
-RaggioFresnel = sqrt(Lambda_c * (DistanzaTxB * DistanzaBRx) / (DistanzaTxB + DistanzaBRx));
-AltezzaFresnel = AltVeicoloStdv ^ 2 * randn(1, NumSimulazioni) + (AltVeicoloMedia - 0.6 * RaggioFresnel);
+RaggioFresnel = sqrt(Lambda_c .* ((DistanzaTxB .* DistanzaBRx) ./ DistanzaTxRxFissa));
+AltezzaFresnel = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + (AltVeicoloMedia - 0.6 * RaggioFresnel);
 
 % Probabilità Bloccaggio dato veicolo presente
-AltezzaBloccante = AltVeicoloStdv ^ 2 * randn(1, NumSimulazioni) + AltVeicoloMedia;
+AltezzaBloccante = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + AltVeicoloMedia;
 AltezzaEfficace = AltezzaBloccante - AltezzaFresnel;
 MediaEfficace = 0.6 * RaggioFresnel;
 DevstdEfficace = sqrt(2 * AltVeicoloStdv ^ 2);
-Prob_NLoSv_B = qfunc((AltezzaEfficace - MediaEfficace) / DevstdEfficace); % CHIEDERE A FRANCESCO, NON TORNA
+Prob_NLoSv_B = qfunc((AltezzaEfficace - MediaEfficace) / DevstdEfficace);
 
 % Probabilità Same Lane
 k = 3;
