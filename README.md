@@ -104,8 +104,26 @@ Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli pre
 La probabilità che un singolo slot sia occupato da un bloccante viene calcolata assumendo che i veicoli siano distribuiti secondo un processo di Poisson lineare (o Linear Point Poisson Process):
 $$\mathcal{P_a} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\cdot \mathbb{P}(\mathcal{B}) = Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)\Gamma e^{-\Gamma}\quad\quad \Gamma = \rho \cdot d_a$$
 Viene infine calcolata la probabilità di avere un bloccaggio da parte di $k$ veicoli mediante una distribuzione di Bernoulli:
-$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
+$$\mathbb{P}
+(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
 
-### Analisi Different Lane
+### Analisi Different Lanes
+Analizziamo ora il caso in cui trasmettitore e ricevitore siano su corsie differenti. Analogamente al caso “Same Lane” dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in slot. Essi vengono suddivisi in due tipologie:
+
+- Slot Tipo B: spazio che potrebbe essere occupato da un bloccante sulla stessa corsia di TX o RX;
+- Slot Tipo C: spazio che potrebbe essere occupato da un bloccante sulle corsie esistenti tra TX e RX.
+
+Definita $\Delta y$ la distanza tra i punti medi delle corsie di TX e RX, possiamo definire le lunghezze $d_b$ e $d_c$:
+$$d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{2\Delta y}\quad\quad d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{\Delta y}+l_v$$
+Si calcola la probabilità di avere TX e RX con uno scostamento laterale pari a $\Delta y = nW, \ n\in\{1,2,\ldots,M\}$:
+$$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1}n = \frac{M-1}{M}$$
+Si calcola inoltre la probabilità di avere $k$ bloccanti su un massimo di $M$ slot, poiché in questo caso si considera che non ci sia più di un veicolo bloccante per corsia:
+$$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q}_k}\prod_{i\in\mathcal{A}}\mathcal{P}_i\prod_{j\in\mathcal{A}^c}(1-\mathcal{P}_j)$$
+Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
+$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P}_b^k(1-\mathcal{P}_b)^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q}_k}\prod_{i\in\mathcal{A}}\mathcal{P}_i\prod_{j\in\mathcal{A}^c}(1-\mathcal{P}_j)$$
+
+### Sintesi
+Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
+$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
 ## Numerical Simulations
