@@ -24,13 +24,14 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 
 ## Parametri e variabili della simulazione
 ### Sistema di comunicazione
-| Parametro                      | Simbolo |  Valore |
-|--------------------------------|:-------:|:-------:|
-| Potenza del trasmettitore      | $P_{t}$ |  0 dBm  |
-| Guadagno antenna trasmettitore | $G_{t}$ |  10 dB  |
-| Guadagno antenna ricevitore    | $G_{r}$ |  10 dB  |
-| Potenza di rumore              | $P_{n}$ | -85 dBm |
-| Frequenza della portante       |  $f_c$  |  28 GHz |
+| Parametro                       | Simbolo |  Valore |
+|---------------------------------|:-------:|:-------:|
+| Potenza del trasmettitore       | $P_{t}$ |  0 dBm  |
+| Guadagno antenna trasmettitore  | $G_{t}$ |  10 dB  |
+| Guadagno antenna ricevitore     | $G_{r}$ |  10 dB  |
+| Potenza di rumore               | $P_{n}$ | -85 dBm |
+| Frequenza della portante        |  $f_c$  |  28 GHz |
+| Lunghezza d'onda della portante |  $\lambda_c$  |  0.01 m |
 
 ### Veicoli
 | Parametro                           |   Simbolo  | Valore |
@@ -81,3 +82,27 @@ La formula per l'attenuazione in spazio libero è calcolata con la formula:
 $$\mu_{LoS} = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c)$$
 da cui deriva quindi la più completa formula derivante dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
 $$PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k)$$
+
+## Vehicular Blockage Modelling
+La propagazione di un segnale viene ostacolata quando un corpo (nell’ambito di questo progetto, un veicolo) ostruisce il primo ellissoide di Fresnel. Le altezze dei veicoli sono assunte come variabili con distribuzione Gaussiana, con media $\mu_v$ e varianza $\sigma_v$.<br>
+Il raggio dipendente dalla lunghezza del primo ellissoide di Fresnel viene calcolato come:
+$$\tilde{r} = \sqrt{\lambda_c\frac{d_{tb}\cdot d_{tr}}{d_{tb}+d_{trx}}}\quad\quad \lambda_c=\frac{c}{f_c}$$
+Viene inoltre calcolata l'altezza del primo ellissoide di Fresnel, il quale è rappresentabile da una distribuzione Gaussiana:
+$$\tilde{h}=h_r\frac{d_{tb}}{d_{tr}}+h_t\frac{d_{br}}{d_{tr}}-0.6\tilde{r}\sim \mathcal{N}(\tilde{\mu},\tilde{\sigma}^2)$$
+$$\to \tilde{\mu}=\mu_v-0.6\tilde{r}\quad\quad \tilde{\sigma}^2=\sigma^2_v$$
+Per calcolare la probabilità di avere un bloccaggio è necessario definire altezza, media e varianza efficace per il bloccaggio:
+$$h_{eff} = h_v-\tilde{h}\quad\quad \mu_{eff}=\mu_v-\tilde{\mu}\quad\quad \sigma^2_{eff}=\sigma_v^2+\tilde{\sigma}^2$$
+Stabilito che un bloccaggio avviene nel momento in cui $h_{eff}>0$, possiamo calcolare la probabilità di avere un bloccaggio data la presenza di un veicolo potenzialmente bloccante:
+$$\mathbb{P}(\textrm{NLoSv}|d_{tr},\mathcal{B})=Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)$$
+La probabilità è dipendente dai parametri della simulazione, quali distanza $d_{tr}$ e densità di automobili $\rho$.<br>
+ La probabilità che un veicolo sia su una determinata corsia è $\frac{1}{M}$, dove $M$ è il numero di corsie considerato.
+
+### Analisi Same Lane
+Nel caso in cui trasmettitore, ricevitore e veicolo bloccante siano sulla stessa corsia, dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in $N_s$ slot. Ogni slot è lungo quanto la somma della lunghezza media di un veicolo e la distanza di sicurezza.<br>
+$$N_s = \frac{d_{eff}}{d_a} \quad\quad d_{eff} = d_{tr}-l_v \quad\quad d_a = l_v+d_s$$
+Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli presenti nel caso "Different Lane".<br><br>
+La probabilità che un singolo slot sia occupato da un bloccante viene calcolata assumendo che i veicoli siano distribuiti secondo un processo di Poisson lineare (o Linear Point Poisson Process):
+$$\mathcal{P_a} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\cdot \mathbb{P}(\mathcal{B}) = Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)\Gamma e^{-\Gamma}\quad\quad \Gamma = \rho d_a$$
+### Analisi Different Lane
+
+## Numerical Simulations
