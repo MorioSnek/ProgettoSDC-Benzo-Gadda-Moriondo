@@ -104,7 +104,7 @@ Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli pre
 La probabilità che un singolo slot sia occupato da un bloccante viene calcolata assumendo che i veicoli siano distribuiti secondo un processo di Poisson lineare (o Linear Point Poisson Process):
 $$\mathcal{P_a} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\cdot \mathbb{P}(\mathcal{B}) = Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)\Gamma e^{-\Gamma}\quad\quad \Gamma = \rho \cdot d_a$$
 Viene infine calcolata la probabilità di avere un bloccaggio da parte di $k$ veicoli:<br>
-$$\mathbb{P}_{SL} (\textrm{NLoSv}^{(k)}|d_{tr})= {N_s \choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
+$$\mathbb{P}_{\textrm{S}}(\textrm{NLoSv}^{(k)}|d_{tr})= {N_s \choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
 
 ### Analisi Different Lane
 
