@@ -117,7 +117,7 @@ $$d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{2\Delta y}\quad\quad d_b = \frac{w_
 Si calcola la probabilità di avere TX e RX con uno scostamento laterale pari a $\Delta y = nW, \ n\in\{1,2,\ldots,M\}$:
 $$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1}n = \frac{M-1}{M}$$
 Si calcola inoltre la probabilità di avere $k$ bloccanti su un massimo di $M$ slot, poiché in questo caso si considera che non ci sia più di un veicolo bloccante per corsia:
-$$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q}\_k}\prod_{i\in\mathcal{A}}\mathcal{P}_i\prod_{j\in\mathcal{A}^c}(1-\mathcal{P}_j)$$
+$$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
 Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
 $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_b^k}(1-\mathcal{P_b})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
 
