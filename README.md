@@ -28,6 +28,7 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
         - [Analisi Same Lane](#samelane)
         - [Analisi Different Lanes](#differentlane)
         - [Sintesi](#sintesi)
+        - [Distribuzione SNR](#snr)
     5. [Numerical Simulations](#numerical)
 - [Spiegazione del codice MATLAB](#codice)
     1. []()
@@ -151,6 +152,11 @@ $$\mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M
 ### Sintesi <a name="sintesi"></a>
 Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
 $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})$$
+
+### Distribuzione SNR <a name="snr"></a>
+La densità di probabilità del rapporto segnale-rumore viene derivata da quella enunciata nella sezione "System Model". La versione generale è una mistura di distribuzioni, la cui funzione di densità di probabilità (PDF) è data da una media ponderata di funzioni di probabilità.
+$$f_\gamma (\gamma|d_{tr}) = \mathbb{P}(\textrm{LoS}|d_{tr})\cdot f_{\gamma^{(0)}}(\gamma|d_{tr})+\sum_{k=1}^B\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})f_{\gamma^{(k)}}(\gamma|d_{tr})$$
+$$\mathbb{P}(\textrm{LoS}|d_{tr})=1-\sum_k\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})\quad\quad B=\max(N_s,M)$$
 
 ## Numerical Simulations <a name="numerical"></a>
 
