@@ -14,7 +14,17 @@ I paper di riferimento per il progetto sono:
 Sono stati usati a supporto del progetto anche i seguenti documenti:
 - [Study on evaluation methodology of new vehicle-to-everything](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3209)
 
-## Introduzione
+## Indice
+1. [Introduzione](#introduzione)
+2. [Parametri e variabili della simulazione](#parametri)
+3. [System Model](#systemmodel)
+4. [Vehicular Blockage Modelling](#blockage)
+    1. [Analisi Same Lane](#samelane)
+    2. [Analisi Different Lanes](#differentlane)
+    3. [Sintesi](#sintesi)
+5. [Numerical Simulations](#numerical)
+
+## Introduzione <a name="introduzione"></a>
 Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare. In particolare, l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
 Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli bloccanti tra il trasmettitore e il ricevitore sulla medesima corsia stradale, per poi studiare quelle più complesse prodotte dalla combinazione di diversi elementi:
 - Uno o più veicoli bloccanti;
@@ -22,7 +32,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 - La presenza di traffico più o meno intenso;
 - La presenza di più corsie.
 
-## Parametri e variabili della simulazione
+## Parametri e variabili della simulazione <a name="parametri"></a>
 ### Sistema di comunicazione
 | Parametro                       | Simbolo |  Valore |
 |---------------------------------|:-------:|:-------:|
@@ -65,7 +75,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | $d_{tr}$         |   $7.5 \div 195$   |   $2.5 \div 190$  |
 | $d_{tb}, d_{br}$ |  $7.5 \div 187.5$  |    $5 \div 185$   |
 
-## System Model
+## System Model <a name="systemmodel"></a>
 Vengono differenziati due scenari relativi a due modelli di canale:
 - *Line-of-Sight* (LoS), ossia il canale in visibilità;
 - *Non-Line-of-Sight vehicle* (NLoSv), ossia il canale non in visibilità attenuato dalla presenza di veicoli bloccanti.
@@ -83,7 +93,7 @@ $$\mu_{LoS} = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c)$$
 da cui deriva quindi la più completa formula derivante dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
 $$PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k)$$
 
-## Vehicular Blockage Modelling
+## Vehicular Blockage Modelling <a name="blockage"></a>
 La propagazione di un segnale viene ostacolata quando un corpo (nell’ambito di questo progetto, un veicolo) ostruisce il primo ellissoide di Fresnel. Le altezze dei veicoli sono assunte come variabili con distribuzione Gaussiana, con media $\mu_v$ e varianza $\sigma_v$.<br>
 Il raggio dipendente dalla lunghezza del primo ellissoide di Fresnel viene calcolato come:
 $$\tilde{r} = \sqrt{\lambda_c\frac{d_{tb}\cdot d_{tr}}{d_{tb}+d_{trx}}}\quad\quad \lambda_c=\frac{c}{f_c}$$
@@ -97,7 +107,7 @@ $$\mathbb{P}(\textrm{NLoSv}|d_{tr},\mathcal{B})=Q\left(\frac{h_{eff}-\mu_{eff}}{
 La probabilità è dipendente dai parametri della simulazione, quali distanza $d_{tr}$ e densità di automobili $\rho$.<br>
  La probabilità che un veicolo sia su una determinata corsia è $\frac{1}{M}$, dove $M$ è il numero di corsie considerato.
 
-### Analisi Same Lane
+### Analisi Same Lane <a name="samelane"></a>
 Nel caso in cui trasmettitore, ricevitore e veicolo bloccante siano sulla stessa corsia, dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in $N_s$ slot. Ogni slot è lungo quanto la somma della lunghezza media di un veicolo e la distanza di sicurezza.<br>
 $$N_s = \frac{d_{eff}}{d_a} \quad\quad d_{eff} = d_{tr}-l_v \quad\quad d_a = l_v+d_s$$
 Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli presenti nel caso "Different Lane".<br><br>
@@ -106,7 +116,7 @@ $$\mathcal{P_a} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\cdot \mathbb{P}(\ma
 Viene infine calcolata la probabilità di avere un bloccaggio da parte di $k$ veicoli mediante una distribuzione di Bernoulli:
 $$\mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
 
-### Analisi Different Lanes
+### Analisi Different Lanes <a name="differentlane"></a>
 Analizziamo ora il caso in cui trasmettitore e ricevitore siano su corsie differenti. Analogamente al caso “Same Lane” dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in slot. Essi vengono suddivisi in due tipologie:
 
 - Slot Tipo B: spazio che potrebbe essere occupato da un bloccante sulla stessa corsia di TX o RX;
@@ -121,8 +131,8 @@ $$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\math
 Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
 $$\mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_b^k}(1-\mathcal{P_b})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
 
-### Sintesi
+### Sintesi <a name="sintesi"></a>
 Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
 $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
-## Numerical Simulations
+## Numerical Simulations <a name="numerical"></a>
