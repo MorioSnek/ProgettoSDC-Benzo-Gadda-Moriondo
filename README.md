@@ -77,7 +77,8 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Distanza di sicurezza           |  $d_s$  |      2.5 m     |
 | Densità di traffico considerate | $\rho$  | 10 / 50 veh/km |
 
-### Variabili <a name="parvariabili"></a>
+<a name="parvariabili"></a>
+### Variabili 
 | Parametro                         |  Simbolo |
 |-----------------------------------|:--------:|
 | Distanza Trasmettitore-Ricevitore | $d_{tr}$ |
