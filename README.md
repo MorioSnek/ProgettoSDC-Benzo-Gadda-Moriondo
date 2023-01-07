@@ -39,8 +39,13 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
 - [Risultati](#risultati)
     1. []()
 
-# Relazione <a name="relazione"></a>
-## Introduzione <a name="introduzione"></a>
+<a name="relazione"></a>
+
+# Relazione 
+
+<a name="introduzione"></a>
+
+## Introduzione
 Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare, con l'ausilio di un programma sviluppato in linguaggio MATLAB. In particolare, l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
 Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli bloccanti tra il trasmettitore e il ricevitore sulla medesima corsia stradale, per poi studiare quelle più complesse prodotte dalla combinazione di diversi elementi:
 
@@ -49,8 +54,13 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 - La presenza di traffico più o meno intenso
 - La presenza di più corsie
 
-## Parametri e variabili della simulazione <a name="parametri"></a>
-### Sistema di comunicazione <a name="parsdc"></a>
+<a name="parametri"></a>
+
+## Parametri e variabili della simulazione
+
+<a name="parsdc"></a>
+
+### Sistema di comunicazione 
 | Parametro                       | Simbolo |  Valore |
 |---------------------------------|:-------:|:-------:|
 | Potenza del trasmettitore       | $P_{t}$ |  0 dBm  |
@@ -60,7 +70,9 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Frequenza della portante        |  $f_c$  |  28 GHz |
 | Lunghezza d'onda della portante |  $\lambda_c$  |  0.01 m |
 
-### Veicoli <a name="parveicoli"></a>
+<a name="parveicoli"></a>
+
+### Veicoli 
 | Parametro                           |   Simbolo  | Valore |
 |-------------------------------------|:----------:|:------:|
 | Lunghezza del veicoli               |    $l_v$   |   5 m  |
@@ -68,7 +80,9 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Altezza media veicoli               |   $\mu_v$  |  1.5 m |
 | Deviazione standard altezza veicoli | $\sigma_v$ | 0.08 m |
 
-### Scenario <a name="parscenario"></a>
+<a name="parscenario"></a>
+
+### Scenario 
 | Parametro                       | Simbolo |     Valore     |
 |---------------------------------|:-------:|:--------------:|
 | Lunghezza scenario              |   $D$   |      200 m     |
@@ -78,6 +92,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Densità di traffico considerate | $\rho$  | 10 / 50 veh/km |
 
 <a name="parvariabili"></a>
+
 ### Variabili 
 | Parametro                         |  Simbolo |
 |-----------------------------------|:--------:|
@@ -95,8 +110,9 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 
 #### Intervalli considerati per le variabili (*differenti corsie*):
 
+<a name="systemmodel"></a>
 
-## System Model <a name="systemmodel"></a>
+## System Model 
 Vengono differenziati due scenari relativi a due modelli di canale:
 
 - *Line-of-Sight* (LoS), ossia il canale in visibilità
@@ -116,7 +132,9 @@ $$\mu_{LoS} = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c)$$
 da cui deriva quindi la più completa formula che tiene conto dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
 $$PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k)$$
 
-## Vehicular Blockage Modelling <a name="blockage"></a>
+<a name="blockage"></a>
+
+## Vehicular Blockage Modelling 
 La propagazione di un segnale viene ostacolata quando un corpo (nell’ambito di questo progetto, un veicolo) ostruisce il primo ellissoide di Fresnel. Le altezze dei veicoli sono assunte come variabili con distribuzione Gaussiana, con media $\mu_v$ e varianza $\sigma_v$.<br>
 Il raggio dipendente dalla lunghezza del primo ellissoide di Fresnel viene calcolato come:
 $$\tilde{r} = \sqrt{\lambda_c\frac{d_{tb}\cdot d_{tr}}{d_{tb}+d_{trx}}}\quad\quad \lambda_c=\frac{c}{f_c}$$
@@ -130,7 +148,9 @@ $$\mathbb{P}(\textrm{NLoSv}|d_{tr},\mathcal{B})=Q\left(\frac{h_{eff}-\mu_{eff}}{
 La probabilità è dipendente dai parametri della simulazione, quali distanza $d_{tr}$ e densità di automobili $\rho$.<br>
  La probabilità che un veicolo sia su una determinata corsia è $\frac{1}{M}$, dove $M$ è il numero di corsie considerato.
 
-### Analisi Same Lane <a name="samelane"></a>
+<a name="samelane"></a>
+
+### Analisi Same Lane 
 Nel caso in cui trasmettitore, ricevitore e veicolo bloccante siano sulla stessa corsia, dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in $N_s$ slot. Ogni slot è lungo quanto la somma della lunghezza media di un veicolo e la distanza di sicurezza.<br>
 $$N_s = \frac{d_{eff}}{d_a} \quad\quad d_{eff} = d_{tr}-l_v \quad\quad d_a = l_v+d_s$$
 Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli presenti nel caso "Different Lane".<br><br>
@@ -139,7 +159,9 @@ $$\mathcal{P_\textrm{\textit{a}}} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\c
 Viene infine calcolata la probabilità di avere un bloccaggio da parte di $k$ veicoli mediante una distribuzione di Bernoulli:
 $$\mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_\textrm{\textit{a}}^\textrm{\textit{k}}}(1-\mathcal{P_\textrm{\textit{a}}})^{N_s-k}$$
 
-### Analisi Different Lanes <a name="differentlane"></a>
+<a name="differentlane"></a>
+
+### Analisi Different Lanes 
 Analizziamo ora il caso in cui trasmettitore e ricevitore siano su corsie differenti. Analogamente al caso “Same Lane” dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in slot. Essi vengono suddivisi in due tipologie:
 
 - Slot Tipo B: spazio che potrebbe essere occupato da un bloccante sulla stessa corsia di TX o RX;
@@ -154,17 +176,27 @@ $$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_\textrm{\textit{k}}}}\prod_{i\i
 Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
 $$\mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_\textrm{\textit{b}}^\textrm{\textit{k}}}(1-\mathcal{P_\textrm{\textit{b}}})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_\textrm{\textit{k}}}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^\textrm{\textit{c}}}}(1-\mathcal{P_\textrm{\textit{j}}})$$
 
-### Sintesi <a name="sintesi"></a>
+<a name="sintesi"></a>
+
+### Sintesi 
 Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
 $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
-### Distribuzione SNR <a name="snr"></a>
+<a name="snr"></a>
+
+### Distribuzione SNR 
 La densità di probabilità del rapporto segnale-rumore viene derivata da quella enunciata nella sezione "System Model". La versione generale è una mistura di distribuzioni Gaussiane, la cui funzione di densità di probabilità (PDF) è data da una media ponderata di funzioni di probabilità:
 $$f_\gamma (\gamma|d_{tr}) = \mathbb{P}(\textrm{LoS}|d_{tr})\cdot f_{\gamma^{(0)}}(\gamma|d_{tr})+\sum_{k=1}^B\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})f_{\gamma^{(k)}}(\gamma|d_{tr})$$
 $$\mathbb{P}(\textrm{LoS}|d_{tr})=1-\sum_k\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})\quad\quad B=\max(N_s,M)$$
 
-## Numerical Simulations <a name="numerical"></a>
+<a name="numerical"></a>
 
-# Spiegazione codice MATLAB <a name="codice"></a>
+## Numerical Simulations 
 
-# Risultati <a name="risultati"></a>
+<a name="codice"></a>
+
+# Spiegazione codice MATLAB 
+
+<a name="risultati"></a>
+
+# Risultati 
