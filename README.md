@@ -23,6 +23,10 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
 - [Relazione](#relazione)
     1. [Introduzione](#introduzione)
     2. [Parametri e variabili della simulazione](#parametri)
+        - [Sistema di comunicazione](#parSDC)
+        - [Veicoli](#parVeicoli)
+        - [Scenario](#parScenario)
+        - [Variabili](#parVariabili)
     3. [System Model](#systemmodel)
     4. [Vehicular Blockage Modelling](#blockage)
         - [Analisi Same Lane](#samelane)
@@ -46,7 +50,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 - La presenza di più corsie
 
 ## Parametri e variabili della simulazione <a name="parametri"></a>
-### Sistema di comunicazione
+### Sistema di comunicazione <a name="parSDC"></a>
 | Parametro                       | Simbolo |  Valore |
 |---------------------------------|:-------:|:-------:|
 | Potenza del trasmettitore       | $P_{t}$ |  0 dBm  |
@@ -56,7 +60,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Frequenza della portante        |  $f_c$  |  28 GHz |
 | Lunghezza d'onda della portante |  $\lambda_c$  |  0.01 m |
 
-### Veicoli
+### Veicoli <a name="parVeicoli"></a>
 | Parametro                           |   Simbolo  | Valore |
 |-------------------------------------|:----------:|:------:|
 | Lunghezza del veicoli               |    $l_v$   |   5 m  |
@@ -64,7 +68,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Altezza media veicoli               |   $\mu_v$  |  1.5 m |
 | Deviazione standard altezza veicoli | $\sigma_v$ | 0.08 m |
 
-### Scenario considerato
+### Scenario <a name="parScenario"></a>
 | Parametro                       | Simbolo |     Valore     |
 |---------------------------------|:-------:|:--------------:|
 | Lunghezza scenario              |   $D$   |      200 m     |
@@ -73,7 +77,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Distanza di sicurezza           |  $d_s$  |      2.5 m     |
 | Densità di traffico considerate | $\rho$  | 10 / 50 veh/km |
 
-### Variabili considerate
+### Variabili <a name="parVariabili"></a>
 | Parametro                         |  Simbolo |
 |-----------------------------------|:--------:|
 | Distanza Trasmettitore-Ricevitore | $d_{tr}$ |
@@ -106,9 +110,9 @@ Il valore $k\in\mathbb{N}$ rappresenta il numero di veicoli bloccanti nella tras
 L'attenuazione per il primo veicolo è ottenuta tramite: 
 $$9 + \max(0,15\cdot\log_{10}(d_{tb})-41)$$
 Pertanto, osservando i risultati del secondo argomento della funzione, nello scenario considerato (200 metri) rimarrà sempre 9dB.<br>
-La formula per l'attenuazione in spazio libero è calcolata con la formula:
+La media dell'attenuazione in spazio libero è calcolata con la formula:
 $$\mu_{LoS} = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c)$$
-da cui deriva quindi la più completa formula derivante dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
+da cui deriva quindi la più completa formula che tiene conto dalle attenuazioni introdotte dall'ambiente e dai bloccanti:
 $$PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \sim\ \mathcal{N}(\mu_{LoS} + \mu(k), \sigma_{sh}^2) + \sigma^2(k)$$
 
 ## Vehicular Blockage Modelling <a name="blockage"></a>
@@ -154,7 +158,7 @@ Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo otten
 $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
 ### Distribuzione SNR <a name="snr"></a>
-La densità di probabilità del rapporto segnale-rumore viene derivata da quella enunciata nella sezione "System Model". La versione generale è una mistura di distribuzioni, la cui funzione di densità di probabilità (PDF) è data da una media ponderata di funzioni di probabilità.
+La densità di probabilità del rapporto segnale-rumore viene derivata da quella enunciata nella sezione "System Model". La versione generale è una mistura di distribuzioni Gaussiane, la cui funzione di densità di probabilità (PDF) è data da una media ponderata di funzioni di probabilità:
 $$f_\gamma (\gamma|d_{tr}) = \mathbb{P}(\textrm{LoS}|d_{tr})\cdot f_{\gamma^{(0)}}(\gamma|d_{tr})+\sum_{k=1}^B\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})f_{\gamma^{(k)}}(\gamma|d_{tr})$$
 $$\mathbb{P}(\textrm{LoS}|d_{tr})=1-\sum_k\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})\quad\quad B=\max(N_s,M)$$
 
