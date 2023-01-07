@@ -23,10 +23,10 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
 - [Relazione](#relazione)
     1. [Introduzione](#introduzione)
     2. [Parametri e variabili della simulazione](#parametri)
-        - [Sistema di comunicazione](#parSDC)
-        - [Veicoli](#parVeicoli)
-        - [Scenario](#parScenario)
-        - [Variabili](#parVariabili)
+        - [Sistema di comunicazione](#parsdc)
+        - [Veicoli](#parveicoli)
+        - [Scenario](#parscenario)
+        - [Variabili](#parvariabili)
     3. [System Model](#systemmodel)
     4. [Vehicular Blockage Modelling](#blockage)
         - [Analisi Same Lane](#samelane)
@@ -50,7 +50,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 - La presenza di più corsie
 
 ## Parametri e variabili della simulazione <a name="parametri"></a>
-### Sistema di comunicazione <a name="parSDC"></a>
+### Sistema di comunicazione <a name="parsdc"></a>
 | Parametro                       | Simbolo |  Valore |
 |---------------------------------|:-------:|:-------:|
 | Potenza del trasmettitore       | $P_{t}$ |  0 dBm  |
@@ -60,7 +60,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Frequenza della portante        |  $f_c$  |  28 GHz |
 | Lunghezza d'onda della portante |  $\lambda_c$  |  0.01 m |
 
-### Veicoli <a name="parVeicoli"></a>
+### Veicoli <a name="parveicoli"></a>
 | Parametro                           |   Simbolo  | Valore |
 |-------------------------------------|:----------:|:------:|
 | Lunghezza del veicoli               |    $l_v$   |   5 m  |
@@ -68,7 +68,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Altezza media veicoli               |   $\mu_v$  |  1.5 m |
 | Deviazione standard altezza veicoli | $\sigma_v$ | 0.08 m |
 
-### Scenario <a name="parScenario"></a>
+### Scenario <a name="parscenario"></a>
 | Parametro                       | Simbolo |     Valore     |
 |---------------------------------|:-------:|:--------------:|
 | Lunghezza scenario              |   $D$   |      200 m     |
@@ -77,7 +77,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Distanza di sicurezza           |  $d_s$  |      2.5 m     |
 | Densità di traffico considerate | $\rho$  | 10 / 50 veh/km |
 
-### Variabili <a name="parVariabili"></a>
+### Variabili <a name="parvariabili"></a>
 | Parametro                         |  Simbolo |
 |-----------------------------------|:--------:|
 | Distanza Trasmettitore-Ricevitore | $d_{tr}$ |
