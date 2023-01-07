@@ -101,7 +101,6 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Distanza Bloccante-Ricevitore     | $d_{br}$ |
 | Numero di veicoli bloccanti       | $k$      |
 
-
 #### Intervalli considerati per le variabili (*singola corsia*):
 | Parametro        |       Rooftop      |       Bumper      |
 |------------------|:------------------:|:-----------------:|
