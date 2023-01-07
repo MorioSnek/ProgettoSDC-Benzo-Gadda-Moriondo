@@ -1,8 +1,11 @@
 ---
 geometry: "margin=2.5cm"
+output: 
+  md_document:
+    preserve_yaml: false
 ---
 
-# ProgettoSDC-Benzo-Gadda-Moriondo
+# Progetto SDC - A.A. 2022-2023
 
 Progetto di Sistemi di Comunicazione dell'Anno Accademico 2022-2023, relativo alle trasmissioni veicolari. I partecipanti del gruppo sono:
 
@@ -20,7 +23,7 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
 - [Study on evaluation methodology of new vehicle-to-everything](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3209)
 
 ## Indice
-- Relazione[]()
+- [Relazione](#relazione)
     1. [Introduzione](#introduzione)
     2. [Parametri e variabili della simulazione](#parametri)
     3. [System Model](#systemmodel)
@@ -29,11 +32,12 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
         - [Analisi Different Lanes](#differentlane)
         - [Sintesi](#sintesi)
     5. [Numerical Simulations](#numerical)
-- Spiegazione del codice MATLAB [](#codice)
+- [Spiegazione del codice MATLAB](#codice)
     1. []()
-- Risultati [](#risultati)
+- [Risultati](#risultati)
     1. []()
 
+# Relazione <a name="relazione"></a>
 ## Introduzione <a name="introduzione"></a>
 Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare, con l'ausilio di un programma sviluppato in linguaggio MATLAB. In particolare, l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
 Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli bloccanti tra il trasmettitore e il ricevitore sulla medesima corsia stradale, per poi studiare quelle più complesse prodotte dalla combinazione di diversi elementi:
@@ -152,3 +156,7 @@ Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo otten
 $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
 ## Numerical Simulations <a name="numerical"></a>
+
+# Spiegazione codice MATLAB <a name="codice"></a>
+
+# Risultati <a name="risultati"></a>
