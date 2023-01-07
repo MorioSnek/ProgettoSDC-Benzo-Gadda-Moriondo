@@ -1,3 +1,7 @@
+---
+geometry: "margin=2.5cm"
+---
+
 # ProgettoSDC-Benzo-Gadda-Moriondo
 
 Progetto di Sistemi di Comunicazione dell'Anno Accademico 2022-2023, relativo alle trasmissioni veicolari. I partecipanti del gruppo sono:
@@ -12,25 +16,32 @@ I paper di riferimento per il progetto sono:
 - [Vehicular Blockage Modelling and Performance Analysis for mmWave V2V Communications](https://ieeexplore.ieee.org/abstract/document/9838711?casa_token=tCe-ZCrgnSoAAAAA:iDeXXihvhmJ2rYX6IvGF9tHlCz9V_wQgAVnqdavT6jiiOrF05iUKiDT-SnLcFWNhJvwgtpow)
 
 Sono stati usati a supporto del progetto anche i seguenti documenti:
+
 - [Study on evaluation methodology of new vehicle-to-everything](https://portal.3gpp.org/desktopmodules/Specifications/SpecificationDetails.aspx?specificationId=3209)
 
 ## Indice
-1. [Introduzione](#introduzione)
-2. [Parametri e variabili della simulazione](#parametri)
-3. [System Model](#systemmodel)
-4. [Vehicular Blockage Modelling](#blockage)
-    1. [Analisi Same Lane](#samelane)
-    2. [Analisi Different Lanes](#differentlane)
-    3. [Sintesi](#sintesi)
-5. [Numerical Simulations](#numerical)
+- Relazione[]()
+    1. [Introduzione](#introduzione)
+    2. [Parametri e variabili della simulazione](#parametri)
+    3. [System Model](#systemmodel)
+    4. [Vehicular Blockage Modelling](#blockage)
+        1. [Analisi Same Lane](#samelane)
+        2. [Analisi Different Lanes](#differentlane)
+        3. [Sintesi](#sintesi)
+    5. [Numerical Simulations](#numerical)
+- Spiegazione del codice MATLAB [](#codice)
+    1. []()
+- Risultati [](#risultati)
+    1. []()
 
 ## Introduzione <a name="introduzione"></a>
-Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare. In particolare, l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
+Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare, con l'ausilio di un programma sviluppato in linguaggio MATLAB. In particolare, l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
 Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli bloccanti tra il trasmettitore e il ricevitore sulla medesima corsia stradale, per poi studiare quelle più complesse prodotte dalla combinazione di diversi elementi:
-- Uno o più veicoli bloccanti;
-- La posizione dell’antenna sul veicolo;
-- La presenza di traffico più o meno intenso;
-- La presenza di più corsie.
+
+- Uno o più veicoli bloccanti
+- La posizione dell’antenna sul veicolo
+- La presenza di traffico più o meno intenso
+- La presenza di più corsie
 
 ## Parametri e variabili della simulazione <a name="parametri"></a>
 ### Sistema di comunicazione
@@ -69,18 +80,23 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Numero di veicoli bloccanti       | $k$      |
 
 
-#### Intervalli considerati per le variabili (*singola corsia*)
-| Parametro        | Rooftop | Bumper |
+#### Intervalli considerati per le variabili (*singola corsia*):
+| Parametro        |       Rooftop      |       Bumper      |
 |------------------|:------------------:|:-----------------:|
 | $d_{tr}$         |   $7.5 \div 195$   |   $2.5 \div 190$  |
 | $d_{tb}, d_{br}$ |  $7.5 \div 187.5$  |    $5 \div 185$   |
 
+#### Intervalli considerati per le variabili (*differenti corsie*):
+
+
 ## System Model <a name="systemmodel"></a>
 Vengono differenziati due scenari relativi a due modelli di canale:
-- *Line-of-Sight* (LoS), ossia il canale in visibilità;
-- *Non-Line-of-Sight vehicle* (NLoSv), ossia il canale non in visibilità attenuato dalla presenza di veicoli bloccanti.
+
+- *Line-of-Sight* (LoS), ossia il canale in visibilità
+- *Non-Line-of-Sight vehicle* (NLoSv), ossia il canale non in visibilità attenuato dalla presenza di veicoli bloccanti
 
 Vengono considerate nell'attenuazione in spazio libero due componenti con distribuzione normale:
+
 - Shadowing component: $\chi\sim \mathcal{N}(0,\sigma_{sh}^2)$
 - Attenuazione da bloccaggio: $\mathcal{A}(k)\sim \mathcal{N}(\mu(k),\sigma^2(k))$
 
@@ -112,9 +128,9 @@ Nel caso in cui trasmettitore, ricevitore e veicolo bloccante siano sulla stessa
 $$N_s = \frac{d_{eff}}{d_a} \quad\quad d_{eff} = d_{tr}-l_v \quad\quad d_a = l_v+d_s$$
 Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli presenti nel caso "Different Lane".<br><br>
 La probabilità che un singolo slot sia occupato da un bloccante viene calcolata assumendo che i veicoli siano distribuiti secondo un processo di Poisson lineare (o Linear Point Poisson Process):
-$$\mathcal{P_a} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\cdot \mathbb{P}(\mathcal{B}) = Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)\Gamma e^{-\Gamma}\quad\quad \Gamma = \rho \cdot d_a$$
+$$\mathcal{P_\textrm{\textit{a}}} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\cdot \mathbb{P}(\mathcal{B}) = Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)\Gamma e^{-\Gamma}\quad\quad \Gamma = \rho \cdot d_a$$
 Viene infine calcolata la probabilità di avere un bloccaggio da parte di $k$ veicoli mediante una distribuzione di Bernoulli:
-$$\mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
+$$\mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_\textrm{\textit{a}}^\textrm{\textit{k}}}(1-\mathcal{P_\textrm{\textit{a}}})^{N_s-k}$$
 
 ### Analisi Different Lanes <a name="differentlane"></a>
 Analizziamo ora il caso in cui trasmettitore e ricevitore siano su corsie differenti. Analogamente al caso “Same Lane” dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in slot. Essi vengono suddivisi in due tipologie:
@@ -127,9 +143,9 @@ $$d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{2\Delta y}\quad\quad d_b = \frac{w_
 Si calcola la probabilità di avere TX e RX con uno scostamento laterale pari a $\Delta y = nW, \ n\in\{1,2,\ldots,M\}$:
 $$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1}n = \frac{M-1}{M}$$
 Si calcola inoltre la probabilità di avere $k$ bloccanti su un massimo di $M$ slot, poiché in questo caso si considera che non ci sia più di un veicolo bloccante per corsia:
-$$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
+$$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_\textrm{\textit{k}}}}\prod_{i\in\mathcal{A}}\mathcal{P_\textrm{\textit{i}}}\prod_{j\in\mathcal{A^\textrm{\textit{c}}}}(1-\mathcal{P_\textrm{\textit{j}}})$$
 Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
-$$\mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_b^k}(1-\mathcal{P_b})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
+$$\mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_\textrm{\textit{b}}^\textrm{\textit{k}}}(1-\mathcal{P_\textrm{\textit{b}}})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_\textrm{\textit{k}}}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^\textrm{\textit{c}}}}(1-\mathcal{P_\textrm{\textit{j}}})$$
 
 ### Sintesi <a name="sintesi"></a>
 Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
