@@ -104,7 +104,7 @@ Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli pre
 La probabilità che un singolo slot sia occupato da un bloccante viene calcolata assumendo che i veicoli siano distribuiti secondo un processo di Poisson lineare (o Linear Point Poisson Process):
 $$\mathcal{P_a} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\cdot \mathbb{P}(\mathcal{B}) = Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)\Gamma e^{-\Gamma}\quad\quad \Gamma = \rho \cdot d_a$$
 Viene infine calcolata la probabilità di avere un bloccaggio da parte di $k$ veicoli mediante una distribuzione di Bernoulli:
-$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
+$$\mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_a^k}(1-\mathcal{P_a})^{N_s-k}$$
 
 ### Analisi Different Lanes
 Analizziamo ora il caso in cui trasmettitore e ricevitore siano su corsie differenti. Analogamente al caso “Same Lane” dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in slot. Essi vengono suddivisi in due tipologie:
@@ -119,10 +119,10 @@ $$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1
 Si calcola inoltre la probabilità di avere $k$ bloccanti su un massimo di $M$ slot, poiché in questo caso si considera che non ci sia più di un veicolo bloccante per corsia:
 $$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
 Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
-$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_b^k}(1-\mathcal{P_b})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
+$$\mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_b^k}(1-\mathcal{P_b})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_k}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^c}}(1-\mathcal{P_j})$$
 
 ### Sintesi
 Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
-$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$$
+$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
 ## Numerical Simulations
