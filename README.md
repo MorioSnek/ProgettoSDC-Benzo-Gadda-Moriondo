@@ -123,6 +123,6 @@ $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mat
 
 ### Sintesi
 Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
-$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$$
+$$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
 ## Numerical Simulations
