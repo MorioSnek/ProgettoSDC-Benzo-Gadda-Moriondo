@@ -1,9 +1,6 @@
----
+<!---
 geometry: "margin=2.5cm"
-output: 
-  md_document:
-    preserve_yaml: false
----
+--->
 
 # Progetto SDC - A.A. 2022-2023
 
