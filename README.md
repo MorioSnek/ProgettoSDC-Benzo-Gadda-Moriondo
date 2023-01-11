@@ -218,7 +218,7 @@ Alternativamente, se non si vuole visualizzare i plot, si consiglia di eseguire 
 
 ## File `setup.m`
 
-```Matlab=
+```Matlab
 clear all, close all, clc
 ```
 
