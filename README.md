@@ -35,7 +35,9 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
         - [Distribuzione SNR](#snr)
     5. [Numerical Simulations](#numerical)
 - [Spiegazione del codice MATLAB](#codice)
-    1. []()
+    - [File `setup.m`](#matsetup)
+    - [File `main.m`](#matmain)
+    - [File `plots.m`](#matplots)
 - [Risultati](#risultati)
     1. []()
 
@@ -211,6 +213,18 @@ Alternativamente, se non si vuole visualizzare i plot, si consiglia di eseguire 
 >> run setup.m
 >> run main.m
 ```
+
+<a name="matsetup"></a>
+
+## File `setup.m`
+
+<a name="matmain"></a>
+
+## File `main.m`
+
+<a name="matplots"></a>
+
+## File `plots.m`
 
 <a name="risultati"></a>
 
