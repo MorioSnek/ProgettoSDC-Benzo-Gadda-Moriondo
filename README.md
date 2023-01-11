@@ -1,6 +1,6 @@
-<!---
+---
 geometry: "margin=2.5cm"
---->
+---
 
 # Progetto SDC - A.A. 2022-2023
 
@@ -195,6 +195,22 @@ $$\mathbb{P}(\textrm{LoS}|d_{tr})=1-\sum_k\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}
 <a name="codice"></a>
 
 # Spiegazione codice MATLAB 
+Il codice è segmentato in diversi file, con la rispettiva funzione:
+
+- `setup.m`: racchiude tutti i parametri dell'analisi e della simulazione;
+- `main.m`: comprende tutti i calcoli e gli algoritmi utili alle simulazioni;
+- `plots.m`: fornisce tutte le istruzioni per i vari plot di grafici.
+
+Per comodità dell'utente, si consiglia di visualizzare il progetto finale attraverso lo script matlab `exec.m`, che contiene dei comandi `run` nell'ordine corretto.<br>
+
+```
+>> run exec.m
+```
+Alternativamente, se non si vuole visualizzare i plot, si consiglia di eseguire nel seguente ordine:
+``` 
+>> run setup.m
+>> run main.m
+```
 
 <a name="risultati"></a>
 
