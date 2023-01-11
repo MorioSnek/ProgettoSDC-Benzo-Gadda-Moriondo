@@ -216,11 +216,12 @@ Alternativamente, se non si vuole visualizzare i plot, si consiglia di eseguire 
 
 <a name="matsetup"></a>
 
-## File `setup.m`
+## File `setup.m` 
 
 ```Matlab
 clear all, close all, clc
 ```
+Essendo il primo file ad essere eseguito contiene le uniche istruzioni nel progetto di pulizia di precedenti workspace MATLAB.
 
 <a name="matmain"></a>
 
