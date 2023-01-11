@@ -1,20 +1,10 @@
 %% System Model
 
-DistanzaTxRxFissa = 50;
-% Attenuazione in spazio libero
-MediaLoS = 32.4 + 20 * log10(DistanzaTxRxFissa) + 20 * log10(Fc / 10 ^ 9); % conversione Hz->GHz
-% Shadowing component
-MediaSh = 0;
-VarianzaSh = 3 ^ 2;
-% Attenuazione da bloccaggio
-MediaAtt = 9 + max(0, 15 * log10(DistanzaTxRxFissa / 2) - 41);
-VarianzaAtt = 4.5 ^ 2;
 % Attenuazione complessiva
 MediaPathLoss = MediaLoS + MediaAtt;
 VarianzaPathLoss = VarianzaSh + VarianzaAtt;
 
 % Modello PathLoss
-NumSimulazioni = 10 ^ 5;
 PathLossLoS = VarianzaSh * randn(1, NumSimulazioni) + MediaLoS; % conversione Hz->GHz
 PathLossNLoSv = VarianzaPathLoss * randn(1, NumSimulazioni) + MediaPathLoss;
 
