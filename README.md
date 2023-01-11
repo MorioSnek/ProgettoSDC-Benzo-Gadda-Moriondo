@@ -218,6 +218,10 @@ Alternativamente, se non si vuole visualizzare i plot, si consiglia di eseguire 
 
 ## File `setup.m`
 
+```Matlab=
+clear all, close all, clc
+```
+
 <a name="matmain"></a>
 
 ## File `main.m`
