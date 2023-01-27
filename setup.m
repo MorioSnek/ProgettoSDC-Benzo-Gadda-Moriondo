@@ -18,7 +18,7 @@ AltVeicoloStdv = 0.08; % deviazione standard delle altezze dei veicoli [m]
 
 % parametri scenario analizzato
 LungScenario = 200; % lunghezza dello scenario analizzato [m]
-NumCorsie = 3; % numero di corsie considerate nello scenario
+NumCorsie = 4; % numero di corsie considerate nello scenario
 LarghezzaCorsia = 3.5;
 DensTraffico1 = 10; % densità a cui sono distribuiti i veicoli [veicolo/km]
 DensTraffico2 = 50;

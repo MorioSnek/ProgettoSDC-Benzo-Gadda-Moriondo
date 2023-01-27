@@ -28,14 +28,27 @@ SimSNRMobileNLoSv = SNRMobileNLoSv + randn(1, size(DistanzaTxRxMobile, 2)) * Var
 % Setup slot
 LarghezzaTotLane = NumCorsie * LarghezzaCorsia;
 LunghezzaSlotA = LungVeicolo + DistSicurezza; % Lunghezza degli slot di tipo A
-LunghezzaSlotB = (LargVeicolo * sqrt(DistanzaTxRxFissa ^ 2) -LarghezzaTotLane ^ 2) / (2 * LarghezzaTotLane); % Lunghezza degli slot di tipo B
-LunghezzaSlotC = 2 * LunghezzaSlotB + LungVeicolo; % Lunghezza degli slot di tipo C
+delta_y = zeros(1, NumCorsie);
+LunghezzaSlotB = zeros(1, NumCorsie); % Lunghezza degli slot di tipo B
+LunghezzaSlotC = zeros(1, NumCorsie); % Lunghezza degli slot di tipo C
 ProbSamelane = 1 / NumCorsie;
 NumeroMaxSlot = floor(DistanzaTxRxFissa / LunghezzaSlotA);
+% definizione distanza orizzontale veicoli
+for i = 2:NumCorsie
+    delta_y(i) = (i - 1) * LarghezzaCorsia;
+    LunghezzaSlotB(i) = (LargVeicolo * sqrt((DistanzaTxRxFissa ^ 2) -delta_y(i) ^ 2)) / (2 * delta_y(i));
+    LunghezzaSlotC(i) = 2 * LunghezzaSlotB(i) + LungVeicolo;
+end
+
 % Variaibli PPP
 GammaA = DensTraffico1 * 10 ^ -3 * LunghezzaSlotA;
-GammaB = DensTraffico1 * 10 ^ -3 * LunghezzaSlotB;
-GammaC = DensTraffico1 * 10 ^ -3 * LunghezzaSlotC;
+GammaB = zeros(1, NumCorsie);
+GammaC = zeros(1, NumCorsie);
+
+for i = 2:NumCorsie
+    GammaB(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotB(i);
+    GammaC(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotC(i);
+end
 
 % Definizione distanze dal bloccante
 DistanzaTxB = rand(1, NumSimulazioni) * DistanzaTxRxFissa; % collocato in una posizione casuale tra TX e RX
@@ -60,8 +73,13 @@ for k = 1:NumeroMaxSlot
 end
 
 % Probabilità Different Lanes
-ProbSingleSlotB = Prob_NLoSv_B * GammaB * exp(-GammaB); %prob. che uno slot sia occupato da un bloccante caso B
-ProbSingleSlotC = Prob_NLoSv_B * GammaC * exp(-GammaC); %prob. che uno slot sia occupato da un bloccante caso C
+ProbSingleSlotB = zeros(1, NumCorsie); %prob. che uno slot sia occupato da un bloccante caso B
+ProbSingleSlotC = zeros(1, NumCorsie); %prob. che uno slot sia occupato da un bloccante caso C
+
+for i = 2:NumCorsie
+    ProbSingleSlotB(i) = mean(Prob_NLoSv_B) * GammaB(i) * exp(-GammaB(i));
+    ProbSingleSlotC(i) = mean(Prob_NLoSv_B) * GammaC(i) * exp(-GammaC(i));
+end
 
 P14 = zeros(NumeroMaxSlot, NumeroMaxSlot);
 
@@ -70,83 +88,87 @@ for NumCorsie = 2:4
     for k = 1:NumCorsie
 
         if NumCorsie == 2 && k == 1
-            P_M2k1_a = mean(ProbSingleSlotB .* (1 - ProbSingleSlotB)); %{1}
-            P_M2k1_b = mean((1 - ProbSingleSlotB) .* ProbSingleSlotB); %{2}
+            P_M2k1_a = ProbSingleSlotB(2) .* (1 - ProbSingleSlotB(2)); %{1}
+            P_M2k1_b = (1 - ProbSingleSlotB(2)) .* ProbSingleSlotB(2); %{2}
             P14(1, 2) = (P_M2k1_a + P_M2k1_b);
 
         elseif NumCorsie == 2 && k == 2
-            P14(2, 2) = mean(ProbSingleSlotB .* ProbSingleSlotB); %{1,2}
+            P14(2, 2) = ProbSingleSlotB(2) .* ProbSingleSlotB(2); %{1,2}
 
         elseif NumCorsie == 3 && k == 1
-            P_M3k1_a = mean(ProbSingleSlotB .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotB)); %{1}
-            P_M3k1_b = mean((1 - ProbSingleSlotB) .* ProbSingleSlotC .* (1 - ProbSingleSlotB)); %{2}
-            P_M3k1_c = mean((1 - ProbSingleSlotB) .* (1 - ProbSingleSlotC) .* ProbSingleSlotB); %{3}
+            P_M3k1_a = ProbSingleSlotB(3) .* (1 - ProbSingleSlotC(3)) .* (1 - ProbSingleSlotB(3)); %{1}
+            P_M3k1_b = (1 - ProbSingleSlotB(3)) .* ProbSingleSlotC(3) .* (1 - ProbSingleSlotB(3)); %{2}
+            P_M3k1_c = (1 - ProbSingleSlotB(3)) .* (1 - ProbSingleSlotC(3)) .* ProbSingleSlotB(3); %{3}
             P14(1, 3) = (P_M3k1_a + P_M3k1_b + P_M3k1_c);
 
         elseif NumCorsie == 3 && k == 2
-            P_M3k2_a = mean(ProbSingleSlotB .* ProbSingleSlotC .* (1 - ProbSingleSlotB)); %{1,2}
-            P_M3k2_b = mean(ProbSingleSlotB .* ProbSingleSlotC .* (1 - ProbSingleSlotB)); %{2,3}
-            P_M3k2_c = mean(ProbSingleSlotB .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotB)); %{1,3}
+            P_M3k2_a = ProbSingleSlotB(3) .* ProbSingleSlotC(3) .* (1 - ProbSingleSlotB(3)); %{1,2}
+            P_M3k2_b = ProbSingleSlotB(3) .* ProbSingleSlotC(3) .* (1 - ProbSingleSlotB(3)); %{2,3}
+            P_M3k2_c = ProbSingleSlotB(3) .* (1 - ProbSingleSlotC(3)) .* ProbSingleSlotB(3); %{1,3}
             P14(2, 3) = (P_M3k2_a + P_M3k2_b + P_M3k2_c);
 
         elseif NumCorsie == 3 && k == 3
-            P14(3, 3) = mean(ProbSingleSlotB .* ProbSingleSlotC .* ProbSingleSlotB); %{1,2,3}
+            P14(3, 3) = ProbSingleSlotB(3) .* ProbSingleSlotC(3) .* ProbSingleSlotB(3); %{1,2,3}
 
         elseif NumCorsie == 4 && k == 1
-            P_M4k1_a = mean(ProbSingleSlotB .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotB)); %{1}
-            P_M4k1_b = mean((1 - ProbSingleSlotB) .* ProbSingleSlotC .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotB)); %{2}
-            P_M4k1_c = mean((1 - ProbSingleSlotB) .* (1 - ProbSingleSlotC) .* ProbSingleSlotC .* (1 - ProbSingleSlotB)); %{3}
-            P_M4k1_d = mean((1 - ProbSingleSlotB) .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotC) .* ProbSingleSlotB); %{4}
+            P_M4k1_a = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotB(4)); %{1}
+            P_M4k1_b = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotB(4)); %{2}
+            P_M4k1_c = (1 - ProbSingleSlotB(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{3}
+            P_M4k1_d = (1 - ProbSingleSlotB(4)) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{4}
             P14(1, 4) = (P_M4k1_a + P_M4k1_b + P_M4k1_c + P_M4k1_d);
 
         elseif NumCorsie == 4 && k == 2
-            P_M4k2_a = mean(ProbSingleSlotB .* ProbSingleSlotC .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotB)); %{1,2}
-            P_M4k2_b = mean(ProbSingleSlotB .* (1 - ProbSingleSlotC) .* ProbSingleSlotC .* (1 - ProbSingleSlotB)); %{1,3}
-            P_M4k2_c = mean(ProbSingleSlotB .* (1 - ProbSingleSlotC) .* (1 - ProbSingleSlotC) .* ProbSingleSlotB); %{1,4}
-            P_M4k2_d = mean((1 - ProbSingleSlotB) .* ProbSingleSlotC .* ProbSingleSlotC .* (1 - ProbSingleSlotB)); %{2,3}
-            P_M4k2_e = mean((1 - ProbSingleSlotB) .* ProbSingleSlotC .* (1 - ProbSingleSlotC) .* ProbSingleSlotB); %{2,4}
-            P_M4k2_f = mean((1 - ProbSingleSlotB) .* (1 - ProbSingleSlotC) .* ProbSingleSlotC .* ProbSingleSlotB); %{3,4}
+            P_M4k2_a = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotB(4)); %{1,2}
+            P_M4k2_b = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{1,3}
+            P_M4k2_c = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{1,4}
+            P_M4k2_d = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{2,3}
+            P_M4k2_e = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{2,4}
+            P_M4k2_f = (1 - ProbSingleSlotB(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{3,4}
             P14(2, 4) = (P_M4k2_a + P_M4k2_b + P_M4k2_c + P_M4k2_d + P_M4k2_e + P_M4k2_f);
 
         elseif NumCorsie == 4 && k == 3
-            P_M4k3_a = mean(ProbSingleSlotB .* ProbSingleSlotC .* ProbSingleSlotC .* (1 - ProbSingleSlotB)); %{1,2,3}
-            P_M4k3_b = mean(ProbSingleSlotB .* ProbSingleSlotC .* (1 - ProbSingleSlotC) .* ProbSingleSlotB); %{1,2,4}
-            P_M4k3_c = mean(ProbSingleSlotB .* (1 - ProbSingleSlotC) .* ProbSingleSlotC .* ProbSingleSlotB); %{1,3,4}
-            P_M4k3_d = mean((1 - ProbSingleSlotB) .* ProbSingleSlotC .* ProbSingleSlotC .* ProbSingleSlotB); %{2,3,4}
+            P_M4k3_a = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{1,2,3}
+            P_M4k3_b = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{1,2,4}
+            P_M4k3_c = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{1,3,4}
+            P_M4k3_d = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{2,3,4}
             P14(3, 4) = (P_M4k3_a + P_M4k3_b + P_M4k3_c + P_M4k3_d);
 
         elseif NumCorsie == 4 && k == 4
-            P14(4, 4) = mean(ProbSingleSlotB .* ProbSingleSlotC .* ProbSingleSlotC .* ProbSingleSlotB); %{1,2,3,4}
+            P14(4, 4) = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{1,2,3,4}
         end
 
     end
 
 end
 
-Binomiale=zeros(2,2);
-for k=1:2
-    n=1;
-    Binomiale(k,2)=(factorial(n+1)/((factorial(n+1-k))*(factorial(k))));
+Binomiale = zeros(2, 2);
+
+for k = 1:2
+    n = 1;
+    Binomiale(k, 2) = (factorial(n + 1) / ((factorial(n + 1 - k)) * (factorial(k))));
 end
 
 %FORMULA 18
-ProbDiffLane=zeros(NumeroMaxSlot,NumeroMaxSlot);
-ProbDiffLane_Part1=zeros(NumeroMaxSlot,NumeroMaxSlot);
-ProbDiffLane_Part2=zeros(NumeroMaxSlot,NumeroMaxSlot);
+ProbDiffLane = zeros(NumeroMaxSlot, NumeroMaxSlot);
+ProbDiffLane_Part1 = zeros(NumeroMaxSlot, NumeroMaxSlot);
+ProbDiffLane_Part2 = zeros(NumeroMaxSlot, NumeroMaxSlot);
 
-for k=1:2
-    n=1;
-    ProbDiffLane_Part1(k,n+1)=((2*(NumCorsie-1))/(NumCorsie^2)).*Binomiale(k,2).*(mean(ProbSingleSlotB).^k).*(mean(1-ProbSingleSlotB).^(n+1-k));
+for k = 1:2
+    n = 1;
+    ProbDiffLane_Part1(k, n + 1) = ((2 * (NumCorsie - 1)) / (NumCorsie ^ 2)) .* Binomiale(k, 2) .* (mean(ProbSingleSlotB) .^ k) .* (mean(1 - ProbSingleSlotB) .^ (n + 1 - k));
 end
 
-P16=zeros(1,NumCorsie);
-for n=2:(NumCorsie-1)
-    P16(1,n+1)=(2*(NumCorsie-n))/(NumCorsie^2);
-    for r=1:4
-        ProbDiffLane_Part2(r,n+1)=P16(1,n+1).*P14(r,n+1);
+P16 = zeros(1, NumCorsie);
+
+for n = 2:(NumCorsie - 1)
+    P16(1, n + 1) = (2 * (NumCorsie - n)) / (NumCorsie ^ 2);
+
+    for r = 1:4
+        ProbDiffLane_Part2(r, n + 1) = P16(1, n + 1) .* P14(r, n + 1);
     end
+
 end
 
-ProbDiffLane=ProbDiffLane_Part1+ProbDiffLane_Part2;
+ProbDiffLane = ProbDiffLane_Part1 + ProbDiffLane_Part2;
 
-ProbTotale=ProbSameLane+ProbDiffLane;
+ProbTotale = ProbSameLane + ProbDiffLane;
