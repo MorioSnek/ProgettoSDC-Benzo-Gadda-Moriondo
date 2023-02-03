@@ -41,13 +41,13 @@ for i = 2:NumCorsie
 end
 
 % Variaibli PPP
-GammaA = DensTraffico1 * 10 ^ -3 * LunghezzaSlotA;
+GammaA = DensTraffico * 10 ^ -3 * LunghezzaSlotA;
 GammaB = zeros(1, NumCorsie);
 GammaC = zeros(1, NumCorsie);
 
 for i = 2:NumCorsie
-    GammaB(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotB(i);
-    GammaC(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotC(i);
+    GammaB(i) = DensTraffico * 10 ^ -3 * LunghezzaSlotB(i);
+    GammaC(i) = DensTraffico * 10 ^ -3 * LunghezzaSlotC(i);
 end
 
 % Definizione distanze dal bloccante
@@ -58,7 +58,7 @@ RaggioFresnel = sqrt(Lambda_c .* ((DistanzaTxB .* DistanzaBRx) ./ DistanzaTxRxFi
 AltezzaFresnel = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + (AltVeicoloMedia - 0.6 * RaggioFresnel);
 
 % Probabilità Bloccaggio dato veicolo presente
-AltezzaBloccante = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + AltVeicoloMedia;
+AltezzaBloccante = (AltBloccanteMedia ^ 2) * randn(1, NumSimulazioni) + AltBloccanteMedia;
 AltezzaEfficace = AltezzaBloccante - AltezzaFresnel;
 MediaEfficace = 0.6 * RaggioFresnel;
 DevstdEfficace = sqrt(2 * AltVeicoloStdv ^ 2);
@@ -171,3 +171,4 @@ end
 
 ProbDiffLane = ProbDiffLane_Part1 + ProbDiffLane_Part2;
 ProbTotale = ProbSameLane + ProbDiffLane;
+ProbNLoS = sum(ProbTotale,'all');
