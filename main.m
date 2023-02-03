@@ -66,7 +66,7 @@ Prob_NLoSv_B = qfunc((AltezzaEfficace - MediaEfficace) / DevstdEfficace);
 
 % Probabilità Same Lane
 ProbSingleSameLane = Prob_NLoSv_B * GammaA * exp(-GammaA);
-ProbSameLane = zeros(NumeroMaxSlot, NumeroMaxSlot);
+ProbSameLane = zeros(NumeroMaxSlot, NumCorsie);
 
 for k = 1:NumeroMaxSlot
     ProbSameLane(k) = (factorial(NumeroMaxSlot) / ((factorial(NumeroMaxSlot - k)) * (factorial(k)))) .* (mean(ProbSingleSameLane) .^ k) .* (mean(1 - ProbSingleSameLane) .^ (NumeroMaxSlot - k));
@@ -81,7 +81,7 @@ for i = 2:NumCorsie
     ProbSingleSlotC(i) = mean(Prob_NLoSv_B) * GammaC(i) * exp(-GammaC(i));
 end
 
-P14 = zeros(NumeroMaxSlot, NumeroMaxSlot);
+P14 = zeros(NumeroMaxSlot, NumCorsie);
 
 for NumCorsie = 2:4
 
@@ -149,13 +149,13 @@ for k = 1:2
 end
 
 %FORMULA 18
-ProbDiffLane = zeros(NumeroMaxSlot, NumeroMaxSlot);
-ProbDiffLane_Part1 = zeros(NumeroMaxSlot, NumeroMaxSlot);
-ProbDiffLane_Part2 = zeros(NumeroMaxSlot, NumeroMaxSlot);
+ProbDiffLane = zeros(NumeroMaxSlot, NumCorsie);
+ProbDiffLane_Part1 = zeros(NumeroMaxSlot, NumCorsie);
+ProbDiffLane_Part2 = zeros(NumeroMaxSlot, NumCorsie);
 
 for k = 1:2
     n = 1;
-    ProbDiffLane_Part1(k, n + 1) = ((2 * (NumCorsie - 1)) / (NumCorsie ^ 2)) .* Binomiale(k, 2) .* (mean(ProbSingleSlotB) .^ k) .* (mean(1 - ProbSingleSlotB) .^ (n + 1 - k));
+    ProbDiffLane_Part1(k, n + 1) = ((2 * (NumCorsie - 1)) / (NumCorsie ^ 2)) .* Binomiale(k, 2) .* (ProbSingleSlotB(2)) .^ k .* (1 - ProbSingleSlotB(2)) .^ (n + 1 - k);
 end
 
 P16 = zeros(1, NumCorsie);
