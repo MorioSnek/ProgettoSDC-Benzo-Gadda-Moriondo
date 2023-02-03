@@ -475,6 +475,65 @@ ProbTotale = ProbSameLane + ProbDiffLane;
 <a name="matplots"></a>
 
 ## File `plots.m`
+```Matlab
+figure(1)
+histogram(PathLossLoS, 'BinWidth', 1)
+hold on
+histogram(PathLossNLoSv, 'BinWidth', 1)
+xlabel('dB');
+ylabel('Densità di Probabilità');
+title('Path loss caso LOS e NLoSv a dtr 50m');
+legend('LoS', 'NLoSv')
+```
+
+```Matlab
+figure(2)
+histogram(SNR, 'BinWidth', 1)
+hold on
+histogram(SNRNLoSv, 'BinWidth', 1)
+xlabel('dB');
+ylabel('Densità di Probabilità');
+title('SNR caso LOS e NLoSv a dtr 50m');
+legend('LoS', 'NLoSv')
+```
+
+```Matlab
+figure(3)
+hold on
+grid on
+xlabel('Distanza dtr');
+ylabel('dB');
+title('Path Loss e SNR a distanza variabile');
+plot(DistanzaTxRxMobile, PathLossMobileLoS, 'LineWidth', 3);
+plot(DistanzaTxRxMobile, PathLossMobileNLoSv, 'LineWidth', 3);
+plot(DistanzaTxRxMobile, SNRMobileLoS, 'LineWidth', 3);
+plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
+legend('Path loss LoS', 'Path loss NLoSv', 'SNR LoS', 'SNR NLoSv')
+```
+
+```Matlab
+figure(4)
+subplot(2, 1, 1)
+hold on
+grid on
+xlim([0 200])
+ylim([-10 50])
+xlabel('Distanza dtr');
+ylabel('dB');
+title('Simulazione SNR LoS a distanza variabile');
+plot(DistanzaTxRxMobile, SNRMobileLoS, 'LineWidth', 3);
+stem(DistanzaTxRxMobile, SimSNRMobileLoS, 'filled', 'LineStyle', 'none');
+subplot(2, 1, 2)
+hold on
+grid on
+xlim([0 200])
+ylim([-20 40])
+xlabel('Distanza dtr');
+ylabel('dB');
+title('Simulazione SNR NLoSv a distanza variabile');
+plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
+stem(DistanzaTxRxMobile, SimSNRMobileNLoSv, 'filled', 'LineStyle', 'none');
+```
 
 <a name="risultati"></a>
 
