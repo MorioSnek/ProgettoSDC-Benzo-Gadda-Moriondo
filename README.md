@@ -199,9 +199,9 @@ $$\mathbb{P}(\textrm{LoS}|d_{tr})=1-\sum_k\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}
 # Spiegazione codice MATLAB 
 Il codice è segmentato in diversi file, con la rispettiva funzione:
 
-- `setup.m`: racchiude tutti i parametri dell'analisi e della simulazione [$\to$](#matsetup)
-- `main.m`: comprende tutti i calcoli e gli algoritmi utili alle simulazioni [$\to$](#matmain)
-- `plots.m`: fornisce tutte le istruzioni per i vari plot di grafici [$\to$](#matplots)
+- `setup.m`: racchiude tutti i parametri dell'analisi e della simulazione [$\rightarrow$](#matsetup)
+- `main.m`: comprende tutti i calcoli e gli algoritmi utili alle simulazioni [$\rightarrow$](#matmain)
+- `plots.m`: fornisce tutte le istruzioni per i vari plot di grafici [$\rightarrow$](#matplots)
 
 Per comodità dell'utente, si consiglia di visualizzare il progetto finale attraverso lo script matlab `exec.m`, che contiene dei comandi `run` nell'ordine corretto.<br>
 
