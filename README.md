@@ -223,9 +223,254 @@ clear all, close all, clc
 ```
 Essendo il primo file ad essere eseguito contiene le uniche istruzioni nel progetto di pulizia di precedenti workspace MATLAB.
 
+```Matlab
+% parametri sistema di comunicazione
+Pt_dBm = 0;
+Gt_dB = 10; 
+Gr_dB = 10;
+Pn_dBm = -85;
+Fc = 28 * 10 ^ 9; 
+Lambda_c = 3e8 / Fc;
+
+% parametri veicoli
+LungVeicolo = 5; 
+LargVeicolo = 1.8;
+AltVeicoloMedia = 1.5;
+AltVeicoloStdv = 0.08;
+
+% parametri scenario analizzato
+LungScenario = 200;
+NumCorsie = 4;
+LarghezzaCorsia = 3.5;
+DensTraffico1 = 10;
+DensTraffico2 = 50;
+DistSicurezza = 2.5;
+
+% attenuazione in spazio libero
+MediaLoS = 32.4 + 20 * log10(DistanzaTxRxFissa) + 20 * log10(Fc / 10 ^ 9);
+MediaSh = 0;
+VarianzaSh = 3 ^ 2;
+MediaAtt = 9 + max(0, 15 * log10(DistanzaTxRxFissa / 2) - 41);
+VarianzaAtt = 4.5 ^ 2;
+```
+Integrazione delle tabelle viste nei [punti](#parametri) precedenti, suddivise per tipologia di variabile. Sono state scelte le unità di misura del paper di riferimento.
+
+```Matlab
+NumSimulazioni = 10 ^ 5;
+DistanzaTxRxFissa = 50;
+```
+Parametri non definiti nel paper, usati nel progetto per poter effettuare diverse simulazioni. Dove non sarà indicato diversamente, sarà infatti considerata una distanza di 50 metri tra i veicoli.<br>
+Il parametro ``NumSimulazioni`` è riferito a quante iterazioni sono state fatte di una determinata estrazione di una variabile gaussiana, relativamente alle distribuzioni normali presenti (SNR, Altezza dell'ellissoide di Fresnel).
+
 <a name="matmain"></a>
 
 ## File `main.m`
+
+### System Model
+
+```Matlab
+MediaPathLoss = MediaLoS + MediaAtt;
+VarianzaPathLoss = VarianzaSh + VarianzaAtt;
+```
+
+```Matlab
+PathLossLoS = VarianzaSh * randn(1, NumSimulazioni) + MediaLoS;
+PathLossNLoSv = VarianzaPathLoss * randn(1, NumSimulazioni) + MediaPathLoss;
+```
+
+```Matlab
+SNR = Pt_dBm + Gt_dB + Gr_dB - PathLossLoS - Pn_dBm;
+SNRNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossNLoSv - Pn_dBm;
+```
+
+```Matlab
+DistanzaTxRxMobile = [DistSicurezza:0.625:LungScenario];
+PathLossMobileLoS = 32.4 + 20 * log10(DistanzaTxRxMobile) + 20 * log10(Fc / 10 ^ 9);
+SNRMobileLoS = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileLoS - Pn_dBm;
+PathLossMobileNLoSv = PathLossMobileLoS + 9 + max(0, 15 * log10(DistanzaTxRxMobile / 2) - 41);
+SNRMobileNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileNLoSv - Pn_dBm;
+```
+
+```Matlab
+SimSNRMobileLoS = SNRMobileLoS + randn(1, size(DistanzaTxRxMobile, 2)) * VarianzaSh;
+SimSNRMobileNLoSv = SNRMobileNLoSv + randn(1, size(DistanzaTxRxMobile, 2)) * VarianzaPathLoss;
+```
+### Vehicular Blockage Modelling
+
+```Matlab
+LarghezzaTotLane = NumCorsie * LarghezzaCorsia;
+LunghezzaSlotA = LungVeicolo + DistSicurezza;
+delta_y = zeros(1, NumCorsie);
+LunghezzaSlotB = zeros(1, NumCorsie);
+LunghezzaSlotC = zeros(1, NumCorsie);
+ProbSamelane = 1 / NumCorsie;
+NumeroMaxSlot = floor(DistanzaTxRxFissa / LunghezzaSlotA);
+```
+
+```Matlab
+for i = 2:NumCorsie
+    delta_y(i) = (i - 1) * LarghezzaCorsia;
+    LunghezzaSlotB(i) = (LargVeicolo * sqrt((DistanzaTxRxFissa ^ 2) -delta_y(i) ^ 2)) / (2 * delta_y(i));
+    LunghezzaSlotC(i) = 2 * LunghezzaSlotB(i) + LungVeicolo;
+end
+```
+
+```Matlab
+GammaA = DensTraffico1 * 10 ^ -3 * LunghezzaSlotA;
+GammaB = zeros(1, NumCorsie);
+GammaC = zeros(1, NumCorsie);
+```
+
+```Matlab
+for i = 2:NumCorsie
+    GammaB(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotB(i);
+    GammaC(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotC(i);
+end
+```
+
+```Matlab
+DistanzaTxB = rand(1, NumSimulazioni) * DistanzaTxRxFissa;
+DistanzaBRx = DistanzaTxRxFissa - DistanzaTxB;
+RaggioFresnel = sqrt(Lambda_c .* ((DistanzaTxB .* DistanzaBRx) ./ DistanzaTxRxFissa));
+AltezzaFresnel = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + (AltVeicoloMedia - 0.6 * RaggioFresnel);
+```
+
+```Matlab
+AltezzaBloccante = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + AltVeicoloMedia;
+AltezzaEfficace = AltezzaBloccante - AltezzaFresnel;
+MediaEfficace = 0.6 * RaggioFresnel;
+DevstdEfficace = sqrt(2 * AltVeicoloStdv ^ 2);
+Prob_NLoSv_B = qfunc((AltezzaEfficace - MediaEfficace) / DevstdEfficace);
+```
+
+```Matlab
+ProbSingleSameLane = Prob_NLoSv_B * GammaA * exp(-GammaA);
+ProbSameLane = zeros(NumeroMaxSlot, NumCorsie);
+```
+
+```Matlab
+for k = 1:NumeroMaxSlot
+    ProbSameLane(k) = (factorial(NumeroMaxSlot) / ((factorial(NumeroMaxSlot - k)) * (factorial(k)))) .* (mean(ProbSingleSameLane) .^ k) .* (mean(1 - ProbSingleSameLane) .^ (NumeroMaxSlot - k));
+end
+```
+
+```Matlab
+ProbSingleSlotB = zeros(1, NumCorsie);
+ProbSingleSlotC = zeros(1, NumCorsie);
+```
+
+```Matlab
+for i = 2:NumCorsie
+    ProbSingleSlotB(i) = mean(Prob_NLoSv_B) * GammaB(i) * exp(-GammaB(i));
+    ProbSingleSlotC(i) = mean(Prob_NLoSv_B) * GammaC(i) * exp(-GammaC(i));
+end
+```
+
+```Matlab
+P14 = zeros(NumeroMaxSlot, NumCorsie);
+```
+
+```Matlab
+for NumCorsie = 2:4
+
+    for k = 1:NumCorsie
+
+        if NumCorsie == 2 && k == 1
+            P_M2k1_a = ProbSingleSlotB(2) .* (1 - ProbSingleSlotB(2)); %{1}
+            P_M2k1_b = (1 - ProbSingleSlotB(2)) .* ProbSingleSlotB(2); %{2}
+            P14(1, 2) = (P_M2k1_a + P_M2k1_b);
+
+        elseif NumCorsie == 2 && k == 2
+            P14(2, 2) = ProbSingleSlotB(2) .* ProbSingleSlotB(2); %{1,2}
+
+        elseif NumCorsie == 3 && k == 1
+            P_M3k1_a = ProbSingleSlotB(3) .* (1 - ProbSingleSlotC(3)) .* (1 - ProbSingleSlotB(3)); %{1}
+            P_M3k1_b = (1 - ProbSingleSlotB(3)) .* ProbSingleSlotC(3) .* (1 - ProbSingleSlotB(3)); %{2}
+            P_M3k1_c = (1 - ProbSingleSlotB(3)) .* (1 - ProbSingleSlotC(3)) .* ProbSingleSlotB(3); %{3}
+            P14(1, 3) = (P_M3k1_a + P_M3k1_b + P_M3k1_c);
+
+        elseif NumCorsie == 3 && k == 2
+            P_M3k2_a = ProbSingleSlotB(3) .* ProbSingleSlotC(3) .* (1 - ProbSingleSlotB(3)); %{1,2}
+            P_M3k2_b = ProbSingleSlotB(3) .* ProbSingleSlotC(3) .* (1 - ProbSingleSlotB(3)); %{2,3}
+            P_M3k2_c = ProbSingleSlotB(3) .* (1 - ProbSingleSlotC(3)) .* ProbSingleSlotB(3); %{1,3}
+            P14(2, 3) = (P_M3k2_a + P_M3k2_b + P_M3k2_c);
+
+        elseif NumCorsie == 3 && k == 3
+            P14(3, 3) = ProbSingleSlotB(3) .* ProbSingleSlotC(3) .* ProbSingleSlotB(3); %{1,2,3}
+
+        elseif NumCorsie == 4 && k == 1
+            P_M4k1_a = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotB(4)); %{1}
+            P_M4k1_b = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotB(4)); %{2}
+            P_M4k1_c = (1 - ProbSingleSlotB(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{3}
+            P_M4k1_d = (1 - ProbSingleSlotB(4)) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{4}
+            P14(1, 4) = (P_M4k1_a + P_M4k1_b + P_M4k1_c + P_M4k1_d);
+
+        elseif NumCorsie == 4 && k == 2
+            P_M4k2_a = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotB(4)); %{1,2}
+            P_M4k2_b = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{1,3}
+            P_M4k2_c = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{1,4}
+            P_M4k2_d = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{2,3}
+            P_M4k2_e = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{2,4}
+            P_M4k2_f = (1 - ProbSingleSlotB(4)) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{3,4}
+            P14(2, 4) = (P_M4k2_a + P_M4k2_b + P_M4k2_c + P_M4k2_d + P_M4k2_e + P_M4k2_f);
+
+        elseif NumCorsie == 4 && k == 3
+            P_M4k3_a = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotB(4)); %{1,2,3}
+            P_M4k3_b = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotB(4); %{1,2,4}
+            P_M4k3_c = ProbSingleSlotB(4) .* (1 - ProbSingleSlotC(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{1,3,4}
+            P_M4k3_d = (1 - ProbSingleSlotB(4)) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{2,3,4}
+            P14(3, 4) = (P_M4k3_a + P_M4k3_b + P_M4k3_c + P_M4k3_d);
+
+        elseif NumCorsie == 4 && k == 4
+            P14(4, 4) = ProbSingleSlotB(4) .* ProbSingleSlotC(4) .* ProbSingleSlotC(4) .* ProbSingleSlotB(4); %{1,2,3,4}
+        end
+
+    end
+
+end
+```
+
+```Matlab
+Binomiale = zeros(2, 2);
+
+for k = 1:2
+    n = 1;
+    Binomiale(k, 2) = (factorial(n + 1) / ((factorial(n + 1 - k)) * (factorial(k))));
+end
+```
+
+```Matlab
+ProbDiffLane = zeros(NumeroMaxSlot, NumCorsie);
+ProbDiffLane_Part1 = zeros(NumeroMaxSlot, NumCorsie);
+ProbDiffLane_Part2 = zeros(NumeroMaxSlot, NumCorsie);
+```
+
+```Matlab
+for k = 1:2
+    n = 1;
+    ProbDiffLane_Part1(k, n + 1) = ((2 * (NumCorsie - 1)) / (NumCorsie ^ 2)) .* Binomiale(k, 2) .* (ProbSingleSlotB(2)) .^ k .* (1 - ProbSingleSlotB(2)) .^ (n + 1 - k);
+end
+```
+
+```Matlab
+P16 = zeros(1, NumCorsie);
+
+for n = 2:(NumCorsie - 1)
+    P16(1, n + 1) = (2 * (NumCorsie - n)) / (NumCorsie ^ 2);
+
+    for r = 1:4
+        ProbDiffLane_Part2(r, n + 1) = P16(1, n + 1) .* P14(r, n + 1);
+    end
+
+end
+```
+
+```Matlab
+ProbDiffLane = ProbDiffLane_Part1 + ProbDiffLane_Part2;
+ProbTotale = ProbSameLane + ProbDiffLane;
+```
+
+### Numerical Simulations
 
 <a name="matplots"></a>
 
@@ -234,3 +479,6 @@ Essendo il primo file ad essere eseguito contiene le uniche istruzioni nel proge
 <a name="risultati"></a>
 
 # Risultati 
+```Matlab
+
+```
