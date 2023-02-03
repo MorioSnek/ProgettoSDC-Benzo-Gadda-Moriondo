@@ -170,5 +170,4 @@ for n = 2:(NumCorsie - 1)
 end
 
 ProbDiffLane = ProbDiffLane_Part1 + ProbDiffLane_Part2;
-
 ProbTotale = ProbSameLane + ProbDiffLane;
