@@ -15,13 +15,13 @@ LungVeicolo = 5; % lunghezza del veicolo [m]
 LargVeicolo = 1.8; % larghezza del veicolo [m]
 AltVeicoloMedia = 1.5; % altezza del veicolo [m]
 AltVeicoloStdv = 0.08; % deviazione standard delle altezze dei veicoli [m]
+AltBloccanteMedia = 1.5; % altezza del paraurti anteriore o posteriore [m]
 
 % parametri scenario analizzato
 LungScenario = 200; % lunghezza dello scenario analizzato [m]
 NumCorsie = 4; % numero di corsie considerate nello scenario
 LarghezzaCorsia = 3.5;
-DensTraffico1 = 10; % densità a cui sono distribuiti i veicoli [veicolo/km]
-DensTraffico2 = 50;
+DensTraffico = 10; % densità a cui sono distribuiti i veicoli [veicolo/km]
 DistSicurezza = 2.5; % distanza di sicurezza (distanza minima) [m]
 
 % Parametri generici simulazione
