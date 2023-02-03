@@ -1,3 +1,4 @@
 run("setup.m")
 run("main.m")
-%run("plots.m")
+run("simulations.m")
+run("plots.m")
