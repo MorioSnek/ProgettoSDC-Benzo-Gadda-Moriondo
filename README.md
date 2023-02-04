@@ -165,6 +165,10 @@ $$\mathcal{P_\textrm{\textit{a}}} = \mathbb{P}(\textrm{NLoSv}|d_a,\mathcal{B})\c
 Viene infine calcolata la probabilità di avere un bloccaggio da parte di $k$ veicoli mediante una distribuzione di Bernoulli:
 $$\mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\mathcal{P_\textrm{\textit{a}}^\textrm{\textit{k}}}(1-\mathcal{P_\textrm{\textit{a}}})^{N_s-k}$$
 
+<p align="center">
+  <img src="img/scenario/ANLoSv.png" width="500">
+</p>
+
 <a name="differentlane"></a>
 
 ### Analisi Different Lanes 
@@ -181,6 +185,14 @@ Definita $\Delta y$ la distanza tra i punti medi delle corsie di TX e RX, possia
 $$d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{2\Delta y}\quad\quad d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{\Delta y}+l_v$$
 Si calcola la probabilità di avere TX e RX con uno scostamento laterale pari a $\Delta y = nW, \ n\in\{1,2,\ldots,M\}$:
 $$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1}n = \frac{M-1}{M}$$
+
+<p align="center">
+  <img src="img/scenario/CNLoSv0.png" width="250">
+  <img src="img/scenario/CNLoSv1.png" width="250">
+  <img src="img/scenario/CNLoSv2.png" width="250">
+  <img src="img/scenario/CNLoSv3.png" width="250">
+</p>
+
 Si calcola inoltre la probabilità di avere $k$ bloccanti su un massimo di $M$ slot, poiché in questo caso si considera che non ci sia più di un veicolo bloccante per corsia:
 $$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_\textrm{\textit{k}}}}\prod_{i\in\mathcal{A}}\mathcal{P_\textrm{\textit{i}}}\prod_{j\in\mathcal{A^\textrm{\textit{c}}}}(1-\mathcal{P_\textrm{\textit{j}}})$$
 Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
