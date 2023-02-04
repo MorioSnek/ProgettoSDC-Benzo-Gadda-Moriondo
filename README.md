@@ -91,7 +91,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Numero di corsie                |   $M$   |        4       |
 | Larghezza delle corsie          |  $W$    |      3.5 m     |
 | Distanza di sicurezza           |  $d_s$  |      2.5 m     |
-| Densità di traffico considerate | $\rho$  | 10 / 50 veh/km |
+| Densità di traffico considerate | $\rho$  | 10 / 20 veh/km |
 
 <a name="parvariabili"></a>
 
@@ -600,6 +600,73 @@ plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
 stem(DistanzaTxRxMobile, SimSNRMobileNLoSv, 'filled', 'LineStyle', 'none');
 ```
 Vengono esposti due grafici all'interno della stessa figura (comando `subplot`), che rappresentano a partire dai plot precedenti la distribuzione del rapporto segnale rumore attorno alla media. Sono stati scelti i limiti [-10 50] e [-20 40] per mantenere uguali le proporzioni tra le curve, essendo la distanza verticale tra di loro la stessa. Visivamente, così facendo, rimane coerente per l'osservatore.
+
+```Matlab
+figure(5)
+hold on
+grid on
+xlim([4 20])
+ylim([0.1 0.9])
+xlabel('Distanza d_{tr} [10^1m]')
+ylabel('Probabilità di bloccaggio')
+title('Probabilità bloccaggio a distanza variabile')
+
+% Rooftop antenna
+stem(ProbNLoSDistVar10,'filled','LineStyle','none','color','#0072BD')
+plot(ProbNLoSDistVar10,'color','#0072BD')
+stem(ProbNLoSDistVar50,'filled','LineStyle','none','color','#0072BD')
+plot(ProbNLoSDistVar50,'color','#0072BD')
+
+% Bumper antenna
+stem(ProbNLoSDistVar10B,'filled','LineStyle','none','color','#A2142F')
+plot(ProbNLoSDistVar10B,'color','#A2142F')
+stem(ProbNLoSDistVar50B,'filled','LineStyle','none','color','#A2142F')
+plot(ProbNLoSDistVar50B,'color','#A2142F')
+```
+Per la prima simulazione numerica, ossia "**Probabilità bloccaggio a distanza variabile**" vengono fatte 8 rappresentazioni, rispettivamente di 4 andamenti.<br>
+Per ogni andamento vengono effettuati sia un `plot` che uno `stem` (rimuovendo le linee verticali di quest'ultimo) per poter meglio evidenziare i punti calcolati dalla simulazione.<br>
+Le curve inferiori sono relative alle analisi effettuate con un'antenna sul tetto (caso Rooftop), quelle superiori riguardano invece il caso con un'antenna sul paraurti (caso Bumper). Le densità considerate sono $\rho = 10$ e $\rho = 20$.
+
+```Matlab
+figure(6)
+hold on
+grid on
+xlim([1 30])
+ylim([0 0.7])
+xlabel('Densità veicolare [veh/km]')
+ylabel('Probabilità di bloccaggio')
+title('Probabilità bloccaggio a densità veicolare variabile')
+% Rooftop antenna
+stem(ProbNLoSDensVar,'filled','LineStyle','none','color','#0072BD')
+plot(ProbNLoSDensVar,'color','#0072BD')
+% Bumper antenna
+stem(ProbNLoSDensVarB,'filled','LineStyle','none','color','#A2142F')
+plot(ProbNLoSDensVarB,'color','#A2142F')
+```
+La seconda simulazione numerica, ossia "**Probabilità bloccaggio a densità veicolare variabile**", viene effettuata in modo simile alla precedente, mantenendo una distanza costante di 50 metri.
+
+```Matlab
+figure(7)
+surf(ProbNLoSDoppia)
+xlim([1 30])
+ylim([4 20])
+zlim([0 0.8])
+xlabel('Densità veicolare [veh/km]')
+ylabel('Distanza d_{tr} [10^1m]')
+zlabel('Probabilità di bloccaggio')
+title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Rooftop)')
+
+figure(8)
+surf(ProbNLoSDoppiaB)
+xlim([1 30])
+ylim([4 20])
+zlim([0 0.8])
+xlabel('Densità veicolare [veh/km]')
+ylabel('Distanza d_{tr} [10^1m]')
+zlabel('Probabilità di bloccaggio')
+title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Bumper)')
+```
+La terza simulazione è divisa in due grafici tridimensionali, ottenuti stampando una superfice con il comando `surf`. In particolare, riceve in ingresso una matrice rettangolare 30x20, e utilizza le coordinate della matrice come riferimenti degli assi x e y, mentre il valore contenuto nelle celle rappresenta l'altezza z.
 
 <a name="risultati"></a>
 

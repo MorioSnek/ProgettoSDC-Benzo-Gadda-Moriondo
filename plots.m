@@ -93,7 +93,7 @@ plot(ProbNLoSDensVarB,'color','#A2142F')
 %% Simulazione numerica probabilità bloccaggio a densità e distanza variabile
 figure(7)
 surf(ProbNLoSDoppia)
-xlim([10 30])
+xlim([1 30])
 ylim([4 20])
 zlim([0 0.8])
 xlabel('Densità veicolare [veh/km]')
@@ -104,7 +104,7 @@ title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Roo
 %% Simulazione numerica probabilità bloccaggio a densità e distanza variabile Bumper
 figure(8)
 surf(ProbNLoSDoppiaB)
-xlim([10 30])
+xlim([1 30])
 ylim([4 20])
 zlim([0 0.8])
 xlabel('Densità veicolare [veh/km]')
