@@ -109,8 +109,6 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | $d_{tr}$         |   $7.5 \div 195$   |   $2.5 \div 190$  |
 | $d_{tb}, d_{br}$ |  $7.5 \div 187.5$  |    $5 \div 185$   |
 
-#### Intervalli considerati per le variabili (*differenti corsie*):
-
 <a name="systemmodel"></a>
 
 ## System Model 
@@ -302,16 +300,23 @@ Il parametro ``NumSimulazioni`` è riferito a quante iterazioni sono state fatte
 MediaPathLoss = MediaLoS + MediaAtt;
 VarianzaPathLoss = VarianzaSh + VarianzaAtt;
 ```
+Vengono definite le variabili $\mu_{PL}$ e $\sigma^2_{PL}$, come da formula 2 del paper.
 
 ```Matlab
 PathLossLoS = VarianzaSh * randn(1, NumSimulazioni) + MediaLoS;
 PathLossNLoSv = VarianzaPathLoss * randn(1, NumSimulazioni) + MediaPathLoss;
 ```
+Essendo il path loss definito come una distribuzione normale, viene eseguito questo passaggio. Si elabora sia nel caso Line-of-Sight che in quello Non-Line-of-Sight (vehicle).
 
 ```Matlab
 SNR = Pt_dBm + Gt_dB + Gr_dB - PathLossLoS - Pn_dBm;
 SNRNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossNLoSv - Pn_dBm;
 ```
+
+Il Signal-to-Noise Ratio viene calcolato a partire dal path loss, seguendo la legge di Friis. I parametri del sistema di comunicazione giocano quindi un ruolo chiave in questo passaggio. Alternativamente, si sarebbe potuta portare la formula in lineare:
+
+$$SNR = \frac{P_{tx}\cdot G_t\cdot G_{r}\cdot \lambda_c^2}{P_n\cdot(4\pi d)^2}$$
+
 
 ```Matlab
 DistanzaTxRxMobile = [DistSicurezza:0.625:LungScenario];
@@ -320,11 +325,15 @@ SNRMobileLoS = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileLoS - Pn_dBm;
 PathLossMobileNLoSv = PathLossMobileLoS + 9 + max(0, 15 * log10(DistanzaTxRxMobile / 2) - 41);
 SNRMobileNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileNLoSv - Pn_dBm;
 ```
+Per il plot titolato "**Path Loss e SNR a distanza variabile**" vengono svolti gli opportuni calcoli, valutando a passo 0.625 a partire dalla distanza di sicurezza.<br>
+Per il rapporto segnale-rumore NLoSv è stato preso come valore di riferimento 9 dB di attenuazione, riportato dalle specifiche pubblicate da 3GPP.
 
 ```Matlab
 SimSNRMobileLoS = SNRMobileLoS + randn(1, size(DistanzaTxRxMobile, 2)) * VarianzaSh;
 SimSNRMobileNLoSv = SNRMobileNLoSv + randn(1, size(DistanzaTxRxMobile, 2)) * VarianzaPathLoss;
 ```
+Per i plot titolati "**Simulazione SNR LoS a distanza variabile**" e "**Simulazione SNR NLoSv a distanza variabile**" vengono svolti gli opportuni calcoli. In particolare, riportando dal blocco di codice precedente i valori di SNR LoS e NLoSv, si simula quale potrebbe essere la distribuzione normale sperimentale alle varie distanze. 
+
 ### Vehicular Blockage Modelling
 
 ```Matlab
