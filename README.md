@@ -214,6 +214,13 @@ $$\mathbb{P}(\textrm{LoS}|d_{tr})=1-\sum_k\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}
 <a name="numerical"></a>
 
 ## Numerical Simulations 
+Vengono effettuate diverse simulazioni, soprattutto relative alla probabilità di bloccaggio nell'ambiente analizzato:
+
+- Probabilità di bloccaggio in funzione della distanza $d_{tr}$
+- Probabilità di bloccaggio in funzione della densità di veicoli $\rho$
+- Probabilità bivariata di bloccaggio in funzione di $\rho$ e $d_{tr}$
+
+Per la visualizzazione delle simulazioni, si consiglia di leggere il [paragrafo dedicato](#risultati).
 
 <a name="codice"></a>
 
@@ -222,6 +229,7 @@ Il codice è segmentato in diversi file, con le rispettive funzioni:
 
 - [`setup.m`](#matsetup): racchiude tutti i parametri dell'analisi e della simulazione.
 - [`main.m`](#matmain): comprende tutti i calcoli e gli algoritmi utili alle simulazioni.
+- [`simulations.m`](#matnum): esegue con parametri differenti il main, al fine di ottenere i dati per le simulazioni.
 - [`plots.m`](#matplots): fornisce tutte le istruzioni per i vari plot di grafici.
 
 Per comodità dell'utente, si consiglia di visualizzare il progetto finale attraverso lo script matlab `exec.m`, che contiene dei comandi `run` nell'ordine corretto.<br>
@@ -233,6 +241,7 @@ Alternativamente, se non si vuole visualizzare i plot, si consiglia di eseguire 
 ``` 
 >> run setup.m
 >> run main.m
+>> run simulations.m
 ```
 
 <a name="matsetup"></a>
@@ -493,6 +502,37 @@ ProbLoS = 1 - sum(ProbTotale,'all');
 ```
 
 ### Numerical Simulations
+
+<a name="matnum"></a>
+
+## File `simulations.m`
+```Matlab
+
+```
+
+```Matlab
+
+```
+
+```Matlab
+
+```
+
+```Matlab
+
+```
+
+```Matlab
+
+```
+
+```Matlab
+
+```
+
+```Matlab
+
+```
 
 <a name="matplots"></a>
 
