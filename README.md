@@ -559,6 +559,7 @@ ylabel('Densità di Probabilità');
 title('SNR caso LOS e NLoSv a dtr 50m');
 legend('LoS', 'NLoSv')
 ```
+In questi due blocchi di codice, si effettuano i plot degli istogrammi relativi alle distribuzioni di SNR e Path Loss. In particolare, si osserva come la relazione sia evidente tra i due plot, con una simmetria dovuta dall'introduzione del rumore e del sistema di comunicazione.
 
 ```Matlab
 figure(3)
@@ -573,6 +574,7 @@ plot(DistanzaTxRxMobile, SNRMobileLoS, 'LineWidth', 3);
 plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
 legend('Path loss LoS', 'Path loss NLoSv', 'SNR LoS', 'SNR NLoSv')
 ```
+Vengono stampate 4 linee spezzate, relative a SNR e Path Loss a dipendenti dalla distanza. Vengono utilizzati gli intervalli definiti precedentemente, ossia dalla distanza di sicurezza alla fine dello scenario considerato.
 
 ```Matlab
 figure(4)
@@ -597,6 +599,7 @@ title('Simulazione SNR NLoSv a distanza variabile');
 plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
 stem(DistanzaTxRxMobile, SimSNRMobileNLoSv, 'filled', 'LineStyle', 'none');
 ```
+Vengono esposti due grafici all'interno della stessa figura (comando `subplot`), che rappresentano a partire dai plot precedenti la distribuzione del rapporto segnale rumore attorno alla media. Sono stati scelti i limiti [-10 50] e [-20 40] per mantenere uguali le proporzioni tra le curve, essendo la distanza verticale tra di loro la stessa. Visivamente, così facendo, rimane coerente per l'osservatore.
 
 <a name="risultati"></a>
 
