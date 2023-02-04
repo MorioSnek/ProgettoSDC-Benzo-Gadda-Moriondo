@@ -156,7 +156,7 @@ Nel caso in cui trasmettitore, ricevitore e veicolo bloccante siano sulla stessa
 $$N_s = \frac{d_{eff}}{d_a} \quad\quad d_{eff} = d_{tr}-l_v \quad\quad d_a = l_v+d_s$$
 Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli presenti nel caso "Different Lane".<br>
 
-![GitHub Logo](/img/ALoS.png)
+![ALoS](/img/scenario/ALoS.png)
 
 <br>
 La probabilità che un singolo slot sia occupato da un bloccante viene calcolata assumendo che i veicoli siano distribuiti secondo un processo di Poisson lineare (o Linear Point Poisson Process):
