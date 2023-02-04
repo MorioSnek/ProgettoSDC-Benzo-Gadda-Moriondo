@@ -526,14 +526,6 @@ ProbLoS = 1 - sum(ProbTotale,'all');
 
 ```
 
-```Matlab
-
-```
-
-```Matlab
-
-```
-
 <a name="matplots"></a>
 
 ## File `plots.m`
