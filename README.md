@@ -187,10 +187,10 @@ Si calcola la probabilità di avere TX e RX con uno scostamento laterale pari a 
 $$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1}n = \frac{M-1}{M}$$
 
 <p align="center">
-  <img src="img/scenario/CNLoSv0.png" width="250">
-  <img src="img/scenario/CNLoSv1.png" width="250">
-  <img src="img/scenario/CNLoSv2.png" width="250">
-  <img src="img/scenario/CNLoSv3.png" width="250">
+  <img src="img/scenario/CNLoSv0.png" width="330">
+  <img src="img/scenario/CNLoSv1.png" width="330"><br>
+  <img src="img/scenario/CNLoSv2.png" width="330">
+  <img src="img/scenario/CNLoSv3.png" width="330">
 </p>
 
 Si calcola inoltre la probabilità di avere $k$ bloccanti su un massimo di $M$ slot, poiché in questo caso si considera che non ci sia più di un veicolo bloccante per corsia:
