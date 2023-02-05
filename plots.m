@@ -1,35 +1,35 @@
 %% Plot PathLoss LoS e NLoSv a 50m
 figure(1)
-histogram(PathLossLoS, 'BinWidth', 1)
+histogram(PathLossLoS, 'BinWidth', 2,'normalization', 'probability')
 hold on
-histogram(PathLossNLoSv, 'BinWidth', 1)
+histogram(PathLossNLoSv, 'BinWidth', 2,'normalization', 'probability')
 xlabel('dB');
 ylabel('Densità di Probabilità');
-title('Path loss caso LOS e NLoSv a dtr 50m');
+title('Path loss caso LOS e NLoSv a d_{tr} = 50m');
 legend('LoS', 'NLoSv')
 
 %% Plot SNR LoS e NLoSv a 50m
 figure(2)
-histogram(SNR, 'BinWidth', 1)
+histogram(SNR, 'BinWidth', 2,'normalization', 'probability')
 hold on
-histogram(SNRNLoSv, 'BinWidth', 1)
+histogram(SNRNLoSv, 'BinWidth', 2,'normalization', 'probability')
 xlabel('dB');
 ylabel('Densità di Probabilità');
-title('SNR caso LOS e NLoSv a dtr 50m');
+title('SNR caso LOS e NLoSv a d_{tr} = 50m');
 legend('LoS', 'NLoSv')
 
 %% Plot SNR e PathLoss a distanza variabile
 figure(3)
 hold on
 grid on
-xlabel('Distanza dtr');
+xlabel('Distanza d_{tr}');
 ylabel('dB');
 title('Path Loss e SNR a distanza variabile');
 plot(DistanzaTxRxMobile, PathLossMobileLoS, 'LineWidth', 3);
 plot(DistanzaTxRxMobile, PathLossMobileNLoSv, 'LineWidth', 3);
 plot(DistanzaTxRxMobile, SNRMobileLoS, 'LineWidth', 3);
 plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
-legend('Path loss LoS', 'Path loss NLoSv', 'SNR LoS', 'SNR NLoSv')
+legend('Path Loss LoS', 'Path Loss NLoSv', 'SNR LoS', 'SNR NLoSv')
 
 %% Simulazione numerica distribuzione SNR a 50m LoS e NLoSv
 figure(4)
