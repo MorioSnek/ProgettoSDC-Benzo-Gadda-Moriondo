@@ -269,7 +269,7 @@ La prima analisi fatta è stata relativamente a quanto la distanza influenzi la 
 </p>
 
 L'antenna posizionata sul paraurti, indicativamente a 30 centimetri da terra, ottiene chiaramente delle prestazioni peggiori, essendo la sua altezza efficace $h_{eff}$ minore del caso con l'antenna installata sul tetto del veicolo. Inoltre, è possibile notare come la probabilità di bloccaggio data dalla presenza di un veicolo bloccante aumenti con l'allontanamento dei due veicoli TX e RX, avendo un veicolo bloccante più spazio e più slot per inserirsi tra essi.<br><br>
-Un discorso simile può essere fatto per la seconda simulazione, ossia la probabilità di bloccaggio valutata a distanza $d_{tr}$ fissa ma a densità $\rho$ variabile. In particolare, facendo variare la densità vecolare tra 1 veh/km fino a 30.
+Un discorso simile può essere fatto per la seconda simulazione, ossia la probabilità di bloccaggio valutata a distanza $d_{tr}$ fissata a 50 metri e a densità $\rho$ variabile. In particolare, facendo variare la densità vecolare tra 1 veh/km fino a 30.
 
 <p align="center">
   <img src="img/sim/ProbDens.png" width="450">
