@@ -232,11 +232,14 @@ In praticolare, i risultati ottenuti si possono concettualmente dividere con le 
 <a name="rismod"></a>
 
 ## Risultati - System Model
+Le prime analisi relative al System Model sono riferite al path loss e al rapporto segnale-rumore. In particolare, è visibile come, in presenza di un bloccante, la distribuzione a essi riferita si presenti con una più vicina all'attenuazione del segnale e con una varianza maggiore.
 
 <p align="center">
   <img src="img/sim/SNR.png" width="330">
   <img src="img/sim/PL.png" width="330">
 </p>
+
+I due istogrammi sono speculari: l'introduzione dei parametri del sistema di comunicazione trasforma l'attenuazione in SNR, spostando - come è visibile - la curva gaussiana riferita all'attenuazione dovuta da un bloccante verso un SNR negativo, centrato su un valore vicino allo zero.
 
 <p align="center">
   <img src="img/sim/PLSNR.png" width="330">
