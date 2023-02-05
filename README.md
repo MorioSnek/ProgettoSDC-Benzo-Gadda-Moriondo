@@ -34,12 +34,15 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
         - [Sintesi](#sintesi)
         - [Distribuzione SNR](#snr)
     5. [Numerical Simulations](#numerical)
+- [Risultati](#risultati)
+    1. [System Model](#rismod)
+    2. [Vehicular Blockage Modelling](#risblo)
+    3. [Numerical Simulations](#rissim)
 - [Spiegazione del codice MATLAB](#codice)
     - [File `setup.m`](#matsetup)
     - [File `main.m`](#matmain)
+    - [File `simulations.m`](#matsim)
     - [File `plots.m`](#matplots)
-- [Risultati](#risultati)
-    1. []()
 
 <a name="relazione"></a>
 
@@ -219,6 +222,31 @@ Vengono effettuate diverse simulazioni, soprattutto relative alla probabilità d
 - Probabilità bivariata di bloccaggio in funzione di $\rho$ e $d_{tr}$
 
 Per la visualizzazione delle simulazioni, si consiglia di leggere il [paragrafo dedicato](#risultati).
+
+<a name="risultati"></a>
+
+# Risultati
+Per poter analizzare i risultati numerici ottenuti, riportati in differenti strutture dati, è stato necessario non solo l'utilizzo di plot grafici, bidimensionali o tridimensionali, ma anche di istogrammi per rappresentare distribuzioni simulate a ogni iterazione del codice.<br>
+In praticolare, i risultati ottenuti si possono concettualmente dividere con le stesse parti del paper: System Model, Vehicular Blockage Modelling e Numerical Simulations.
+
+<a name="rismod"></a>
+
+## Risultati - System Model
+
+<p align="center">
+  <img src="img/sim/SNR.png" width="330">
+  <img src="img/sim/PL.png" width="330">
+</p>
+
+<a name="risblo"></a>
+
+## Risultati - Vehicular Blockage Modelling
+
+<a name="rissim"></a>
+
+## Risultati - Numerical Simulations
+
+
 
 <a name="codice"></a>
 
@@ -540,23 +568,23 @@ ProbLoS = 1 - sum(ProbTotale,'all');
 ## File `plots.m`
 ```Matlab
 figure(1)
-histogram(PathLossLoS, 'BinWidth', 1)
+histogram(PathLossLoS, 'BinWidth', 2,'normalization', 'probability')
 hold on
-histogram(PathLossNLoSv, 'BinWidth', 1)
+histogram(PathLossNLoSv, 'BinWidth', 2,'normalization', 'probability')
 xlabel('dB');
 ylabel('Densità di Probabilità');
-title('Path loss caso LOS e NLoSv a dtr 50m');
+title('Path loss caso LOS e NLoSv a d_{tr} = 50m');
 legend('LoS', 'NLoSv')
 ```
 
 ```Matlab
 figure(2)
-histogram(SNR, 'BinWidth', 1)
+histogram(SNR, 'BinWidth', 2,'normalization', 'probability')
 hold on
-histogram(SNRNLoSv, 'BinWidth', 1)
+histogram(SNRNLoSv, 'BinWidth', 2,'normalization', 'probability')
 xlabel('dB');
 ylabel('Densità di Probabilità');
-title('SNR caso LOS e NLoSv a dtr 50m');
+title('SNR caso LOS e NLoSv a d_{tr} = 50m');
 legend('LoS', 'NLoSv')
 ```
 In questi due blocchi di codice, si effettuano i plot degli istogrammi relativi alle distribuzioni di SNR e Path Loss. In particolare, si osserva come la relazione sia evidente tra i due plot, con una simmetria dovuta dall'introduzione del rumore e del sistema di comunicazione.
@@ -625,7 +653,7 @@ plot(ProbNLoSDistVar50B,'color','#A2142F')
 ```
 Per la prima simulazione numerica, ossia "**Probabilità bloccaggio a distanza variabile**" vengono fatte 8 rappresentazioni, rispettivamente di 4 andamenti.<br>
 Per ogni andamento vengono effettuati sia un `plot` che uno `stem` (rimuovendo le linee verticali di quest'ultimo) per poter meglio evidenziare i punti calcolati dalla simulazione.<br>
-Le curve inferiori sono relative alle analisi effettuate con un'antenna sul tetto (caso Rooftop), quelle superiori riguardano invece il caso con un'antenna sul paraurti (caso Bumper). Le densità considerate sono $\rho = 10$ e $\rho = 20$.
+Le curve inferiori sono relative alle analisi effettuate con un'antenna sul tetto (caso Rooftop), quelle superiori riguardano invece il caso con un'antenna sul paraurti (caso Bumper). Le densità considerate sono $\rho = 10$ e $\rho = 20$
 
 ```Matlab
 figure(6)
@@ -667,10 +695,3 @@ zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Bumper)')
 ```
 La terza simulazione è divisa in due grafici tridimensionali, ottenuti stampando una superfice con il comando `surf`. In particolare, riceve in ingresso una matrice rettangolare 30x20, e utilizza le coordinate della matrice come riferimenti degli assi x e y, mentre il valore contenuto nelle celle rappresenta l'altezza z.
-
-<a name="risultati"></a>
-
-# Risultati 
-```Matlab
-
-```
