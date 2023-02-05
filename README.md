@@ -267,7 +267,6 @@ Un discorso simile può essere fatto per la seconda simulazione, ossia la probab
 </p>
 
 Le probabilità di bloccaggio per valori bassi sono praticamente nulle, mentre si raggiungono valori molto più consistenti di probabilità al di sopra dei 15 veh/km. Anche in questo caso, si valuta la prestazione in base al posizionamento dell'antenna, che riscuote prestazioni nettamente maggiori - anche in questo caso - quando posizionata sul tetto del veicolo.<br><br>
-
 Una sintesi delle due simulazioni precedenti può essere racchiusa in queste superfici che descrivono una probabilità bivariata, dipendente da $d_{tr}$ e $\rho$. Diventa quindi necessario separare i grafici per trattare il caso "Rooftop" e il caso "Bumper". 
 
 <p align="center">
@@ -275,7 +274,7 @@ Una sintesi delle due simulazioni precedenti può essere racchiusa in queste sup
   <img src="img/sim/BiBumper.png" width="330">
 </p>
 
-
+Si osserva dunque come la densità veicolare abbia un impatto decisamente maggiore rispetto alla distanza tra TX e RX sulla probabilità di bloccaggio, osservabile soprattutto sul caso "Bumper". Le curve generate a parità di densità veicolare hanno un dislivello assai maggiore rispetto al loro duale riferito alla distanza.
 
 <a name="codice"></a>
 
