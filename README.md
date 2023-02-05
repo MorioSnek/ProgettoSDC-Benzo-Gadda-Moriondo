@@ -253,14 +253,22 @@ In praticolare, i risultati ottenuti si possono concettualmente dividere con le 
 <a name="rissim"></a>
 
 ## Risultati - Numerical Simulations
+La prima analisi fatta è stata relativamente a quanto la distanza influenzi la probabilità totale di bloccaggio, ottenuta come $\sum_{k}\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$. Facendo dunque variare la distanza tra un intervallo che va dai 40 ai 200 metri, vengono ottenuti i seguenti risultati:
 
 <p align="center">
   <img src="img/sim/ProbDist.png" width="330">
 </p>
 
+L'antenna posizionata sul paraurti, indicativamente a 30 centimetri da terra, ottiene chiaramente delle prestazioni peggiori, essendo la sua altezza efficace $h_{eff}$ minore del caso con l'antenna installata sul tetto del veicolo. Inoltre, è possibile notare come la probabilità di bloccaggio data dalla presenza di un veicolo bloccante aumenti con l'allontanamento dei due veicoli TX e RX, avendo un veicolo bloccante più spazio e più slot per inserirsi tra essi.<br><br>
+Un discorso simile può essere fatto per la seconda simulazione, ossia la probabilità di bloccaggio valutata a distanza $d_{tr}$ fissa ma a densità $\rho$ variabile. In particolare, facendo variare la densità vecolare tra 1 veh/km fino a 30.
+
 <p align="center">
   <img src="img/sim/ProbDens.png" width="330">
 </p>
+
+Le probabilità di bloccaggio per valori bassi sono praticamente nulle, mentre si raggiungono valori molto più consistenti di probabilità al di sopra dei 15 veh/km. Anche in questo caso, si valuta la prestazione in base al posizionamento dell'antenna, che riscuote prestazioni nettamente maggiori - anche in questo caso - quando posizionata sul tetto del veicolo.<br><br>
+
+Una sintesi delle due simulazioni precedenti può essere racchiusa in queste superfici che descrivono una probabilità bivariata, dipendente da $d_{tr}$ e $\rho$. Diventa quindi necessario separare i grafici per trattare il caso "Rooftop" e il caso "Bumper". 
 
 <p align="center">
   <img src="img/sim/BiRooftop.png" width="330">
