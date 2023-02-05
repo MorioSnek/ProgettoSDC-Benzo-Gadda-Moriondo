@@ -571,8 +571,8 @@ end
 
 ```Matlab
 ProbDiffLane = ProbDiffLane_Part1 + ProbDiffLane_Part2;
-ProbTotale = ProbSameLane + ProbDiffLane;
-ProbLoS = 1 - sum(ProbTotale,'all');
+ProbTotale = 1/NumCorsie * ProbSameLane + ProbDiffLane;
+ProbNLoS = sum(ProbTotale,'all');
 ```
 
 ### Numerical Simulations
@@ -590,7 +590,7 @@ for j = 4:20
     ProbNLoSDistVar10(j, 1) = ProbNLoS;
 end
 
-DensTraffico = 20;
+DensTraffico = 30;
 ProbNLoSDistVar50 = zeros(20, 1);
 for j = 4:20
     DistanzaTxRxFissa = j * 10;
@@ -611,21 +611,15 @@ for j = 4:20
     ProbNLoSDistVar10B(j, 1) = ProbNLoS;
 end
 
-DensTraffico = 20;
+DensTraffico = 30;
 ProbNLoSDistVar50B = zeros(20, 1);
 for j = 4:20
     DistanzaTxRxFissa = j * 10;
     run("main.m")
     ProbNLoSDistVar50B(j, 1) = ProbNLoS;
 end
-
-ProbNLoSDistVar10 = ProbNLoSDistVar10/2;
-ProbNLoSDistVar50 = ProbNLoSDistVar50/2;
-ProbNLoSDistVar10B = ProbNLoSDistVar10B/2;
-ProbNLoSDistVar50B = ProbNLoSDistVar50B/2;
-
 ```
-Vengono effettuati gli stessi passaggi del punto precedente, con una variazione di altezza dell'antenna a 30 centimetri da terra. Si esaminano anche in questa parte di codice i casi con densità di traffico 10 e 20 veh/km.
+Vengono effettuati gli stessi passaggi del punto precedente, con una variazione di altezza dell'antenna a 30 centimetri da terra. Si esaminano anche in questa parte di codice i casi con densità di traffico 10 e 30 veh/km.
 
 ```Matlab
 DistanzaTxRxFissa = 50;
@@ -644,9 +638,6 @@ for j = 1:30
     run("main.m")
     ProbNLoSDensVarB(j, 1) = ProbNLoS;
 end
-
-ProbNLoSDensVar = ProbNLoSDensVar/2;
-ProbNLoSDensVarB = ProbNLoSDensVarB/2;
 ```
 Lo stesso iter relativo alla distanza variabile viene ripetuto con la densità veicolare, prendendo come valore $d_{tr}$ 50 metri, come per le prime simulazioni. Vengono effettuate iterazione del codice `main.m` sia per il caso "Rooftop" che "Bumper", ottenendo così due curve.
 
@@ -673,7 +664,6 @@ for CountDist = 4:20
         ProbNLoSDoppiaB(CountDist,CountDens) = ProbNLoS;
     end
 end
-ProbNLoSDoppiaB = ProbNLoSDoppiaB/2;
 ```
 Per ottenere una sintesi dei due casi visti precedentemente, vengono annidati due cicli `for`: uno per modificare la distanza $d_{tr}$ e un altro per la densità $\rho$. Vengono ripetute le iterazioni sia per il caso "Rooftop" che per il caso "Bumper", inserendo i dati ottenuti in due matrici 20x30. Tuttavia, questo passaggio si dimostra particolarmente oneroso a livello computazionale, dovendo eseguire il codice `main.m` per un totale di 1200 volte.
 
@@ -774,7 +764,7 @@ plot(ProbNLoSDistVar50B,'color','#A2142F')
 ```
 Per la prima simulazione numerica, ossia "**Probabilità bloccaggio a distanza variabile**" vengono fatte 8 rappresentazioni, rispettivamente di 4 andamenti.<br>
 Per ogni andamento vengono effettuati sia un `plot` che uno `stem` (rimuovendo le linee verticali di quest'ultimo) per poter meglio evidenziare i punti calcolati dalla simulazione.<br>
-Le curve inferiori sono relative alle analisi effettuate con un'antenna sul tetto (caso Rooftop), quelle superiori riguardano invece il caso con un'antenna sul paraurti (caso Bumper). Le densità considerate sono $\rho = 10$ e $\rho = 20$
+Le curve inferiori sono relative alle analisi effettuate con un'antenna sul tetto (caso Rooftop), quelle superiori riguardano invece il caso con un'antenna sul paraurti (caso Bumper). Le densità considerate sono $\rho = 10$ e $\rho = 30$
 
 ```Matlab
 figure(6)
