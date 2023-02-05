@@ -238,6 +238,14 @@ In praticolare, i risultati ottenuti si possono concettualmente dividere con le 
   <img src="img/sim/PL.png" width="330">
 </p>
 
+<p align="center">
+  <img src="img/sim/PLSNR.png" width="330">
+</p>
+
+<p align="center">
+    <img src="img/sim/Distribution.png" width="330">
+</p>
+
 <a name="risblo"></a>
 
 ## Risultati - Vehicular Blockage Modelling
@@ -245,6 +253,19 @@ In praticolare, i risultati ottenuti si possono concettualmente dividere con le 
 <a name="rissim"></a>
 
 ## Risultati - Numerical Simulations
+
+<p align="center">
+  <img src="img/sim/ProbDist.png" width="330">
+</p>
+
+<p align="center">
+  <img src="img/sim/ProbDens.png" width="330">
+</p>
+
+<p align="center">
+  <img src="img/sim/BiRooftop.png" width="330">
+  <img src="img/sim/BiBumper.png" width="330">
+</p>
 
 
 
