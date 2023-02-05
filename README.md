@@ -581,24 +581,108 @@ ProbLoS = 1 - sum(ProbTotale,'all');
 
 ## File `simulations.m`
 ```Matlab
+AltBloccanteMedia = 1.5;
+DensTraffico = 10;
+ProbNLoSDistVar10 = zeros(20, 1);
+for j = 4:20
+    DistanzaTxRxFissa = j * 10;
+    run("main.m")
+    ProbNLoSDistVar10(j, 1) = ProbNLoS;
+end
 
+DensTraffico = 20;
+ProbNLoSDistVar50 = zeros(20, 1);
+for j = 4:20
+    DistanzaTxRxFissa = j * 10;
+    run("main.m")
+    ProbNLoSDistVar50(j, 1) = ProbNLoS;
+end
 ```
+La simulazione in questione ha come scopo trovare, a distanza variabile, la probabilità di ottenere un bloccaggio. Per far ciò, vengono prima ripristinati i valori di altezza dell'antenna e della densità del traffico, in quanto in seguito verranno modificati. Questo passaggio viene fatto per pura convenienza, in quanto non sempre sarà necessario eseguire il codice in tutta la sua interezza.<br>
+Viene modificata la distanza tra TX e RX a ogni iterazione di un ciclo `for`, e viene riportato il dato finale `ProbNLoS` in un array in seguito alla riesecuzione del codice MATLAB `main.m`.
 
 ```Matlab
+AltBloccanteMedia = 0.3;
+DensTraffico = 10;
+ProbNLoSDistVar10B = zeros(20, 1);
+for j = 4:20
+    DistanzaTxRxFissa = j * 10;
+    run("main.m")
+    ProbNLoSDistVar10B(j, 1) = ProbNLoS;
+end
+
+DensTraffico = 20;
+ProbNLoSDistVar50B = zeros(20, 1);
+for j = 4:20
+    DistanzaTxRxFissa = j * 10;
+    run("main.m")
+    ProbNLoSDistVar50B(j, 1) = ProbNLoS;
+end
+
+ProbNLoSDistVar10 = ProbNLoSDistVar10/2;
+ProbNLoSDistVar50 = ProbNLoSDistVar50/2;
+ProbNLoSDistVar10B = ProbNLoSDistVar10B/2;
+ProbNLoSDistVar50B = ProbNLoSDistVar50B/2;
 
 ```
+Vengono effettuati gli stessi passaggi del punto precedente, con una variazione di altezza dell'antenna a 30 centimetri da terra. Si esaminano anche in questa parte di codice i casi con densità di traffico 10 e 20 veh/km.
 
 ```Matlab
+DistanzaTxRxFissa = 50;
+AltBloccanteMedia = 1.5;
+ProbNLoSDensVar = zeros(30, 1);
+for j = 1:30
+    DensTraffico = j;
+    run("main.m")
+    ProbNLoSDensVar(j, 1) = ProbNLoS;
+end
 
+AltBloccanteMedia = 0.3;
+ProbNLoSDensVarB = zeros(30, 1);
+for j = 1:30
+    DensTraffico = j;
+    run("main.m")
+    ProbNLoSDensVarB(j, 1) = ProbNLoS;
+end
+
+ProbNLoSDensVar = ProbNLoSDensVar/2;
+ProbNLoSDensVarB = ProbNLoSDensVarB/2;
 ```
+Lo stesso iter relativo alla distanza variabile viene ripetuto con la densità veicolare, prendendo come valore $d_{tr}$ 50 metri, come per le prime simulazioni. Vengono effettuate iterazione del codice `main.m` sia per il caso "Rooftop" che "Bumper", ottenendo così due curve.
 
 ```Matlab
+AltBloccanteMedia = 1.5;
+ProbNLoSDoppia = zeros(20, 30);
+for CountDist = 4:20
+    DistanzaTxRxFissa = CountDist * 10;
+    for CountDens = 1:30
+        DensTraffico = CountDens;
+        run("main.m")
+        ProbNLoSDoppia(CountDist,CountDens) = ProbNLoS;
+    end
+end
+ProbNLoSDoppia = ProbNLoSDoppia/2;
 
+AltBloccanteMedia = 0.3;
+ProbNLoSDoppiaB = zeros(20, 30);
+for CountDist = 4:20
+    DistanzaTxRxFissa = CountDist * 10;
+    for CountDens = 1:30
+        DensTraffico = CountDens;
+        run("main.m")
+        ProbNLoSDoppiaB(CountDist,CountDens) = ProbNLoS;
+    end
+end
+ProbNLoSDoppiaB = ProbNLoSDoppiaB/2;
 ```
+Per ottenere una sintesi dei due casi visti precedentemente, vengono annidati due cicli `for`: uno per modificare la distanza $d_{tr}$ e un altro per la densità $\rho$. Vengono ripetute le iterazioni sia per il caso "Rooftop" che per il caso "Bumper", inserendo i dati ottenuti in due matrici 20x30. Tuttavia, questo passaggio si dimostra particolarmente oneroso a livello computazionale, dovendo eseguire il codice `main.m` per un totale di 1200 volte.
 
 ```Matlab
-
+AltBloccanteMedia = 1.5;
+DensTraffico = 10;
+DistanzaTxRxFissa = 50;
 ```
+Vengono ripristinati i valori di partenza dei parametri modificati durante la simulazione.
 
 <a name="matplots"></a>
 
