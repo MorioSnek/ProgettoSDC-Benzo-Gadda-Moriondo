@@ -235,8 +235,8 @@ In praticolare, i risultati ottenuti si possono concettualmente dividere con le 
 Le prime analisi relative al System Model sono riferite al path loss e al rapporto segnale-rumore. In particolare, è visibile come, in presenza di un bloccante, la distribuzione a essi riferita si presenti con una più vicina all'attenuazione del segnale e con una varianza maggiore.
 
 <p align="center">
-  <img src="img/sim/SNR.png" width="330">
-  <img src="img/sim/PL.png" width="330">
+  <img src="img/sim/SNR.png" width="400">
+  <img src="img/sim/PL.png" width="400">
 </p>
 
 I due istogrammi sono speculari: l'introduzione dei parametri del sistema di comunicazione trasforma l'attenuazione in SNR, spostando - come è visibile - la curva gaussiana riferita all'attenuazione dovuta da un bloccante verso un SNR negativo, centrato su un valore vicino allo zero.<br><br>
@@ -250,7 +250,7 @@ Osservando la loro progressione in scala logaritmica, si nota come nel caso NLoS
 Per avere un valore simile in un caso LoS, invece, si osserva come il valore si approssimi agli 0 dB intorno ai 160 metri.<br><br>
 Tuttavia, come visto nei primi grafici, il rapporto segnale-rumore e il path loss sono distribuzioni normali. Per questo motivo, si visualizza come le differenti varianze possano influire sulle due curve inferiori del grafico appena osservato.
 <p align="center">
-    <img src="img/sim/Distribution.png" width="330">
+    <img src="img/sim/Distribution.png" width="450">
 </p>
 Effettuando una simulazione relativa alla distribuzione del segnale a diverse distanze, la dispersione rimane vicina alla curva.<br>
 Come è ovvio dalle osservazioni fatte in precedenza, nel caso LoS la dispersione è molto vicina alla curva, mentre assume valori molto più imprevedibili in presenza di un bloccante.
