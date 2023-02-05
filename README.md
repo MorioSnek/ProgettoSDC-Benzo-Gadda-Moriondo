@@ -1,6 +1,6 @@
-<!---
+---
 geometry: "margin=2.5cm"
---->
+---
 
 # Progetto SDC - A.A. 2022-2023
 
@@ -106,11 +106,11 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Distanza Bloccante-Ricevitore     | $d_{br}$ |
 | Numero di veicoli bloccanti       | $k$      |
 
-#### Intervalli considerati per le variabili (*singola corsia*):
+<!-- #### Intervalli considerati per le variabili (*singola corsia*):
 | Parametro        |       Rooftop      |       Bumper      |
 |------------------|:------------------:|:-----------------:|
 | $d_{tr}$         |   $7.5 \div 195$   |   $2.5 \div 190$  |
-| $d_{tb}, d_{br}$ |  $7.5 \div 187.5$  |    $5 \div 185$   |
+| $d_{tb}, d_{br}$ |  $7.5 \div 187.5$  |    $5 \div 185$   | -->
 
 <a name="systemmodel"></a>
 
