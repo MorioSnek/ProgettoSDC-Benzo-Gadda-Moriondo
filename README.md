@@ -243,7 +243,7 @@ I due istogrammi sono speculari: l'introduzione dei parametri del sistema di com
 Viene effettuata un'analisi relativa all valore medio delle gaussiane $\mu_{PL}$ nei casi Line-of-Sight e Non-Line-of-Sight. In particolare, il grafico è effettuato in maniera tale da rappresentare sia il path loss che il rapporto segnale-rumore in funzione della distanza tra TX e RX.  
 
 <p align="center">
-  <img src="img/sim/PLSNR.png" width="330">
+  <img src="img/sim/PLSNR.png" width="450">
 </p>
 
 Osservando la loro progressione in scala logaritmica, si nota come nel caso NLoSv si abbia una media centrata in zero intorno ai 57 metri, in cui il segnale è tanto presente quanto il rumore.<br> 
@@ -265,22 +265,22 @@ Come è ovvio dalle osservazioni fatte in precedenza, nel caso LoS la dispersion
 La prima analisi fatta è stata relativamente a quanto la distanza influenzi la probabilità totale di bloccaggio, ottenuta come $\sum_{k}\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$. Facendo dunque variare la distanza tra un intervallo che va dai 40 ai 200 metri, vengono ottenuti i seguenti risultati:
 
 <p align="center">
-  <img src="img/sim/ProbDist.png" width="330">
+  <img src="img/sim/ProbDist.png" width="450">
 </p>
 
 L'antenna posizionata sul paraurti, indicativamente a 30 centimetri da terra, ottiene chiaramente delle prestazioni peggiori, essendo la sua altezza efficace $h_{eff}$ minore del caso con l'antenna installata sul tetto del veicolo. Inoltre, è possibile notare come la probabilità di bloccaggio data dalla presenza di un veicolo bloccante aumenti con l'allontanamento dei due veicoli TX e RX, avendo un veicolo bloccante più spazio e più slot per inserirsi tra essi.<br><br>
 Un discorso simile può essere fatto per la seconda simulazione, ossia la probabilità di bloccaggio valutata a distanza $d_{tr}$ fissa ma a densità $\rho$ variabile. In particolare, facendo variare la densità vecolare tra 1 veh/km fino a 30.
 
 <p align="center">
-  <img src="img/sim/ProbDens.png" width="330">
+  <img src="img/sim/ProbDens.png" width="450">
 </p>
 
 Le probabilità di bloccaggio per valori bassi sono praticamente nulle, mentre si raggiungono valori molto più consistenti di probabilità al di sopra dei 15 veh/km. Anche in questo caso, si valuta la prestazione in base al posizionamento dell'antenna, che riscuote prestazioni nettamente maggiori - anche in questo caso - quando posizionata sul tetto del veicolo.<br><br>
 Una sintesi delle due simulazioni precedenti può essere racchiusa in queste superfici che descrivono una probabilità bivariata, dipendente da $d_{tr}$ e $\rho$. Diventa quindi necessario separare i grafici per trattare il caso "Rooftop" e il caso "Bumper". 
 
 <p align="center">
-  <img src="img/sim/BiRooftop.png" width="330">
-  <img src="img/sim/BiBumper.png" width="330">
+  <img src="img/sim/BiRooftop.png" width="400">
+  <img src="img/sim/BiBumper.png" width="400">
 </p>
 
 Si osserva dunque come la densità veicolare abbia un impatto decisamente maggiore rispetto alla distanza tra TX e RX sulla probabilità di bloccaggio, osservabile soprattutto sul caso "Bumper". Le curve generate a parità di densità veicolare hanno un dislivello assai maggiore rispetto al loro duale riferito alla distanza.
