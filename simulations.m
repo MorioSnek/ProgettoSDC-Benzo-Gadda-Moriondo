@@ -9,7 +9,7 @@ for j = 4:20
     ProbNLoSDistVar10(j, 1) = ProbNLoS;
 end
 
-DensTraffico = 20;
+DensTraffico = 30;
 ProbNLoSDistVar50 = zeros(20, 1);
 for j = 4:20
     DistanzaTxRxFissa = j * 10;
@@ -27,18 +27,13 @@ for j = 4:20
     ProbNLoSDistVar10B(j, 1) = ProbNLoS;
 end
 
-DensTraffico = 20;
+DensTraffico = 30;
 ProbNLoSDistVar50B = zeros(20, 1);
 for j = 4:20
     DistanzaTxRxFissa = j * 10;
     run("main.m")
     ProbNLoSDistVar50B(j, 1) = ProbNLoS;
 end
-
-ProbNLoSDistVar10 = ProbNLoSDistVar10/2;
-ProbNLoSDistVar50 = ProbNLoSDistVar50/2;
-ProbNLoSDistVar10B = ProbNLoSDistVar10B/2;
-ProbNLoSDistVar50B = ProbNLoSDistVar50B/2;
 
 %% Simulazione Probabilità di Bloccaggio a densità di veicoli variabile
 
@@ -59,9 +54,6 @@ for j = 1:30
     ProbNLoSDensVarB(j, 1) = ProbNLoS;
 end
 
-ProbNLoSDensVar = ProbNLoSDensVar/2;
-ProbNLoSDensVarB = ProbNLoSDensVarB/2;
-
 %% Simulazione doppia
 
 AltBloccanteMedia = 1.5;
@@ -74,7 +66,6 @@ for CountDist = 4:20
         ProbNLoSDoppia(CountDist,CountDens) = ProbNLoS;
     end
 end
-ProbNLoSDoppia = ProbNLoSDoppia/2;
 
 AltBloccanteMedia = 0.3;
 ProbNLoSDoppiaB = zeros(20, 30);
@@ -86,7 +77,6 @@ for CountDist = 4:20
         ProbNLoSDoppiaB(CountDist,CountDens) = ProbNLoS;
     end
 end
-ProbNLoSDoppiaB = ProbNLoSDoppiaB/2;
 
 AltBloccanteMedia = 1.5;
 DensTraffico = 10;
