@@ -84,6 +84,7 @@ Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli blocca
 | Larghezza veicoli                   |    $w_v$   |  1.8 m |
 | Altezza media veicoli               |   $\mu_v$  |  1.5 m |
 | Deviazione standard altezza veicoli | $\sigma_v$ | 0.08 m |
+| Altezza media paraurti              |   $\mu_p$  |  0.3 m |
 
 <a name="parscenario"></a>
 
