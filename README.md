@@ -277,7 +277,7 @@ I dati prodotti dalla formula 19 sono più chiaramente visualizzabili attraverso
   <img src="img/sim/probtotale.png" width="450">
 </p>
 
-Le probabilità a parità di veicoli possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio.
+Le probabilità a parità di veicoli bloccanti possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio. Si nota che 
 
 <p align="center">
   <img src="img/sim/probtotalestack.png" width="450">
