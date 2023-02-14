@@ -291,6 +291,8 @@ Si osserva dunque l'istogramma relativo alla probabilità cumulata di avere $k\g
   <img src="img/sim/ProbCum.png" width="450">
 </p>
 
+Si noti che, in tutti i grafici, l'asse x viene limitato a $k = 4$ per ragioni di visualizzazione. Le probabilità approcciano lo zero, e diventa irrilevante inserirle negli istogrammi. Tuttavia, si potrebbe stampare fino a $k = N_s$, ossia `NumeroMaxSlot`.
+
 <a name="rissim"></a>
 
 ## Risultati - Numerical Simulations
