@@ -284,7 +284,7 @@ Le probabilità a parità di veicoli bloccanti possono essere dunque impilate tr
 </p>
 
 Si nota che le colonne sono espresse come "esattamente $k$ veicoli bloccanti" e non "almeno $k$ veicoli bloccanti". Per questo, la probabilità che avvenga un bloccaggio da parte di almeno $k$ veicoli risulta la somma della colonna $k$ e di tutte le successive:
-$$\mathbb{P}(\textrm{NLoSv}^{(k > j)}|d_{tr}) = \sum_{j}^{\max(N_s)}\mathbb{P}(\textrm{NLoSv}^{(j)}|d_{tr})$$
+$$\mathbb{P}(\textrm{NLoSv}^{(k > j)}|d_{tr}) = \sum_{j}^{N_s}\mathbb{P}(\textrm{NLoSv}^{(j)}|d_{tr})$$
 Si osserva dunque l'istogramma relativo alla probabilità cumulata di avere $k\geq i$ bloccanti:
 
 <p align="center">
