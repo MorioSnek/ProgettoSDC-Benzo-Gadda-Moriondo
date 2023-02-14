@@ -871,6 +871,7 @@ xlabel('Densità veicolare [veh/km]')
 ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Rooftop)')
+colorbar('eastoutside')
 
 figure(11)
 surf(ProbNLoSDoppiaB)
@@ -881,5 +882,7 @@ xlabel('Densità veicolare [veh/km]')
 ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Bumper)')
+colorbar('eastoutside')
 ```
-La terza simulazione è divisa in due grafici tridimensionali, ottenuti stampando una superfice con il comando `surf`. In particolare, riceve in ingresso una matrice rettangolare 30x20, e utilizza le coordinate della matrice come riferimenti degli assi x e y, mentre il valore contenuto nelle celle rappresenta l'altezza z.
+La terza simulazione è divisa in due grafici tridimensionali, ottenuti stampando una superfice con il comando `surf`. In particolare, riceve in ingresso una matrice rettangolare 30x20, e utilizza le coordinate della matrice come riferimenti degli assi x e y, mentre il valore contenuto nelle celle rappresenta l'altezza z.<br> 
+Il comando `colorbar('eastoutside')` è utilizzato per far comparire nel plot una barra di colori che esprime il valore presente in un determinato punto della superficie.
