@@ -259,6 +259,29 @@ Come è ovvio dalle osservazioni fatte in precedenza, nel caso LoS la dispersion
 <a name="risblo"></a>
 
 ## Risultati - Vehicular Blockage Modelling
+I risultati della terza parte sono espressi in una matrice, avente come dimensioni il numero di slot possibili nel caso same lane e il numero di corsie del tratto autostradale analizzato. Nella rappresentazione matriciale, si riportano nelle celle le probabilità che avvenga un bloccaggio da parte di $k$ veicoli a una data distanza di corsie $\Delta y - 1$.
+
+```
+     1 corsia  2 corsie  3 corsie  4 corsie
+--------------------------------------------
+k=1 | 0.0791    0.1125    0.0858    0.0463
+k=2 | 0.0682    0.0127    0.0167    0.0122
+k=3 | 0.0377      -       0.0011    0.0014
+k=4 | 0.0149      -         -       0.0001
+... |  ...       ...       ...       ...
+```
+
+I dati prodotti dalla formula 19 sono più chiaramente visualizzabili attraverso un istogramma, che raggruppa le probabilità nelle diverse corsie a parità di bloccanti:
+
+<p align="center">
+  <img src="img/sim/probtotale.png" width="450">
+</p>
+
+Le probabilità a parità di veicoli possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio.
+
+<p align="center">
+  <img src="img/sim/probtotalestack.png" width="450">
+</p>
 
 <a name="rissim"></a>
 
@@ -301,11 +324,12 @@ Per comodità dell'utente, si consiglia di visualizzare il progetto finale attra
 ```
 >> run exec.m
 ```
-Alternativamente, se non si vuole visualizzare i plot, si consiglia di eseguire nel seguente ordine:
+Alternativamente, si possono eseguire i comandi nel seguente ordine:
 ``` 
 >> run setup.m
 >> run main.m
 >> run simulations.m
+>> run plots.m
 ```
 
 <a name="matsetup"></a>
