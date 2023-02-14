@@ -54,8 +54,41 @@ title('Simulazione SNR NLoSv a distanza variabile');
 plot(DistanzaTxRxMobile, SNRMobileNLoSv, 'LineWidth', 3);
 stem(DistanzaTxRxMobile, SimSNRMobileNLoSv, 'filled', 'LineStyle', 'none');
 
-%% Simulazione numerica probabilità bloccaggio a distanza variabile
+%% Plot della matrice di probabilità a 200 metri
 figure(5)
+bar(Dist200)
+xlim([0.5 4.5])
+title('Probabilità di bloccaggio da parte di k bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xticks([1 2 3 4])
+xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
+legend('1 corsia', '2 corsie', '3 corsie', '4 corsie')
+
+%% Plot della matrice di probabilità impilato 200 metri
+figure(6)
+bar(Dist200, 'stacked')
+xlim([0.5 4.5])
+title('Probabilità di bloccaggio da parte di k bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xticks([1 2 3 4])
+xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
+legend('1 corsia', '2 corsie', '3 corsie', '4 corsie')
+
+%% Plot della matrice di probabilità impilato 200 metri cumulata
+figure(7)
+bar(ProbCum,'stacked')
+title('Probabilità di bloccaggio da parte di almeno k bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xlim([0.5 4.5])
+xticks([1 2 3 4])
+xticklabels({'k \geq 1','k \geq 2','k \geq 3', 'k \geq 4'})
+legend('1 corsia', '2 corsie', '3 corsie', '4 corsie')
+
+%% Simulazione numerica probabilità bloccaggio a distanza variabile
+figure(8)
 hold on
 grid on
 xlim([4 20])
@@ -76,7 +109,7 @@ stem(ProbNLoSDistVar50B,'filled','LineStyle','none','color','#A2142F')
 plot(ProbNLoSDistVar50B,'color','#A2142F')
 
 %% Simulazione numerica probabilità bloccaggio a densità variabile
-figure(6)
+figure(9)
 hold on
 grid on
 xlim([1 30])
@@ -91,7 +124,7 @@ stem(ProbNLoSDensVarB,'filled','LineStyle','none','color','#A2142F')
 plot(ProbNLoSDensVarB,'color','#A2142F')
 
 %% Simulazione numerica probabilità bloccaggio a densità e distanza variabile
-figure(7)
+figure(10)
 surf(ProbNLoSDoppia)
 xlim([1 30])
 ylim([4 20])
@@ -102,7 +135,7 @@ zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Rooftop)')
 
 %% Simulazione numerica probabilità bloccaggio a densità e distanza variabile Bumper
-figure(8)
+figure(11)
 surf(ProbNLoSDoppiaB)
 xlim([1 30])
 ylim([4 20])
@@ -111,23 +144,3 @@ xlabel('Densità veicolare [veh/km]')
 ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Bumper)')
-
-%% Plot della matrice di probabilità a 200 metri
-figure(9)
-bar(Dist200)
-xlim([0.5 4.5])
-title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
-xlabel('Numero di bloccanti')
-ylabel('Probabilità di bloccaggio')
-xticks([1 2 3 4])
-xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
-
-%% Plot della matrice di probabilità impilato 200 metri
-figure(10)
-bar(Dist200, 'stacked')
-xlim([0.5 4.5])
-title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
-xlabel('Numero di bloccanti')
-ylabel('Probabilità di bloccaggio')
-xticks([1 2 3 4])
-xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
