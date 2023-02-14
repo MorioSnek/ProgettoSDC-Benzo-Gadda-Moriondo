@@ -766,6 +766,28 @@ stem(DistanzaTxRxMobile, SimSNRMobileNLoSv, 'filled', 'LineStyle', 'none');
 Vengono esposti due grafici all'interno della stessa figura (comando `subplot`), che rappresentano a partire dai plot precedenti la distribuzione del rapporto segnale rumore attorno alla media. Sono stati scelti i limiti [-10 50] e [-20 40] per mantenere uguali le proporzioni tra le curve, essendo la distanza verticale tra di loro la stessa. Visivamente, così facendo, rimane coerente per l'osservatore.
 
 ```Matlab
+figure(9)
+bar(Dist200)
+xlim([0.5 4.5])
+title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xticks([1 2 3 4])
+xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
+
+figure(10)
+bar(Dist200, 'stacked')
+xlim([0.5 4.5])
+title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xticks([1 2 3 4])
+xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
+```
+Vengono prodotti due istogrammi attraverso la funzione `bar`, relativi alle probabilità di bloccaggio a parità di bloccanti. Per questo plot è necessario notare come sia stato doveroso l'uso di `xticks`, poiché altrimenti avrebbe segnato sull'asse delle ascisse anche valori come 1.5 o 2.5, che in questo contesto sono privi di significato.<br>
+Il secondo istogramma, come è possibile notare dal codice, è identico al primo, eccetto per l'attributo `'stacked'` all'interno della funzione `bar`. Questo perché non possiedono differenze essenziali, ma per meglio visualizzare la probabilità di bloccaggio sull'asse delle ordinate è necessario impilare le diverse colonne della matrice.
+
+```Matlab
 figure(5)
 hold on
 grid on
