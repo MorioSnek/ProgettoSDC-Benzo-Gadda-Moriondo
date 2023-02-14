@@ -274,13 +274,21 @@ k=4 | 0.0149      -         -       0.0001
 I dati prodotti dalla formula 19 sono più chiaramente visualizzabili attraverso un istogramma, che raggruppa le probabilità nelle diverse corsie a parità di bloccanti:
 
 <p align="center">
-  <img src="img/sim/probtotale.png" width="450">
+  <img src="img/sim/ProbTotale.png" width="450">
 </p>
 
-Le probabilità a parità di veicoli bloccanti possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio. Si nota che 
+Le probabilità a parità di veicoli bloccanti possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio.
 
 <p align="center">
-  <img src="img/sim/probtotalestack.png" width="450">
+  <img src="img/sim/ProbTotaleStack.png" width="450">
+</p>
+
+Si nota che le colonne sono espresse come "esattamente $k$ veicoli bloccanti" e non "almeno $k$ veicoli bloccanti". Per questo, la probabilità che avvenga un bloccaggio da parte di almeno $k$ veicoli risulta la somma della colonna $k$ e di tutte le successive:
+$$\mathbb{P}(\textrm{NLoSv}^{(k > j)}|d_{tr}) = \sum_{j}^{\max(N_s)}\mathbb{P}(\textrm{NLoSv}^{(j)}|d_{tr})$$
+Si osserva dunque l'istogramma relativo alla probabilità cumulata di avere $k\geq i$ bloccanti:
+
+<p align="center">
+  <img src="img/sim/ProbCum.png" width="450">
 </p>
 
 <a name="rissim"></a>
@@ -699,6 +707,15 @@ DistanzaTxRxFissa = 50;
 ```
 Vengono ripristinati i valori di partenza dei parametri modificati durante la simulazione.
 
+```Matlab
+run("main.m")
+Dist200 = ProbTotale;
+ProbCum = flip(Dist200);
+ProbCum = cumsum(ProbCum);
+ProbCum = flip(ProbCum);
+```
+Servendo una probabilità cumulata, si inverte l'ordine delle righe della matrice, le si somma tra di loro, e si inverte di nuovo per avere i dati in ordinati con $k$ crescente.
+
 <a name="matplots"></a>
 
 ## File `plots.m`
@@ -766,7 +783,7 @@ stem(DistanzaTxRxMobile, SimSNRMobileNLoSv, 'filled', 'LineStyle', 'none');
 Vengono esposti due grafici all'interno della stessa figura (comando `subplot`), che rappresentano a partire dai plot precedenti la distribuzione del rapporto segnale rumore attorno alla media. Sono stati scelti i limiti [-10 50] e [-20 40] per mantenere uguali le proporzioni tra le curve, essendo la distanza verticale tra di loro la stessa. Visivamente, così facendo, rimane coerente per l'osservatore.
 
 ```Matlab
-figure(9)
+figure(5)
 bar(Dist200)
 xlim([0.5 4.5])
 title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
@@ -775,7 +792,7 @@ ylabel('Probabilità di bloccaggio')
 xticks([1 2 3 4])
 xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
 
-figure(10)
+figure(6)
 bar(Dist200, 'stacked')
 xlim([0.5 4.5])
 title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
@@ -788,7 +805,20 @@ Vengono prodotti due istogrammi attraverso la funzione `bar`, relativi alle prob
 Il secondo istogramma, come è possibile notare dal codice, è identico al primo, eccetto per l'attributo `'stacked'` all'interno della funzione `bar`. Questo perché non possiedono differenze essenziali, ma per meglio visualizzare la probabilità di bloccaggio sull'asse delle ordinate è necessario impilare le diverse colonne della matrice.
 
 ```Matlab
-figure(5)
+figure(7)
+bar(ProbCum,'stacked')
+title('Probabilità di bloccaggio da parte di almeno k bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xlim([0.5 4.5])
+xticks([1 2 3 4])
+xticklabels({'k \geq 1','k \geq 2','k \geq 3', 'k \geq 4'})
+legend('1 corsia', '2 corsie', '3 corsie', '4 corsie')
+```
+Si stampa in modo equivalente alle matrici precedenti l'istogramma relativo alla probabilità cumulata. Anche in questa circostanza è necessario utilizzare il comando `xticks` e `xtickslabels`.
+
+```Matlab
+figure(8)
 hold on
 grid on
 xlim([4 20])
@@ -814,7 +844,7 @@ Per ogni andamento vengono effettuati sia un `plot` che uno `stem` (rimuovendo l
 Le curve inferiori sono relative alle analisi effettuate con un'antenna sul tetto (caso Rooftop), quelle superiori riguardano invece il caso con un'antenna sul paraurti (caso Bumper). Le densità considerate sono $\rho = 10$ e $\rho = 30$
 
 ```Matlab
-figure(6)
+figure(9)
 hold on
 grid on
 xlim([1 30])
@@ -832,7 +862,7 @@ plot(ProbNLoSDensVarB,'color','#A2142F')
 La seconda simulazione numerica, ossia "**Probabilità bloccaggio a densità veicolare variabile**", viene effettuata in modo simile alla precedente, mantenendo una distanza costante di 50 metri.
 
 ```Matlab
-figure(7)
+figure(10)
 surf(ProbNLoSDoppia)
 xlim([1 30])
 ylim([4 20])
@@ -842,7 +872,7 @@ ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Rooftop)')
 
-figure(8)
+figure(11)
 surf(ProbNLoSDoppiaB)
 xlim([1 30])
 ylim([4 20])
