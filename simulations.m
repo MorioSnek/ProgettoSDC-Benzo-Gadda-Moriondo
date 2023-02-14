@@ -78,8 +78,13 @@ for CountDist = 4:20
     end
 end
 
+%% Simulazioni Parte 3
 AltBloccanteMedia = 1.5;
 DensTraffico = 20;
 DistanzaTxRxFissa = 200;
 run("main.m")
 Dist200 = ProbTotale;
+
+ProbCum = flip(Dist200);
+ProbCum = cumsum(ProbCum);
+ProbCum = flip(ProbCum);
