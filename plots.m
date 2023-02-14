@@ -112,3 +112,22 @@ ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Bumper)')
 
+%% Plot della matrice di probabilità a 200 metri
+figure(10)
+bar(Dist200)
+xlim([0.5 4.5])
+title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xticks([1 2 3 4])
+xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
+
+%% Plot della matrice di probabilità impilato 200 metri
+figure(11)
+bar(Dist200, 'stacked')
+xlim([0.5 4.5])
+title('Probabilità di bloccaggio da parte di n bloccanti (d_{tr} 200 = m, \rho = 20 veh/km)')
+xlabel('Numero di bloccanti')
+ylabel('Probabilità di bloccaggio')
+xticks([1 2 3 4])
+xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
