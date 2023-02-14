@@ -133,6 +133,7 @@ xlabel('Densità veicolare [veh/km]')
 ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Rooftop)')
+colorbar('eastoutside')
 
 %% Simulazione numerica probabilità bloccaggio a densità e distanza variabile Bumper
 figure(11)
@@ -144,3 +145,4 @@ xlabel('Densità veicolare [veh/km]')
 ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di bloccaggio')
 title('Probabilità di bloccaggio con densità veicolare e distanza variabili (Bumper)')
+colorbar('eastoutside')
