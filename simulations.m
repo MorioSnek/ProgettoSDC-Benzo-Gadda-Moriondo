@@ -79,5 +79,7 @@ for CountDist = 4:20
 end
 
 AltBloccanteMedia = 1.5;
-DensTraffico = 10;
-DistanzaTxRxFissa = 50;
+DensTraffico = 20;
+DistanzaTxRxFissa = 200;
+run("main.m")
+Dist200 = ProbTotale;
