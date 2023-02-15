@@ -63,7 +63,7 @@ xlabel('Numero di bloccanti')
 ylabel('Probabilità di bloccaggio')
 xticks([1 2 3 4])
 xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
-legend('1 corsia', '2 corsie', '3 corsie', '4 corsie')
+legend('c = 0', 'c = 1', 'c = 2', 'c = 3')
 
 %% Plot della matrice di probabilità impilato 200 metri
 figure(6)
@@ -74,7 +74,7 @@ xlabel('Numero di bloccanti')
 ylabel('Probabilità di bloccaggio')
 xticks([1 2 3 4])
 xticklabels({'k = 1','k = 2','k = 3', 'k=4'})
-legend('1 corsia', '2 corsie', '3 corsie', '4 corsie')
+legend('c = 0', 'c = 1', 'c = 2', 'c = 3')
 
 %% Plot della matrice di probabilità impilato 200 metri cumulata
 figure(7)
@@ -85,7 +85,7 @@ ylabel('Probabilità di bloccaggio')
 xlim([0.5 4.5])
 xticks([1 2 3 4])
 xticklabels({'k \geq 1','k \geq 2','k \geq 3', 'k \geq 4'})
-legend('1 corsia', '2 corsie', '3 corsie', '4 corsie')
+legend('c = 0', 'c = 1', 'c = 2', 'c = 3')
 
 %% Simulazione numerica probabilità bloccaggio a distanza variabile
 figure(8)
