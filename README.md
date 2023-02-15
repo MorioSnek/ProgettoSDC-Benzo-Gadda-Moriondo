@@ -240,11 +240,19 @@ Le prime analisi relative al System Model sono riferite al path loss e al rappor
   <img src="img/sim/PL.png" width="400">
 </p>
 
+<p align = "center">
+Fig.1-2 - SNR e Path Loss a 50 metri, nel caso LoS e NLoSv.
+</p>
+
 I due istogrammi sono speculari: l'introduzione dei parametri del sistema di comunicazione trasforma l'attenuazione in SNR, spostando - come è visibile - la curva gaussiana riferita all'attenuazione dovuta da un bloccante verso un SNR negativo, centrato su un valore vicino allo zero.<br><br>
 Viene effettuata un'analisi relativa all valore medio delle gaussiane $\mu_{PL}$ nei casi Line-of-Sight e Non-Line-of-Sight. In particolare, il grafico è effettuato in maniera tale da rappresentare sia il path loss che il rapporto segnale-rumore in funzione della distanza tra TX e RX.  
 
 <p align="center">
   <img src="img/sim/PLSNR.png" width="450">
+</p>
+
+<p align = "center">
+Fig.3 - SNR e Path Loss medi a una distanza variabile da 2.5 a 200 metri.
 </p>
 
 Osservando la loro progressione in scala logaritmica, si nota come nel caso NLoSv si abbia una media centrata in zero intorno ai 57 metri, in cui il segnale è tanto presente quanto il rumore.<br> 
@@ -253,16 +261,21 @@ Tuttavia, come visto nei primi grafici, il rapporto segnale-rumore e il path los
 <p align="center">
     <img src="img/sim/Distribution.png" width="450">
 </p>
+<p align = "center">
+Fig.4 - Realizzazione singola della distribuzione dell'SNR nel caso LoS e NLoSv.
+</p>
 Effettuando una simulazione relativa alla distribuzione del segnale a diverse distanze, la dispersione rimane vicina alla curva.<br>
 Come è ovvio dalle osservazioni fatte in precedenza, nel caso LoS la dispersione è molto vicina alla curva, mentre assume valori molto più imprevedibili in presenza di un bloccante.
 
 <a name="risblo"></a>
 
 ## Risultati - Vehicular Blockage Modelling
-I risultati della terza parte sono espressi in una matrice, avente come dimensioni il numero di slot possibili nel caso same lane e il numero di corsie del tratto autostradale analizzato. Nella rappresentazione matriciale, si riportano nelle celle le probabilità che avvenga un bloccaggio da parte di $k$ veicoli a una data distanza di corsie $\Delta y - 1$.
+I risultati della terza parte sono espressi in una matrice, avente come dimensioni il numero di slot possibili nel caso same lane e il numero di corsie del tratto autostradale analizzato.<br>
+Per semplicità, si definisce un parametro $c$, ossia la distanza perpendicolare al senso di marcia tra TX e RX (espresso in corsie). Ad esempio, $c=0$ vuole esprimere che i due veicoli di interesse si trovano sulla stessa corsia, mentre $c=3$ significa che TX e RX si trovano su corsie opposte della carreggiata.<br>
+Nella rappresentazione matriciale, si riportano nelle celle le probabilità che avvenga un bloccaggio da parte di $k$ veicoli a una data distanza di corsie $c$.
 
 ```
-     1 corsia  2 corsie  3 corsie  4 corsie
+        c=0       c=1       c=2       c=3
 --------------------------------------------
 k=1 | 0.0791    0.1125    0.0858    0.0463
 k=2 | 0.0682    0.0127    0.0167    0.0122
@@ -276,11 +289,17 @@ I dati prodotti dalla formula 19 sono più chiaramente visualizzabili attraverso
 <p align="center">
   <img src="img/sim/ProbTotale.png" width="450">
 </p>
+<p align = "center"">
+Fig.5 - Probabilità di avere k bloccanti, ripartita per i diversi valori di c.
+</p>
 
 Le probabilità a parità di veicoli bloccanti possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio.
 
 <p align="center">
   <img src="img/sim/ProbTotaleStack.png" width="450">
+</p>
+<p align = "center"">
+Fig.6 - Probabilità di avere k bloccanti, indipendentemente da c.
 </p>
 
 Si nota che le colonne sono espresse come "esattamente $k$ veicoli bloccanti" e non "almeno $k$ veicoli bloccanti". Per questo, la probabilità che avvenga un bloccaggio da parte di almeno $k$ veicoli risulta la somma della colonna $k$ e di tutte le successive:
@@ -289,6 +308,9 @@ Si osserva dunque l'istogramma relativo alla probabilità cumulata di avere $k\g
 
 <p align="center">
   <img src="img/sim/ProbCum.png" width="450">
+</p>
+<p align = "center"">
+Fig.7 - Probabilità di avere almeno k bloccanti, indipendentemente da c.
 </p>
 
 Si noti che, in tutti i grafici, l'asse x viene limitato a $k = 4$ per ragioni di visualizzazione. Le probabilità approcciano lo zero, e diventa irrilevante inserirle negli istogrammi. Tuttavia, si potrebbe stampare fino a $k = N_s$, ossia `NumeroMaxSlot`.
@@ -301,12 +323,18 @@ La prima analisi fatta è stata relativamente a quanto la distanza influenzi la 
 <p align="center">
   <img src="img/sim/ProbDist.png" width="450">
 </p>
+<p align = "center"">
+Fig.8 - Probabilità di avere almeno un bloccaggio a distanza variabile (40-200 metri).
+</p>
 
 L'antenna posizionata sul paraurti, indicativamente a 30 centimetri da terra, ottiene chiaramente delle prestazioni peggiori, essendo la sua altezza efficace $h_{eff}$ minore del caso con l'antenna installata sul tetto del veicolo. Inoltre, è possibile notare come la probabilità di bloccaggio data dalla presenza di un veicolo bloccante aumenti con l'allontanamento dei due veicoli TX e RX, avendo un veicolo bloccante più spazio e più slot per inserirsi tra essi.<br><br>
 Un discorso simile può essere fatto per la seconda simulazione, ossia la probabilità di bloccaggio valutata a distanza $d_{tr}$ fissata a 50 metri e a densità $\rho$ variabile. In particolare, facendo variare la densità vecolare tra 1 veh/km fino a 30.
 
 <p align="center">
   <img src="img/sim/ProbDens.png" width="450">
+</p>
+<p align = "center"">
+Fig.9 - Probabilità di avere almeno un bloccaggio a densità veicolare variabile (0-30 veicoli/chilometro).
 </p>
 
 Le probabilità di bloccaggio per valori bassi sono praticamente nulle, mentre si raggiungono valori molto più consistenti di probabilità al di sopra dei 15 veh/km. Anche in questo caso, si valuta la prestazione in base al posizionamento dell'antenna, che riscuote prestazioni nettamente maggiori - anche in questo caso - quando posizionata sul tetto del veicolo.<br><br>
@@ -315,6 +343,9 @@ Una sintesi delle due simulazioni precedenti può essere racchiusa in queste sup
 <p align="center">
   <img src="img/sim/BiRooftop.png" width="400">
   <img src="img/sim/BiBumper.png" width="400">
+</p>
+<p align = "center"">
+Fig.10 - Probabilità di avere almeno un bloccaggio a distanza variabile (40-200 metri) e densità veicolare variabile (0-30 veicoli/chilometro).
 </p>
 
 Si osserva dunque come la densità veicolare abbia un impatto decisamente maggiore rispetto alla distanza tra TX e RX sulla probabilità di bloccaggio, osservabile soprattutto sul caso "Bumper". Le curve generate a parità di densità veicolare hanno un dislivello assai maggiore rispetto al loro duale riferito alla distanza.
