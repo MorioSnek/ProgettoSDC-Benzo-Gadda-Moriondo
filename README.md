@@ -293,6 +293,9 @@ I dati prodotti dalla formula 19 sono più chiaramente visualizzabili attraverso
 Fig.5 - Probabilità di avere k bloccanti, ripartita per i diversi valori di c.
 </p>
 
+Si può subito notare dalla rappresentazione che la probabilità di avere un bloccaggio su due corsie adiacenti risulta maggiore di averla su una stessa corsia, con $k=1$.<br> 
+Ciò avviene perché, essendoci solamente slot di tipo A e B, i secondi si presentano geometricamente più ampi in superficie, aumentando di conseguenza la probabilità di un bloccaggio
+
 Le probabilità a parità di veicoli bloccanti possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio.
 
 <p align="center">
