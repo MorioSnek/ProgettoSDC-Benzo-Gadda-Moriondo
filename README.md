@@ -445,6 +445,7 @@ LunghezzaSlotC = zeros(1, NumCorsie);
 ProbSamelane = 1 / NumCorsie;
 NumeroMaxSlot = floor(DistanzaTxRxFissa / LunghezzaSlotA);
 ```
+Vengono calcolati la lunghezza degli slot di tipo "A", la probabilità che TX e TX siano sulla stessa corsia e il numero massimo di slot di tipo "A" geometricamente possibile. Inoltre vengono inizializzate le matrici che conterrano i valori delle lunghezze degli slot "B" e "C". La variabile `delta_y` indica il numero di corsie di distanza fra TX e RX.
 
 ```Matlab
 for i = 2:NumCorsie
@@ -453,19 +454,19 @@ for i = 2:NumCorsie
     LunghezzaSlotC(i) = 2 * LunghezzaSlotB(i) + LungVeicolo;
 end
 ```
+Vengono calcolate le lunghezze degli slot "B" e "C" al variare del numero di corsie di distanza fra TX e RX.
 
 ```Matlab
 GammaA = DensTraffico1 * 10 ^ -3 * LunghezzaSlotA;
 GammaB = zeros(1, NumCorsie);
 GammaC = zeros(1, NumCorsie);
-```
 
-```Matlab
 for i = 2:NumCorsie
     GammaB(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotB(i);
     GammaC(i) = DensTraffico1 * 10 ^ -3 * LunghezzaSlotC(i);
 end
 ```
+Viene calcolata la variabile `Gamma` per ogni tipo di slot. Essa sarà necessaria per calcolare la probabilità che un singolo slot (del relativo tipo) sia occupato da un bloccante.
 
 ```Matlab
 DistanzaTxB = rand(1, NumSimulazioni) * DistanzaTxRxFissa;
@@ -473,6 +474,7 @@ DistanzaBRx = DistanzaTxRxFissa - DistanzaTxB;
 RaggioFresnel = sqrt(Lambda_c .* ((DistanzaTxB .* DistanzaBRx) ./ DistanzaTxRxFissa));
 AltezzaFresnel = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + (AltVeicoloMedia - 0.6 * RaggioFresnel);
 ```
+Vengono definiti i vettori delle le distanze fra TX, bloccante e RX. La distanza tra RX e RX è fissata, mentre il bloccante può essere in un qualsiasi punto fra trasmettitore e ricevitore. Vengono inoltre calcolati il raggio e l'altezza del primo ellissoide di Fresnel (l'altezza va dal terreno al punto più basso in cui si incontra l'ellissoide).
 
 ```Matlab
 AltezzaBloccante = (AltVeicoloStdv ^ 2) * randn(1, NumSimulazioni) + AltVeicoloMedia;
@@ -481,35 +483,36 @@ MediaEfficace = 0.6 * RaggioFresnel;
 DevstdEfficace = sqrt(2 * AltVeicoloStdv ^ 2);
 Prob_NLoSv_B = qfunc((AltezzaEfficace - MediaEfficace) / DevstdEfficace);
 ```
+Viene definito un vettore con le possibili altezze di un bloccante e la probabilità che si abbia bloccaggio data la presenza di un bloccante (`Prob_NLoSv_B`).
 
 ```Matlab
 ProbSingleSameLane = Prob_NLoSv_B * GammaA * exp(-GammaA);
 ProbSameLane = zeros(NumeroMaxSlot, NumCorsie);
 ```
+Viene calcolata la probabilità che un singolo slot di tipo "A" sia occupata da un bloccante. Viene, inoltre, inizializzata la matrice dei valori della probabilità di avere $k$ bloccanti in slot di tipo "A" (le dimensioni della matrice servono per semplificare delle operazioni successive).
 
 ```Matlab
 for k = 1:NumeroMaxSlot
     ProbSameLane(k) = (factorial(NumeroMaxSlot) / ((factorial(NumeroMaxSlot - k)) * (factorial(k)))) .* (mean(ProbSingleSameLane) .^ k) .* (mean(1 - ProbSingleSameLane) .^ (NumeroMaxSlot - k));
 end
 ```
+Vengono calcolati i valori della probabilità di avere k bloccanti in slot di tipo "A", fissata una distanza tra TX e RX. 
+Le righe rappresentano il numero di bloccanti considerato.
 
 ```Matlab
 ProbSingleSlotB = zeros(1, NumCorsie);
 ProbSingleSlotC = zeros(1, NumCorsie);
-```
 
-```Matlab
 for i = 2:NumCorsie
     ProbSingleSlotB(i) = mean(Prob_NLoSv_B) * GammaB(i) * exp(-GammaB(i));
     ProbSingleSlotC(i) = mean(Prob_NLoSv_B) * GammaC(i) * exp(-GammaC(i));
 end
 ```
+Vengono calcolate le probabilità che un singolo slot di tipo B o C sia occupato da un bloccante.
 
 ```Matlab
 P14 = zeros(NumeroMaxSlot, NumCorsie);
-```
 
-```Matlab
 for NumCorsie = 2:4
 
     for k = 1:NumCorsie
@@ -568,6 +571,8 @@ for NumCorsie = 2:4
 
 end
 ```
+Viene calcolata, caso per caso, la probabilità di avere $k$ bloccanti su $n+1$ possibili, nel caso in cui TX e RX siano su corsie diverse. <br>
+Per come sono definiti geometricamente gli slot di tipo "B" e "C", il numero massimo di bloccanti è pari alle corsie di distanza fra TX e RX più 1. Ad esempio, se RX si trova sulla corsia accanto a quella di TX, il numero massimo di bloccanti è 2, mentre se, considerando una strada a 4 corsie, TX è sulla prima e RX sull'ultima, il numero massimo di bloccanti sarà 4.
 
 ```Matlab
 Binomiale = zeros(2, 2);
@@ -577,21 +582,18 @@ for k = 1:2
     Binomiale(k, 2) = (factorial(n + 1) / ((factorial(n + 1 - k)) * (factorial(k))));
 end
 ```
+Viene definita una matrice di binomiali utilizzata nelle successive formule.
 
 ```Matlab
 ProbDiffLane = zeros(NumeroMaxSlot, NumCorsie);
 ProbDiffLane_Part1 = zeros(NumeroMaxSlot, NumCorsie);
 ProbDiffLane_Part2 = zeros(NumeroMaxSlot, NumCorsie);
-```
 
-```Matlab
 for k = 1:2
     n = 1;
     ProbDiffLane_Part1(k, n + 1) = ((2 * (NumCorsie - 1)) / (NumCorsie ^ 2)) .* Binomiale(k, 2) .* (ProbSingleSlotB(2)) .^ k .* (1 - ProbSingleSlotB(2)) .^ (n + 1 - k);
 end
-```
 
-```Matlab
 P16 = zeros(1, NumCorsie);
 
 for n = 2:(NumCorsie - 1)
@@ -603,12 +605,14 @@ for n = 2:(NumCorsie - 1)
 
 end
 ```
+Viene calcolata la probabilità di avere $k$ bloccanti nel caso in cui TX e RX siano su corsie diverse, e pesata per la probabilità che i due veicoli siano su corsie diverse. Le colonne rappresentano le corsie di distanza fra TX e RX, mentre le righe il numero di bloccanti considerato.
 
 ```Matlab
 ProbDiffLane = ProbDiffLane_Part1 + ProbDiffLane_Part2;
 ProbTotale = 1/NumCorsie * ProbSameLane + ProbDiffLane;
 ProbNLoS = sum(ProbTotale,'all');
 ```
+Vengono sommate la matrice contenente le probabilità di avere $k$ bloccanti nel caso TX e RX siano sulla stessa corsia e la matrice contenente le probabilità di avere $k$ bloccanti nel caso TX e RX siano su corsie diverse. Si ottiene una matrice le cui colonne rappresentano le corsie di distanza fra trasmettitore e ricevitore, mentre le righe il numero di bloccanti considerato.
 
 ### Numerical Simulations
 
