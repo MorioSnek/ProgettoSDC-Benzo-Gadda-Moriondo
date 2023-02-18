@@ -170,5 +170,35 @@ for n = 2:(NumCorsie - 1)
 end
 
 ProbDiffLane = ProbDiffLane_Part1 + ProbDiffLane_Part2;
-ProbTotale = 1/NumCorsie * ProbSameLane + ProbDiffLane;
-ProbNLoS = sum(ProbTotale,'all');
+ProbTotale = 1 / NumCorsie * ProbSameLane + ProbDiffLane;
+ProbNLoS = sum(ProbTotale, 'all');
+ProbLoS = 1 - ProbNLoS;
+
+mediaDistrSNR_LoS = Pt_dBm + Gt_dB + Gr_dB - MediaLoS - Pn_dBm;
+mediaDistrSNR_NLoS = Pt_dBm + Gt_dB + Gr_dB - MediaPathLoss - Pn_dBm;
+
+DistrSNR_LoS = VarianzaSh * randn(1, NumSimulazioni) + mediaDistrSNR_LoS; %4 k=0
+DistrSNR_NLoS = VarianzaPathLoss * randn(1, NumSimulazioni) + mediaDistrSNR_NLoS; %4 k=1,2,3...
+
+%Prob formula 20
+ProbNLoS_k = zeros(NumeroMaxSlot, 1);
+for SNRCountI = 1:NumeroMaxSlot
+
+    for SNRCountJ = 1:4
+        ProbNLoS_k(SNRCountI) = ProbTotale(SNRCountI, SNRCountJ) + ProbNLoS_k(SNRCountI);
+    end
+
+end
+
+%formula 20
+DistribuzioneSNR = (ProbLoS) * DistrSNR_LoS;
+
+for SNRCountI = 1:NumeroMaxSlot
+    DistribuzioneSNR = DistribuzioneSNR + ProbNLoS_k(SNRCountI) * DistrSNR_NLoS;
+end
+
+[N, edges] = histcounts(DistribuzioneSNR, 'Normalization', 'pdf');
+edges = edges(2:end) - (edges(2) - edges(1)) / 2;
+s = sign(edges);
+inegatif = sum(s(:) == -1);
+ResServizio = trapz(N(inegatif+1:end))/trapz(N);
