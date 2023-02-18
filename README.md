@@ -351,7 +351,18 @@ Una sintesi delle due simulazioni precedenti può essere racchiusa in queste sup
 Fig.10 - Probabilità di avere almeno un bloccaggio a distanza variabile (40-200 metri) e densità veicolare variabile (0-30 veicoli/chilometro).
 </p>
 
-Si osserva dunque come la densità veicolare abbia un impatto decisamente maggiore rispetto alla distanza tra TX e RX sulla probabilità di bloccaggio, osservabile soprattutto sul caso "Bumper". Le curve generate a parità di densità veicolare hanno un dislivello assai maggiore rispetto al loro duale riferito alla distanza.
+Si osserva dunque come la densità veicolare abbia un impatto decisamente maggiore rispetto alla distanza tra TX e RX sulla probabilità di bloccaggio, osservabile soprattutto sul caso "Bumper". Le curve generate a parità di densità veicolare hanno un dislivello assai maggiore rispetto al loro duale riferito alla distanza.<br>
+
+In ultima analisi, si osserva la probabilità di servizio, ossia con quanta probabilità il rapporto segnale-rumore $\gamma$ risulta maggiore di 0. Anche in questo caso, si osservano le due possibili posizioni per l'antenna, ossia "Rooftop" e "Bumper".
+
+<p align="center">
+  <img src="img/sim/SNRRooftop.png" width="400">
+  <img src="img/sim/SNRBumper.png" width="400">
+</p>
+<p align = "center"">
+Fig.11 - Probabilità di avere servizio a distanza variabile (40-200 metri) e densità veicolare variabile (0-30 veicoli/chilometro).
+</p>
+
 
 <a name="codice"></a>
 
@@ -648,6 +659,31 @@ ProbNLoS = sum(ProbTotale,'all');
 ```
 Vengono sommate la matrice contenente le probabilità di avere $k$ bloccanti nel caso TX e RX siano sulla stessa corsia e la matrice contenente le probabilità di avere $k$ bloccanti nel caso TX e RX siano su corsie diverse. Si ottiene una matrice le cui colonne rappresentano le corsie di distanza fra trasmettitore e ricevitore, mentre le righe il numero di bloccanti considerato.
 
+```Matlab
+ProbNLoS_k = zeros(NumeroMaxSlot, 1);
+for SNRCountI = 1:NumeroMaxSlot
+
+    for SNRCountJ = 1:4
+        ProbNLoS_k(SNRCountI) = ProbTotale(SNRCountI, SNRCountJ) + ProbNLoS_k(SNRCountI);
+    end
+
+end
+
+DistribuzioneSNR = (ProbLoS) * DistrSNR_LoS;
+
+for SNRCountI = 1:NumeroMaxSlot
+    DistribuzioneSNR = DistribuzioneSNR + ProbNLoS_k(SNRCountI) * DistrSNR_NLoS;
+end
+
+[N, edges] = histcounts(DistribuzioneSNR, 'Normalization', 'pdf');
+edges = edges(2:end) - (edges(2) - edges(1)) / 2;
+s = sign(edges);
+inegatif = sum(s(:) == -1);
+ResServizio = trapz(N(inegatif+1:end))/trapz(N);
+```
+In quest'ultimo blocco di codice si osserva il codice per ottenere il rapporto segnale rumore in relazione al bloccaggio, e ottenere anche la probabilità di servizio.<br>
+Essa viene calcolata effettuando l'integrale della gaussiana a partire dal valore di SNR 0 attraverso la funzione `trapz`. Benché sia già stata effettuata una normalizzazione sui dati, talvolta è risultato esserci un bug che riportava dei valori di servizio al doppio del loro valore previsto. Per questo, viene effettuata un'ulteriore normalizzazione dividendo la parte della gaussiana utile per tutta la gaussiana.
+
 ### Numerical Simulations
 
 <a name="matnum"></a>
@@ -755,6 +791,31 @@ ProbCum = cumsum(ProbCum);
 ProbCum = flip(ProbCum);
 ```
 Servendo una probabilità cumulata, si inverte l'ordine delle righe della matrice, le si somma tra di loro, e si inverte di nuovo per avere i dati in ordinati con $k$ crescente.
+
+```Matlab
+Servizio = zeros(20, 30);
+for SNRCountDist = 4:20
+    DistanzaTxRxFissa = SNRCountDist * 10;
+    for SNRCountDens = 1:30
+        DensTraffico = SNRCountDens;
+        run("main.m")
+        Servizio(SNRCountDist,SNRCountDens) = ResServizio;
+    end
+end
+
+%% SNR Bumper
+AltBloccanteMedia = 0.3;
+ServizioBumper = zeros(20, 30);
+for SNRCountDist = 4:20
+    DistanzaTxRxFissa = SNRCountDist * 10;
+    for SNRCountDens = 1:30
+        DensTraffico = SNRCountDens;
+        run("main.m")
+        ServizioBumper(SNRCountDist,SNRCountDens) = ResServizio;
+    end
+end
+```
+Similmente agli scorsi plot ripetuti, viene fatto lo stesso per la ricerca della probabilità di servizio.
 
 <a name="matplots"></a>
 
@@ -926,3 +987,30 @@ colorbar('eastoutside')
 ```
 La terza simulazione è divisa in due grafici tridimensionali, ottenuti stampando una superfice con il comando `surf`. In particolare, riceve in ingresso una matrice rettangolare 30x20, e utilizza le coordinate della matrice come riferimenti degli assi x e y, mentre il valore contenuto nelle celle rappresenta l'altezza z.<br> 
 Il comando `colorbar('eastoutside')` è utilizzato per far comparire nel plot una barra di colori che esprime il valore presente in un determinato punto della superficie.
+
+```Matlab
+figure(12)
+surf(Servizio)
+set(gca,'XDir','rev','YDir','rev')
+xlabel('Densità veicolare [veh/km]')
+ylabel('Distanza d_{tr} [10^1m]')
+zlabel('Probabilità di servizio')
+title('Probabilità di servizio con densità veicolare e distanza variabili (Bumper)')
+xlim([1 30])
+ylim([4 20])
+zlim([0.5 1])
+colorbar('eastoutside')
+
+figure(13)
+surf(ServizioBumper)
+set(gca,'XDir','rev','YDir','rev')
+xlabel('Densità veicolare [veh/km]')
+ylabel('Distanza d_{tr} [10^1m]')
+zlabel('Probabilità di servizio')
+title('Probabilità di servizio con densità veicolare e distanza variabili (Bumper)')
+xlim([1 30])
+ylim([4 20])
+zlim([0.5 1])
+colorbar('eastoutside')
+```
+La simulazione relativa alle probabilità di servizio si presenta in modo simile a quella precedente (sempre un comando `surf` con `colorbar`), tuttavia per la forma della superficie esaminata è più opportuno invertire le direzioni degli assi X e Y. Ciò è possibile farlo con il comando `set(gca,'XDir','rev','YDir','rev')`.
