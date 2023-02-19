@@ -51,7 +51,7 @@ Sono stati usati a supporto del progetto anche i seguenti documenti:
 <a name="introduzione"></a>
 
 ## Introduzione
-Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare, con l'ausilio di un programma sviluppato in linguaggio MATLAB. In particolare, l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
+Il progetto ha come scopo la caratterizzazione e la simulazione di una trasmissione veicolare, con l'ausilio di un programma sviluppato in linguaggio MATLAB. In particolare, si studia l'impatto che ha la presenza di un veicolo bloccante sul Signal-To-Noise Ratio relativo alla trasmissione tra due veicoli in uno scenario autostradale.<br>
 Si andrà ad analizzare la situazione base, ovvero l’assenza di veicoli bloccanti tra il trasmettitore e il ricevitore sulla medesima corsia stradale, per poi studiare quelle più complesse prodotte dalla combinazione di diversi elementi:
 
 - Uno o più veicoli bloccanti
@@ -139,9 +139,9 @@ $$PL(k) = 32.4+20\log_{10}(d_{tr})+20\log_{10}(f_c) + \mathcal{A}(k) + \chi\ \si
 
 ## Vehicular Blockage Modelling 
 La propagazione di un segnale viene ostacolata quando un corpo (nell’ambito di questo progetto, un veicolo) ostruisce il primo ellissoide di Fresnel. Le altezze dei veicoli sono assunte come variabili con distribuzione Gaussiana, con media $\mu_v$ e varianza $\sigma_v$.<br>
-Il raggio dipendente dalla lunghezza del primo ellissoide di Fresnel viene calcolato come:
+Il raggio, dipendente dalla lunghezza del primo ellissoide di Fresnel, viene calcolato come:
 $$\tilde{r} = \sqrt{\lambda_c\frac{d_{tb}\cdot d_{tr}}{d_{tb}+d_{trx}}}\quad\quad \lambda_c=\frac{c}{f_c}$$
-Viene inoltre calcolata l'altezza del primo ellissoide di Fresnel, il quale è rappresentabile da una distribuzione Gaussiana:
+Viene inoltre misurata l'altezza del primo ellissoide di Fresnel, la quale è rappresentabile da una distribuzione Gaussiana:
 $$\tilde{h}=h_r\frac{d_{tb}}{d_{tr}}+h_t\frac{d_{br}}{d_{tr}}-0.6\tilde{r}\sim \mathcal{N}(\tilde{\mu},\tilde{\sigma}^2)$$
 $$\to \tilde{\mu}=\mu_v-0.6\tilde{r}\quad\quad \tilde{\sigma}^2=\sigma^2_v$$
 Per calcolare la probabilità di avere un bloccaggio è necessario definire altezza, media e varianza efficace per il bloccaggio:
@@ -154,7 +154,7 @@ La probabilità è dipendente dai parametri della simulazione, quali distanza $d
 <a name="samelane"></a>
 
 ### Analisi Same Lane 
-Nel caso in cui trasmettitore, ricevitore e veicolo bloccante siano sulla stessa corsia, dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in $N_s$ slot. Ogni slot è lungo quanto la somma della lunghezza media di un veicolo e la distanza di sicurezza.<br>
+Nel caso in cui trasmettitore, ricevitore e veicolo bloccante siano sulla stessa corsia, si divide lo spazio che intercorre tra trasmettitore e ricevitore in $N_s$ slot. Ogni slot è lungo quanto la somma della lunghezza media di un veicolo e la distanza di sicurezza.<br>
 $$N_s = \frac{d_{eff}}{d_a} \quad\quad d_{eff} = d_{tr}-l_v \quad\quad d_a = l_v+d_s$$
 Viene assegnato per questi slot il nome "tipo A", per distinguerli da quelli presenti nel caso "Different Lane".
 
@@ -174,7 +174,7 @@ $$\mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})={N_s\choose k}\ma
 <a name="differentlane"></a>
 
 ### Analisi Different Lanes 
-Analizziamo ora il caso in cui trasmettitore e ricevitore siano su corsie differenti. Analogamente al caso “Same Lane” dividiamo lo spazio che intercorre tra trasmettitore e ricevitore in slot. Essi vengono suddivisi in due tipologie:
+Si analizza ora il caso in cui trasmettitore e ricevitore siano su corsie differenti. Analogamente al caso “Same Lane” si divide lo spazio che intercorre tra trasmettitore e ricevitore in slot. Essi vengono suddivisi in due tipologie: 
 
 - Slot Tipo B: spazio che potrebbe essere occupato da un bloccante sulla stessa corsia di TX o RX;
 - Slot Tipo C: spazio che potrebbe essere occupato da un bloccante sulle corsie esistenti tra TX e RX.
@@ -183,9 +183,9 @@ Analizziamo ora il caso in cui trasmettitore e ricevitore siano su corsie differ
   <img src="img/scenario/CLoS.png" width="500">
 </p>
 
-Definita $\Delta y$ la distanza tra i punti medi delle corsie di TX e RX, possiamo definire le lunghezze $d_b$ e $d_c$:
+Denominata $\Delta y$ la distanza tra i punti medi delle corsie di TX e RX, si definisce le lunghezze $d_b$ e $d_c$:
 $$d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{2\Delta y}\quad\quad d_b = \frac{w_v\sqrt{d_{tr}^2-\Delta y^2}}{\Delta y}+l_v$$
-Si calcola la probabilità di avere TX e RX con uno scostamento laterale pari a $\Delta y = nW, \ n\in\{1,2,\ldots,M\}$:
+La probabilità di avere TX e RX con uno scostamento laterale pari a  $\Delta y = nW, \ n\in\{1,2,\ldots,M\}$:
 $$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1}n = \frac{M-1}{M}$$
 
 <p align="center">
@@ -195,15 +195,15 @@ $$\mathbb{P}(\Delta y = n W) = 2\frac{M-n}{M^2}\to \frac{2}{M^2}+\sum_{n=1}^{M-1
   <img src="img/scenario/CNLoSv3.png" width="330">
 </p>
 
-Si calcola inoltre la probabilità di avere $k$ bloccanti su un massimo di $M$ slot, poiché in questo caso si considera che non ci sia più di un veicolo bloccante per corsia:
+Considerando inoltre la presenza di un solo veicolo bloccante per corsia, la probabilità di avere $k$ bloccanti su un massimo di $M$ slot è:
 $$\mathbb{P}(K=k)=\sum_{\mathcal{A}\in\mathcal{Q_\textrm{\textit{k}}}}\prod_{i\in\mathcal{A}}\mathcal{P_\textrm{\textit{i}}}\prod_{j\in\mathcal{A^\textrm{\textit{c}}}}(1-\mathcal{P_\textrm{\textit{j}}})$$
-Ottenuti questi risultati numerici, possiamo unire le due formule per ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli:
+Ottenuti questi risultati numerici, unendo le due formule si ricava la probabilità di avere un bloccaggio da parte di $k$ veicoli:
 $$\mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) = \frac{2(M-1)}{M^2}{n+1\choose k}\mathcal{P_\textrm{\textit{b}}^\textrm{\textit{k}}}(1-\mathcal{P_\textrm{\textit{b}}})^{n+1+k}+\sum_{n=2}^{M-1}\frac{2(M-n)}{M^2}\sum_{\mathcal{A}\in\mathcal{Q_\textrm{\textit{k}}}}\prod_{i\in\mathcal{A}}\mathcal{P_i}\prod_{j\in\mathcal{A^\textrm{\textit{c}}}}(1-\mathcal{P_\textrm{\textit{j}}})$$
 
 <a name="sintesi"></a>
 
 ### Sintesi 
-Sintetizzando il caso "Single Lane" con quello "Different Lanes", possiamo ottenere la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
+Sintetizzando il caso "Single Lane" con quello "Different Lanes", si ottiene la probabilità di avere un bloccaggio da parte di $k$ veicoli in un contesto generale:
 $$\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr}) = \mathbb{P_\textrm{\textit{DL}}}(\textrm{NLoSv}^{(k)}|d_{tr}) + \frac{1}{M}\ \mathbb{P_\textrm{\textit{SL}}}(\textrm{NLoSv}^{(k)}|d_{tr})$$
 
 <a name="snr"></a>
@@ -233,7 +233,7 @@ In praticolare, i risultati ottenuti si possono concettualmente dividere con le 
 <a name="rismod"></a>
 
 ## Risultati - System Model
-Le prime analisi relative al System Model sono riferite al path loss e al rapporto segnale-rumore. In particolare, è visibile come, in presenza di un bloccante, la distribuzione a essi riferita si presenti con una più vicina all'attenuazione del segnale e con una varianza maggiore.
+Le prime analisi relative al System Model sono riferite al path loss e al rapporto segnale-rumore. In particolare è visibile come, in presenza di un bloccante, la distribuzione a essa riferita si presenti con una media più vicina all'attenuazione del segnale e con una varianza maggiore.
 
 <p align="center">
   <img src="img/sim/SNR.png" width="400">
@@ -294,7 +294,7 @@ Fig.5 - Probabilità di avere k bloccanti, ripartita per i diversi valori di c.
 </p>
 
 Si può subito notare dalla rappresentazione che la probabilità di avere un bloccaggio su due corsie adiacenti risulta maggiore di averla su una stessa corsia, con $k=1$.<br> 
-Ciò avviene perché, essendoci solamente slot di tipo A e B, i secondi si presentano geometricamente più ampi in superficie, aumentando di conseguenza la probabilità di un bloccaggio
+Ciò avviene perché, essendoci solamente slot di tipo A e B, i secondi si presentano geometricamente più ampi in superficie, aumentando di conseguenza la probabilità di un bloccaggio.
 
 Le probabilità a parità di veicoli bloccanti possono essere dunque impilate tra loro per ottenere un dato meglio interpretabile sulle probabilità di bloccaggio.
 
@@ -316,12 +316,12 @@ Si osserva dunque l'istogramma relativo alla probabilità cumulata di avere $k\g
 Fig.7 - Probabilità di avere almeno k bloccanti, indipendentemente da c.
 </p>
 
-Si noti che, in tutti i grafici, l'asse x viene limitato a $k = 4$ per ragioni di visualizzazione. Le probabilità approcciano lo zero, e diventa irrilevante inserirle negli istogrammi. Tuttavia, si potrebbe stampare fino a $k = N_s$, ossia `NumeroMaxSlot`.
+Si noti che, in tutti i grafici, l'asse x viene limitato a $k = 4$ per ragioni di visualizzazione. Le probabilità tendono a zero e diventa irrilevante inserirle negli istogrammi. Tuttavia, si potrebbe stampare fino a $k = N_s$, ossia `NumeroMaxSlot`.
 
 <a name="rissim"></a>
 
 ## Risultati - Numerical Simulations
-La prima analisi fatta è stata relativamente a quanto la distanza influenzi la probabilità totale di bloccaggio, ottenuta come $\sum_{k}\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$. Facendo dunque variare la distanza tra un intervallo che va dai 40 ai 200 metri, vengono ottenuti i seguenti risultati:
+La prima analisi effettuata riguarda l’influenza della distanza sulla probabilità totale, ottenuta come $\sum_{k}\mathbb{P}(\textrm{NLoSv}^{(k)}|d_{tr})$. Variando dunque la distanza in un intervallo compreso tra i 40 e i 200 metri, si ottengono i seguenti risultati:
 
 <p align="center">
   <img src="img/sim/ProbDist.png" width="450">
@@ -331,7 +331,7 @@ Fig.8 - Probabilità di avere almeno un bloccaggio a distanza variabile (40-200 
 </p>
 
 L'antenna posizionata sul paraurti, indicativamente a 30 centimetri da terra, ottiene chiaramente delle prestazioni peggiori, essendo la sua altezza efficace $h_{eff}$ minore del caso con l'antenna installata sul tetto del veicolo. Inoltre, è possibile notare come la probabilità di bloccaggio data dalla presenza di un veicolo bloccante aumenti con l'allontanamento dei due veicoli TX e RX, avendo un veicolo bloccante più spazio e più slot per inserirsi tra essi.<br><br>
-Un discorso simile può essere fatto per la seconda simulazione, ossia la probabilità di bloccaggio valutata a distanza $d_{tr}$ fissata a 50 metri e a densità $\rho$ variabile. In particolare, facendo variare la densità vecolare tra 1 veh/km fino a 30.
+Un discorso simile può essere fatto per la seconda simulazione, ossia la probabilità di bloccaggio valutata a distanza $d_{tr}$ fissata a 50 metri e a densità veicolare $\rho$ variabile tra 1 veh/km e 30.
 
 <p align="center">
   <img src="img/sim/ProbDens.png" width="450">
@@ -340,7 +340,7 @@ Un discorso simile può essere fatto per la seconda simulazione, ossia la probab
 Fig.9 - Probabilità di avere almeno un bloccaggio a densità veicolare variabile (0-30 veicoli/chilometro).
 </p>
 
-Le probabilità di bloccaggio per valori bassi sono praticamente nulle, mentre si raggiungono valori molto più consistenti di probabilità al di sopra dei 15 veh/km. Anche in questo caso, si valuta la prestazione in base al posizionamento dell'antenna, che riscuote prestazioni nettamente maggiori - anche in questo caso - quando posizionata sul tetto del veicolo.<br><br>
+Le probabilità di bloccaggio per valori bassi sono praticamente nulle, mentre si raggiungono valori di probabilità molto più consistenti, al di sopra dei 15 veh/km. Anche in questo caso, si valuta la prestazione in base al posizionamento dell'antenna, che riscuote prestazioni nettamente maggiori quando posizionata sul tetto del veicolo.<br><br>
 Una sintesi delle due simulazioni precedenti può essere racchiusa in queste superfici che descrivono una probabilità bivariata, dipendente da $d_{tr}$ e $\rho$. Diventa quindi necessario separare i grafici per trattare il caso "Rooftop" e il caso "Bumper". 
 
 <p align="center">
@@ -351,7 +351,7 @@ Una sintesi delle due simulazioni precedenti può essere racchiusa in queste sup
 Fig.10 - Probabilità di avere almeno un bloccaggio a distanza variabile (40-200 metri) e densità veicolare variabile (0-30 veicoli/chilometro).
 </p>
 
-Si osserva dunque come la densità veicolare abbia un impatto decisamente maggiore rispetto alla distanza tra TX e RX sulla probabilità di bloccaggio, osservabile soprattutto sul caso "Bumper". Le curve generate a parità di densità veicolare hanno un dislivello assai maggiore rispetto al loro duale riferito alla distanza.<br>
+Si osserva dunque come la densità veicolare abbia un impatto decisamente maggiore rispetto alla distanza tra TX e RX sulla probabilità di bloccaggio, osservabile soprattutto sul caso "Bumper". Le curve generate a parità di distanza ma a densità veicolare crescente sono caratterizzate da una ripidità maggiore rispetto a quelle generate a parità di densità ma con distanza crescente.<br>
 
 In ultima analisi, si osserva la probabilità di servizio, ossia con quanta probabilità il rapporto segnale-rumore $\gamma$ risulta maggiore di 0. Anche in questo caso, si osservano le due possibili posizioni per l'antenna, ossia "Rooftop" e "Bumper".
 
