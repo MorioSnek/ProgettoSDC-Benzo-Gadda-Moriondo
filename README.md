@@ -1,7 +1,3 @@
-<!-- ---
-geometry: "margin=2.5cm"
---- -->
-
 # Progetto SDC - A.A. 2022-2023
 
 Progetto di Sistemi di Comunicazione dell'Anno Accademico 2022-2023, relativo alle trasmissioni veicolari. I partecipanti del gruppo sono:
@@ -146,7 +142,7 @@ $$\tilde{h}=h_r\frac{d_{tb}}{d_{tr}}+h_t\frac{d_{br}}{d_{tr}}-0.6\tilde{r}\sim \
 $$\to \tilde{\mu}=\mu_v-0.6\tilde{r}\quad\quad \tilde{\sigma}^2=\sigma^2_v$$
 Per calcolare la probabilità di avere un bloccaggio è necessario definire altezza, media e varianza efficace per il bloccaggio:
 $$h_{eff} = h_v-\tilde{h}\quad\quad \mu_{eff}=\mu_v-\tilde{\mu}\quad\quad \sigma^2_{eff}=\sigma_v^2+\tilde{\sigma}^2$$
-Stabilito che un bloccaggio avviene nel momento in cui $h_{eff}>0$, possiamo calcolare la probabilità di avere un bloccaggio data la presenza di un veicolo potenzialmente bloccante:
+Stabilito che un bloccaggio avviene nel momento in cui $h_{eff}>0$, è possibile calcolare la probabilità di avere un bloccaggio data la presenza di un veicolo potenzialmente bloccante:
 $$\mathbb{P}(\textrm{NLoSv}|d_{tr},\mathcal{B})=Q\left(\frac{h_{eff}-\mu_{eff}}{\sigma_{eff}}\right)$$
 La probabilità è dipendente dai parametri della simulazione, quali distanza $d_{tr}$ e densità di automobili $\rho$.<br>
  La probabilità che un veicolo sia su una determinata corsia è $\frac{1}{M}$, dove $M$ è il numero di corsie considerato.
@@ -221,6 +217,7 @@ Vengono effettuate diverse simulazioni, soprattutto relative alla probabilità d
 - Probabilità di bloccaggio in funzione della distanza $d_{tr}$
 - Probabilità di bloccaggio in funzione della densità di veicoli $\rho$
 - Probabilità bivariata di bloccaggio in funzione di $\rho$ e $d_{tr}$
+- Probabilità bivariata di servizio in funzione di $\rho$ e $d_{tr}$
 
 Per la visualizzazione delle simulazioni, si consiglia di leggere il [paragrafo dedicato](#risultati).
 
@@ -245,7 +242,7 @@ Fig.1-2 - SNR e Path Loss a 50 metri, nel caso LoS e NLoSv.
 </p>
 
 I due istogrammi sono speculari: l'introduzione dei parametri del sistema di comunicazione trasforma l'attenuazione in SNR, spostando - come è visibile - la curva gaussiana riferita all'attenuazione dovuta da un bloccante verso un SNR negativo, centrato su un valore vicino allo zero.<br><br>
-Viene effettuata un'analisi relativa all valore medio delle gaussiane $\mu_{PL}$ nei casi Line-of-Sight e Non-Line-of-Sight. In particolare, il grafico è effettuato in maniera tale da rappresentare sia il path loss che il rapporto segnale-rumore in funzione della distanza tra TX e RX.  
+Viene effettuata un'analisi relativa all valore medio delle gaussiane $\mu_{PL}$ nei casi Line-of-Sight e Non-Line-of-Sight. In particolare, il grafico è effettuato in maniera tale da rappresentare sia il path loss che il rapporto segnale-rumore in funzione della distanza tra TX e RX. 
 
 <p align="center">
   <img src="img/sim/PLSNR.png" width="450">
