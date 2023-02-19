@@ -230,7 +230,7 @@ In praticolare, i risultati ottenuti si possono concettualmente dividere con le 
 <a name="rismod"></a>
 
 ## Risultati - System Model
-Le prime analisi relative al System Model sono riferite al path loss e al rapporto segnale-rumore. In particolare è visibile come, in presenza di un bloccante, la distribuzione a essa riferita si presenti con una media più vicina all'attenuazione del segnale e con una varianza maggiore.
+Le prime analisi relative al System Model sono riferite al path loss e al rapporto segnale-rumore. In particolare è visibile come, in presenza di un bloccante, la distribuzione a essi riferita si presenti con una media più vicina all'attenuazione del segnale e con una varianza maggiore.
 
 <p align="center">
   <img src="img/sim/SNR.png" width="400">
