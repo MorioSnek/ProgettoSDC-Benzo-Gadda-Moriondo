@@ -372,14 +372,14 @@ Il codice è segmentato in diversi file, con le rispettive funzioni:
 - [`setup.m`](#matsetup): racchiude tutti i parametri dell'analisi e della simulazione.
 - [`main.m`](#matmain): comprende tutti i calcoli e gli algoritmi utili alle simulazioni.
 - [`simulations.m`](#matnum): esegue con parametri differenti il main, al fine di ottenere i dati per le simulazioni.
-- [`plots.m`](#matplots): fornisce tutte le istruzioni per i vari plot di grafici.
+- [`plots.m`](#matplots): fornisce tutte le istruzioni per i differenti plot di grafici.
 
-Per comodità dell'utente, si consiglia di visualizzare il progetto finale attraverso lo script matlab `exec.m`, che contiene dei comandi `run` nell'ordine corretto.<br>
+Per comodità dell'utente, si consiglia di visualizzare il progetto finale attraverso lo script MATLAB `exec.m`, che contiene i comandi `run` dei relativi script nell'ordine corretto.<br>
 
 ```
 >> run exec.m
 ```
-Alternativamente, si possono eseguire i comandi nel seguente ordine:
+Alternativamente, si possono eseguire i comandi `run` nel seguente ordine:
 ``` 
 >> run setup.m
 >> run main.m
@@ -394,7 +394,7 @@ Alternativamente, si possono eseguire i comandi nel seguente ordine:
 ```Matlab
 clear all, close all, clc
 ```
-Essendo il primo file ad essere eseguito contiene le uniche istruzioni nel progetto di pulizia di precedenti workspace MATLAB.
+Essendo il primo file ad essere eseguito, contiene le istruzioni di pulizia di precedenti workspace MATLAB.
 
 ```Matlab
 % parametri sistema di comunicazione
@@ -432,8 +432,8 @@ Integrazione delle tabelle viste nei [punti](#parametri) precedenti, suddivise p
 NumSimulazioni = 10 ^ 5;
 DistanzaTxRxFissa = 50;
 ```
-Parametri non definiti nel paper, usati nel progetto per poter effettuare diverse simulazioni. Dove non sarà indicato diversamente, sarà infatti considerata una distanza di 50 metri tra i veicoli.<br>
-Il parametro ``NumSimulazioni`` è riferito a quante iterazioni sono state fatte di una determinata estrazione di una variabile gaussiana, relativamente alle distribuzioni normali presenti (SNR, Altezza dell'ellissoide di Fresnel).
+Parametri non definiti all'interno delle fonti, usati nel progetto per poter effettuare diverse simulazioni. Dove non sarà indicato diversamente, sarà infatti considerata una distanza di 50 metri tra i veicoli.<br>
+Il parametro `NumSimulazioni` esplicita quante realizzazioni di una variabile casuale gaussiana sono state fatte, relativamente alle distribuzioni normali presenti (SNR, Altezza dell'ellissoide di Fresnel).
 
 <a name="matmain"></a>
 
@@ -470,7 +470,7 @@ SNRMobileLoS = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileLoS - Pn_dBm;
 PathLossMobileNLoSv = PathLossMobileLoS + 9 + max(0, 15 * log10(DistanzaTxRxMobile / 2) - 41);
 SNRMobileNLoSv = Pt_dBm + Gt_dB + Gr_dB - PathLossMobileNLoSv - Pn_dBm;
 ```
-Per il plot titolato "**Path Loss e SNR a distanza variabile**" vengono svolti gli opportuni calcoli, valutando a passo 0.625 a partire dalla distanza di sicurezza.<br>
+Per il plot titolato "**Path Loss e SNR a distanza variabile**" (Figura 1) vengono svolti gli opportuni calcoli, valutando a passo 0.625 a partire dalla distanza di sicurezza.<br>
 Per il rapporto segnale-rumore NLoSv è stato preso come valore di riferimento 9 dB di attenuazione, riportato dalle specifiche pubblicate da 3GPP.
 
 ```Matlab
@@ -617,7 +617,7 @@ for NumCorsie = 2:4
 end
 ```
 Viene calcolata, caso per caso, la probabilità di avere $k$ bloccanti su $n+1$ possibili, nel caso in cui TX e RX siano su corsie diverse. <br>
-Per come sono definiti geometricamente gli slot di tipo "B" e "C", il numero massimo di bloccanti è pari alle corsie di distanza fra TX e RX più 1. Ad esempio, se RX si trova sulla corsia accanto a quella di TX, il numero massimo di bloccanti è 2, mentre se, considerando una strada a 4 corsie, TX è sulla prima e RX sull'ultima, il numero massimo di bloccanti sarà 4.
+Per come sono definiti geometricamente gli slot di tipo "B" e "C", il numero massimo di bloccanti è pari alle corsie di distanza fra TX e RX ($c$) sommato a 1. Ad esempio, se RX si trova sulla corsia accanto a quella di TX, il numero massimo di bloccanti è 2, mentre se, considerando una strada a 4 corsie, TX è sulla prima e RX sull'ultima, il numero massimo di bloccanti sarà 4.
 
 ```Matlab
 Binomiale = zeros(2, 2);
@@ -681,8 +681,9 @@ s = sign(edges);
 inegatif = sum(s(:) == -1);
 ResServizio = trapz(N(inegatif+1:end))/trapz(N);
 ```
-In quest'ultimo blocco di codice si osserva il codice per ottenere il rapporto segnale rumore in relazione al bloccaggio, e ottenere anche la probabilità di servizio.<br>
-Essa viene calcolata effettuando l'integrale della gaussiana a partire dal valore di SNR 0 attraverso la funzione `trapz`. Benché sia già stata effettuata una normalizzazione sui dati, talvolta è risultato esserci un bug che riportava dei valori di servizio al doppio del loro valore previsto. Per questo, viene effettuata un'ulteriore normalizzazione dividendo la parte della gaussiana utile per tutta la gaussiana.
+In quest'ultimo blocco di codice si osserva il codice per ottenere il rapporto segnale-rumore in relazione al bloccaggio, e ottenere dunque la probabilità di servizio.<br>
+Essa viene calcolata effettuando l'integrale della gaussiana a partire dal valore di SNR 0, attraverso la funzione `trapz`. Benché sia già stata effettuata una normalizzazione sui dati, talvolta è risultato esserci un bug che riportava l'integrale della gaussiana da $0$ a $+\infty$ pari al doppio del loro valore previsto.<br> 
+Ciò avveniva anche nel caso da $-\infty$ a $+\infty$, risultando quindi in un integrale pari a 2. Per questo, viene effettuata un'ulteriore normalizzazione dividendo la parte della gaussiana utile per tutta la gaussiana.
 
 ### Numerical Simulations
 
@@ -995,7 +996,7 @@ set(gca,'XDir','rev','YDir','rev')
 xlabel('Densità veicolare [veh/km]')
 ylabel('Distanza d_{tr} [10^1m]')
 zlabel('Probabilità di servizio')
-title('Probabilità di servizio con densità veicolare e distanza variabili (Bumper)')
+title('Probabilità di servizio con densità veicolare e distanza variabili (Rooftop)')
 xlim([1 30])
 ylim([4 20])
 zlim([0.5 1])
